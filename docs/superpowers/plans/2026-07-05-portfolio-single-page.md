@@ -18,7 +18,7 @@
 - **Node:** v24 / npm 11 (already installed).
 - **Deploy target:** Vercel.
 - **Assets (copy into `/public`):** `emmanuel.jpg` (from `/Users/emmanuelaguero/Downloads/DVC04710.JPG`), `EmmanuelAguero_CV_2026.pdf` (from `/Users/emmanuelaguero/Documents/EmmanuelAguero_CV_2026.pdf`).
-- **X handle:** not yet provided. `X_HANDLE` constant starts as `""`; the X section renders a placeholder link while empty and the live widget once set.
+- **X handle:** `EmmanuelDevCr` (`https://x.com/EmmanuelDevCr`). `X_HANDLE = "EmmanuelDevCr"`; the X section renders the live widget. The placeholder branch remains as a safe fallback if the handle is ever cleared.
 - **Content source of truth:** `EmmanuelAguero_CV_2026.pdf` (all bullets/skills/dates are transcribed in Task 3).
 
 ---
@@ -390,7 +390,7 @@ export interface SiteContent {
 }
 
 export const NAME = "Emmanuel Agüero Rojas";
-export const X_HANDLE = ""; // e.g. "emmanuel_ar" — fill when provided
+export const X_HANDLE = "EmmanuelDevCr";
 
 export const LINKS = {
   github: "https://github.com/EmmanuelAR",
@@ -1514,6 +1514,6 @@ Expected: live URL returned.
 
 ## Notes / open inputs
 
-- **X handle:** set `X_HANDLE` in `lib/content.ts` to enable the live X timeline; until then the X section shows a placeholder link and the X buttons point to `https://x.com`.
+- **X handle:** set to `EmmanuelDevCr` in `lib/content.ts`; the live X timeline is enabled. Clear `X_HANDLE` to fall back to the placeholder link.
 - **Loader style:** the plan uses a simple mono `>_ loading...` loader. If you want one of the specific uiverse loaders (`black-bullfrog-16` / `quick-chicken-16` / `selfish-bobcat-73`), swap the markup/CSS inside `components/Loader.tsx` — the mount/unmount logic stays the same.
 - **uiverse component styling:** `bright-chicken-11` (ventures/buttons) and `unlucky-rattlesnake-65` (grid) informed the card/grid styling, adapted to the black/white/mono palette. Exact uiverse CSS can be dropped into the corresponding component if a closer match is wanted.

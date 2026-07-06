@@ -76,10 +76,8 @@ before revealing the hero.
   (`revalidate: 86400`).
 
 ### Live X feed
-- Official X (Twitter) embedded timeline widget for Emmanuel's handle.
-- **Open input required:** X handle not yet provided. Until supplied, the section
-  renders a placeholder card linking to X; wire the live widget once the handle
-  is known.
+- Official X (Twitter) embedded timeline widget for Emmanuel's handle
+  `EmmanuelDevCr` (https://x.com/EmmanuelDevCr).
 
 ### i18n (EN | ES)
 - Simple toggle backed by two JSON dictionaries (`en.json` / `es.json`) and a
@@ -110,12 +108,11 @@ languages, contact) comes from `EmmanuelAguero_CV_2026.pdf`. Contact details:
 - Phone: +506 8433-9541
 - LinkedIn: linkedin.com/in/emmanuelaguerorojas
 - GitHub: github.com/EmmanuelAR
-- X: _pending handle_
+- X: x.com/EmmanuelDevCr
 
 ## Open inputs
 
-1. **X (Twitter) handle** — required to wire the live X feed widget. Section
-   ships with a placeholder link until provided.
+None — all inputs provided.
 
 ## Out of scope (YAGNI)
 
