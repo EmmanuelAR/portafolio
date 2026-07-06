@@ -4,7 +4,7 @@ import "./globals.css";
 
 const mono = JetBrains_Mono({
   subsets: ["latin"],
-  variable: "--font-mono",
+  variable: "--font-jbmono",
   display: "swap",
 });
 
