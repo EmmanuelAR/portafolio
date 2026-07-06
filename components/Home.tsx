@@ -7,6 +7,9 @@ import Nav from "./Nav";
 import Hero from "./Hero";
 import About from "./About";
 import GitHubGrid from "./GitHubGrid";
+import Experience from "./Experience";
+import Projects from "./Projects";
+import Skills from "./Skills";
 
 export default function Home({
   contributions,
@@ -22,6 +25,9 @@ export default function Home({
           <Hero />
           <About />
           <GitHubGrid data={contributions} />
+          <Experience />
+          <Skills />
+          <Projects />
         </main>
       </div>
     </LanguageProvider>
