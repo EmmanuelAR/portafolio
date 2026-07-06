@@ -7,9 +7,11 @@ import Nav from "./Nav";
 import Hero from "./Hero";
 import About from "./About";
 import GitHubGrid from "./GitHubGrid";
+import Ventures from "./Ventures";
 import Experience from "./Experience";
 import Projects from "./Projects";
 import Skills from "./Skills";
+import CVModal from "./CVModal";
 
 export default function Home({
   contributions,
@@ -19,12 +21,14 @@ export default function Home({
   return (
     <LanguageProvider>
       <Loader />
+      <CVModal />
       <div id="top">
         <Nav />
         <main>
           <Hero />
           <About />
           <GitHubGrid data={contributions} />
+          <Ventures />
           <Experience />
           <Skills />
           <Projects />
