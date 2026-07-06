@@ -26,6 +26,10 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     if (saved === "en" || saved === "es") setLangState(saved);
   }, []);
 
+  useEffect(() => {
+    document.documentElement.lang = lang;
+  }, [lang]);
+
   const setLang = (l: Lang) => {
     setLangState(l);
     localStorage.setItem("portfolio-lang", l);

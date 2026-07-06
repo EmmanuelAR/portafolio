@@ -43,7 +43,7 @@ export async function getContributions(
   try {
     const res = await fetch(
       `https://github-contributions-api.jogruber.de/v4/${username}?y=last`,
-      { next: { revalidate: 86400 } }
+      { next: { revalidate: 86400 }, signal: AbortSignal.timeout(8000) }
     );
     if (!res.ok) return { total: 0, weeks: [] };
     const data = (await res.json()) as ApiResponse;

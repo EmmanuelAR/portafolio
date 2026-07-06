@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLang } from "@/lib/i18n";
 import { content, LINKS } from "@/lib/content";
 
@@ -8,6 +8,7 @@ export default function CVModal() {
   const { lang } = useLang();
   const c = content[lang];
   const [open, setOpen] = useState(false);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const openHandler = () => setOpen(true);
@@ -22,12 +23,28 @@ export default function CVModal() {
     };
   }, []);
 
+  useEffect(() => {
+    if (open) {
+      closeButtonRef.current?.focus();
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col bg-white">
+    <div
+      role="dialog"
+      aria-modal="true"
+      className="fixed inset-0 z-50 flex flex-col bg-white"
+    >
       <div className="flex items-center justify-between border-b border-black px-4 py-3">
-        <span className="text-sm font-bold">{c.hero.cta.cv} — {lang === "en" ? "CV" : "CV"}</span>
+        <span className="text-sm font-bold">{c.hero.cta.cv}</span>
         <div className="flex gap-3 text-sm">
           <a
             href={LINKS.cv}
@@ -37,6 +54,7 @@ export default function CVModal() {
             {lang === "en" ? "Download" : "Descargar"}
           </a>
           <button
+            ref={closeButtonRef}
             onClick={() => setOpen(false)}
             aria-label="Close CV"
             className="border border-black px-3 py-1 hover:bg-black hover:text-white"
