@@ -4,6 +4,8 @@ import { LanguageProvider } from "@/lib/i18n";
 import type { ContributionData } from "@/lib/github";
 import Loader from "./Loader";
 import Nav from "./Nav";
+import Hero from "./Hero";
+import About from "./About";
 
 export default function Home({
   contributions,
@@ -16,12 +18,8 @@ export default function Home({
       <div id="top">
         <Nav />
         <main>
-          <section id="about" className="px-4 py-24 sm:px-8">
-            <p>&gt;_ sections mount here</p>
-            <p className="text-xs text-black/50">
-              {contributions.total} contributions loaded
-            </p>
-          </section>
+          <Hero />
+          <About />
         </main>
       </div>
     </LanguageProvider>
