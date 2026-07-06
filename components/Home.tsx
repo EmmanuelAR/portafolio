@@ -6,6 +6,7 @@ import Loader from "./Loader";
 import Nav from "./Nav";
 import Hero from "./Hero";
 import About from "./About";
+import GitHubGrid from "./GitHubGrid";
 
 export default function Home({
   contributions,
@@ -20,6 +21,7 @@ export default function Home({
         <main>
           <Hero />
           <About />
+          <GitHubGrid data={contributions} />
         </main>
       </div>
     </LanguageProvider>
