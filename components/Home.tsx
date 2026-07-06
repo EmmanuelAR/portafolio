@@ -12,6 +12,8 @@ import Experience from "./Experience";
 import Projects from "./Projects";
 import Skills from "./Skills";
 import CVModal from "./CVModal";
+import XFeed from "./XFeed";
+import Footer from "./Footer";
 
 export default function Home({
   contributions,
@@ -32,6 +34,8 @@ export default function Home({
           <Experience />
           <Skills />
           <Projects />
+          <XFeed />
+          <Footer />
         </main>
       </div>
     </LanguageProvider>
