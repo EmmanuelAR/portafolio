@@ -2,6 +2,7 @@
 
 import { useLang } from "@/lib/i18n";
 import { content, NAME, LINKS, X_HANDLE } from "@/lib/content";
+import BookCall from "./BookCall";
 
 function openCv() {
   window.dispatchEvent(new CustomEvent("open-cv"));
@@ -22,6 +23,7 @@ export default function Hero() {
       <p className="mt-2 text-xs text-black/60">{c.hero.location}</p>
       <div className="mt-8 flex flex-wrap gap-3">
         <button onClick={openCv} className={btn}>[ {c.hero.cta.cv} ]</button>
+        <BookCall />
         <a href={LINKS.github} target="_blank" rel="noopener" className={btn}>[ {c.hero.cta.github} ]</a>
         <a href={LINKS.linkedin} target="_blank" rel="noopener" className={btn}>[ {c.hero.cta.linkedin} ]</a>
         <a

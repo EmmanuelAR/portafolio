@@ -23,7 +23,7 @@ export interface SiteContent {
     role: string;
     summary: string;
     location: string;
-    cta: { cv: string; github: string; linkedin: string; x: string };
+    cta: { cv: string; github: string; linkedin: string; x: string; book: string };
   };
   about: { heading: string; body: string };
   githubHeading: string;
@@ -41,6 +41,9 @@ export interface SiteContent {
 
 export const NAME = "Emmanuel Agüero Rojas";
 export const X_HANDLE = "EmmanuelDevCr";
+// Your PUBLIC Cal.com booking link, e.g. "emmanuel-aguero" or "emmanuel-aguero/30min".
+// Leave empty to hide the "Book a call" button.
+export const CAL_LINK = "";
 
 export const LINKS = {
   github: "https://github.com/EmmanuelAR",
@@ -64,7 +67,7 @@ export const content: Record<Lang, SiteContent> = {
       summary:
         "Backend and full-stack engineer with 3+ years shipping production systems in fintech and Web3.",
       location: "Alajuela, Costa Rica · GMT-6 · Remote-eligible",
-      cta: { cv: "View CV", github: "GitHub", linkedin: "LinkedIn", x: "X" },
+      cta: { cv: "View CV", github: "GitHub", linkedin: "LinkedIn", x: "X", book: "Book a call" },
     },
     about: {
       heading: "// about",
@@ -131,7 +134,7 @@ export const content: Record<Lang, SiteContent> = {
       summary:
         "Ingeniero backend y full-stack con más de 3 años entregando sistemas en producción en fintech y Web3.",
       location: "Alajuela, Costa Rica · GMT-6 · Disponible en remoto",
-      cta: { cv: "Ver CV", github: "GitHub", linkedin: "LinkedIn", x: "X" },
+      cta: { cv: "Ver CV", github: "GitHub", linkedin: "LinkedIn", x: "X", book: "Agendar llamada" },
     },
     about: {
       heading: "// sobre mí",
