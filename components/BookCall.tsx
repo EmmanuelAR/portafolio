@@ -5,7 +5,7 @@ import { getCalApi } from "@calcom/embed-react";
 import { useLang } from "@/lib/i18n";
 import { content, CAL_LINK } from "@/lib/content";
 
-export default function BookCall() {
+export default function BookCall({ className }: { className?: string }) {
   const { lang } = useLang();
   const c = content[lang];
 
@@ -25,7 +25,10 @@ export default function BookCall() {
 
   return (
     <button
-      className="border border-black px-4 py-2 text-sm hover:bg-black hover:text-white transition-colors"
+      className={
+        className ??
+        "shrink-0 border border-black bg-black px-5 py-2.5 text-sm font-bold text-white hover:bg-white hover:text-black transition-colors"
+      }
       data-cal-link={CAL_LINK}
       data-cal-config='{"layout":"month_view"}'
     >
