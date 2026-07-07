@@ -27,7 +27,7 @@ export default function BookCall({ className }: { className?: string }) {
     <button
       className={
         className ??
-        "shrink-0 border border-black bg-black px-5 py-2.5 text-sm font-bold text-white hover:bg-white hover:text-black transition-colors"
+        "shrink-0 border border-black bg-black px-5 py-2.5 text-center text-sm font-bold text-white hover:bg-white hover:text-black transition-colors"
       }
       data-cal-link={CAL_LINK}
       data-cal-config='{"layout":"month_view"}'
