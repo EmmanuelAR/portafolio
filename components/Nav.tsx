@@ -12,7 +12,6 @@ export default function Nav() {
       <div className="hidden gap-6 sm:flex">
         <a href="#about" className="hover:underline">{c.nav.about}</a>
         <a href="#work" className="hover:underline">{c.nav.work}</a>
-        <a href="#projects" className="hover:underline">{c.nav.projects}</a>
         <a href="#contact" className="hover:underline">{c.nav.contact}</a>
       </div>
       <button

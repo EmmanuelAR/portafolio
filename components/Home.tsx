@@ -9,10 +9,8 @@ import About from "./About";
 import GitHubGrid from "./GitHubGrid";
 import Ventures from "./Ventures";
 import Experience from "./Experience";
-import Projects from "./Projects";
 import Skills from "./Skills";
 import CVModal from "./CVModal";
-import XFeed from "./XFeed";
 import Footer from "./Footer";
 
 export default function Home({
@@ -33,8 +31,6 @@ export default function Home({
           <Ventures />
           <Experience />
           <Skills />
-          <Projects />
-          <XFeed />
           <Footer />
         </main>
       </div>
