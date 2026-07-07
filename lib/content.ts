@@ -45,6 +45,7 @@ export const X_HANDLE = "EmmanuelDevCr";
 export const LINKS = {
   github: "https://github.com/EmmanuelAR",
   linkedin: "https://linkedin.com/in/emmanuelaguerorojas",
+  instagram: "https://www.instagram.com/ear__rae/",
   email: "emmanuelaguerorojas@gmail.com",
   cv: "/EmmanuelAguero_CV_2026.pdf",
 };
