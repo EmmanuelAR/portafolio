@@ -23,7 +23,7 @@ export interface SiteContent {
     role: string;
     summary: string;
     location: string;
-    cta: { cv: string; github: string; linkedin: string; x: string; book: string };
+    cta: { cv: string; github: string; linkedin: string; x: string; book: string; email: string };
   };
   about: { heading: string; body: string };
   githubHeading: string;
@@ -34,9 +34,18 @@ export interface SiteContent {
   projectsHeading: string;
   projects: Project[];
   skillsHeading: string;
+  educationHeading: string;
+  certificationsHeading: string;
   xHeading: string;
   xPending: string;
   contact: { heading: string; email: string; phone: string };
+}
+
+export interface Credential {
+  title: string;
+  org: string;
+  period: string;
+  url?: string;
 }
 
 export const NAME = "Emmanuel Agüero Rojas";
@@ -49,6 +58,8 @@ export const LINKS = {
   github: "https://github.com/EmmanuelAR",
   linkedin: "https://linkedin.com/in/emmanuelaguerorojas",
   instagram: "https://www.instagram.com/ear__rae/",
+  telegram: "https://t.me/EmmanuelDevCr",
+  whatsapp: "https://wa.me/50684339541",
   email: "emmanuelaguerorojas@gmail.com",
   cv: "/EmmanuelAguero_CV_2026.pdf",
 };
@@ -59,6 +70,49 @@ export const SKILLS = [
   "AWS", "Azure", "Supabase", "MongoDB", "Git", "CI/CD", "Starknet", "Ethereum",
 ];
 
+// Most recent first.
+export const EDUCATION: Credential[] = [
+  {
+    title: "Blockchain, Solidity y Gobernanza con Optimism",
+    org: "Universidad CENFOTEC",
+    period: "Aug 2024",
+    url: "https://www.acreditta.com/credential/4c527060-23eb-469c-95c5-3fbafe604e97",
+  },
+  {
+    title: "B.Eng., Systems Engineering",
+    org: "Universidad Nacional, Costa Rica",
+    period: "Feb 2018 – Nov 2022",
+  },
+];
+
+// Most recent first.
+export const CERTIFICATIONS: Credential[] = [
+  {
+    title: "Introduction to Data Science",
+    org: "Cisco",
+    period: "Oct 2023",
+    url: "https://www.credly.com/badges/390a35e6-a130-441f-a19b-c4dc2be7faa2/linked_in_profile",
+  },
+  {
+    title: "Python Essentials 1",
+    org: "Cisco",
+    period: "Sep 2023",
+    url: "https://www.credly.com/badges/ab001455-5d5d-4e28-81c5-eb41ea549d81/linked_in_profile",
+  },
+  {
+    title: "Scrum Fundamentals Certified (SFC)",
+    org: "SCRUMstudy",
+    period: "May 2022",
+    url: "https://www.scrumstudy.com/certification/verify?type=SFC&number=918103",
+  },
+  {
+    title: "Postman Student Expert",
+    org: "Canvas Credentials (Badgr)",
+    period: "May 2022",
+    url: "https://badges.parchment.com/public/assertions/TDAAH0Q3Ru2vGOYqaUptkA",
+  },
+];
+
 export const content: Record<Lang, SiteContent> = {
   en: {
     nav: { about: "about", work: "work", projects: "projects", contact: "contact" },
@@ -67,7 +121,7 @@ export const content: Record<Lang, SiteContent> = {
       summary:
         "Backend and full-stack engineer with 3+ years shipping production systems in fintech and Web3.",
       location: "Alajuela, Costa Rica · GMT-6 · Remote-eligible",
-      cta: { cv: "View CV", github: "GitHub", linkedin: "LinkedIn", x: "X", book: "Book a call" },
+      cta: { cv: "View CV", github: "GitHub", linkedin: "LinkedIn", x: "X", book: "Book a call", email: "Email" },
     },
     about: {
       heading: "// about",
@@ -123,6 +177,8 @@ export const content: Record<Lang, SiteContent> = {
       { name: "Go Stark Me", stack: "Next.js · Cairo", blurb: "Decentralized fundraising on Starknet using Cairo smart contracts for low-cost, non-technical-friendly Web3 donations." },
     ],
     skillsHeading: "// skills",
+    educationHeading: "// education",
+    certificationsHeading: "// certifications",
     xHeading: "// on X",
     xPending: "X feed coming soon — follow me on X.",
     contact: { heading: "// contact", email: "emmanuelaguerorojas@gmail.com", phone: "+506 8433-9541" },
@@ -134,7 +190,7 @@ export const content: Record<Lang, SiteContent> = {
       summary:
         "Ingeniero backend y full-stack con más de 3 años entregando sistemas en producción en fintech y Web3.",
       location: "Alajuela, Costa Rica · GMT-6 · Disponible en remoto",
-      cta: { cv: "Ver CV", github: "GitHub", linkedin: "LinkedIn", x: "X", book: "Agendar llamada" },
+      cta: { cv: "Ver CV", github: "GitHub", linkedin: "LinkedIn", x: "X", book: "Agendar llamada", email: "Email" },
     },
     about: {
       heading: "// sobre mí",
@@ -190,6 +246,8 @@ export const content: Record<Lang, SiteContent> = {
       { name: "Go Stark Me", stack: "Next.js · Cairo", blurb: "Recaudación descentralizada en Starknet con contratos Cairo para donaciones Web3 de bajo costo y amigables para no técnicos." },
     ],
     skillsHeading: "// habilidades",
+    educationHeading: "// educación",
+    certificationsHeading: "// certificaciones",
     xHeading: "// en X",
     xPending: "El feed de X llegará pronto — sígueme en X.",
     contact: { heading: "// contacto", email: "emmanuelaguerorojas@gmail.com", phone: "+506 8433-9541" },

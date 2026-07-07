@@ -10,6 +10,7 @@ import GitHubGrid from "./GitHubGrid";
 import Ventures from "./Ventures";
 import Experience from "./Experience";
 import Skills from "./Skills";
+import Education from "./Education";
 import CVModal from "./CVModal";
 import Footer from "./Footer";
 
@@ -31,6 +32,7 @@ export default function Home({
           <Ventures />
           <Experience />
           <Skills />
+          <Education />
           <Footer />
         </main>
       </div>

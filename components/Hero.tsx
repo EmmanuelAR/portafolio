@@ -23,9 +23,10 @@ export default function Hero() {
         {c.hero.summary}
       </p>
       <p className="mt-2 text-xs text-black/60">{c.hero.location}</p>
-      <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:flex lg:flex-nowrap lg:items-center">
+      <div className="mt-8 grid max-w-2xl grid-cols-2 gap-3 sm:grid-cols-3">
         <button onClick={openCv} className={primary}>[ {c.hero.cta.cv} ]</button>
         <BookCall className={primary} />
+        <a href={`mailto:${LINKS.email}`} className={primary}>[ {c.hero.cta.email} ]</a>
         <a href={LINKS.github} target="_blank" rel="noopener" className={secondary}>[ {c.hero.cta.github} ]</a>
         <a href={LINKS.linkedin} target="_blank" rel="noopener" className={secondary}>[ {c.hero.cta.linkedin} ]</a>
         <a
@@ -37,6 +38,8 @@ export default function Hero() {
           [ {c.hero.cta.x} ]
         </a>
         <a href={LINKS.instagram} target="_blank" rel="noopener" className={secondary}>[ Instagram ]</a>
+        <a href={LINKS.telegram} target="_blank" rel="noopener" className={secondary}>[ Telegram ]</a>
+        <a href={LINKS.whatsapp} target="_blank" rel="noopener" className={secondary}>[ WhatsApp ]</a>
       </div>
     </section>
   );
