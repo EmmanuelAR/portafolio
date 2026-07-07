@@ -32,6 +32,7 @@ export default function Hero() {
         >
           [ {c.hero.cta.x} ]
         </a>
+        <a href={LINKS.instagram} target="_blank" rel="noopener" className={btn}>[ Instagram ]</a>
       </div>
     </section>
   );
