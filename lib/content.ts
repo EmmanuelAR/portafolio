@@ -43,7 +43,7 @@ export const NAME = "Emmanuel Agüero Rojas";
 export const X_HANDLE = "EmmanuelDevCr";
 // Your PUBLIC Cal.com booking link, e.g. "emmanuel-aguero" or "emmanuel-aguero/30min".
 // Leave empty to hide the "Book a call" button.
-export const CAL_LINK = "";
+export const CAL_LINK = "emmanuel-aguero-rojas-qgavpz/15min";
 
 export const LINKS = {
   github: "https://github.com/EmmanuelAR",
