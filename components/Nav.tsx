@@ -8,7 +8,7 @@ export default function Nav() {
   const c = content[lang];
   return (
     <nav className="sticky top-0 z-40 flex items-center justify-between border-b border-black bg-white px-4 py-3 text-sm sm:px-8">
-      <a href="#top" className="font-bold">EA·</a>
+      <a href="#top" className="font-bold">ear_rae</a>
       <div className="hidden gap-6 sm:flex">
         <a href="#about" className="hover:underline">{c.nav.about}</a>
         <a href="#work" className="hover:underline">{c.nav.work}</a>

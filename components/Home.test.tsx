@@ -4,5 +4,5 @@ import Home from "./Home";
 test("renders nav with language toggle", () => {
   render(<Home contributions={{ total: 0, weeks: [] }} />);
   expect(screen.getByLabelText("Toggle language")).toBeInTheDocument();
-  expect(screen.getByText("EA·")).toBeInTheDocument();
+  expect(screen.getByText("ear_rae")).toBeInTheDocument();
 });
