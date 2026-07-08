@@ -22,7 +22,10 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Lang>("en");
 
   useEffect(() => {
+    // SSR-safe: default to "en" on server/first render, then hydrate the saved
+    // preference on mount. This one-time sync is intentional.
     const saved = localStorage.getItem("portfolio-lang");
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (saved === "en" || saved === "es") setLangState(saved);
   }, []);
 

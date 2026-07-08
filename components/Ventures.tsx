@@ -1,7 +1,55 @@
 "use client";
 
+import Image from "next/image";
 import { useLang } from "@/lib/i18n";
-import { content } from "@/lib/content";
+import { content, type Venture } from "@/lib/content";
+
+function VentureCard({ v }: { v: Venture }) {
+  return (
+    <a
+      href={v.url}
+      target="_blank"
+      rel="noopener"
+      className={`group block border-black p-6 transition-colors hover:bg-black/[0.02] sm:p-8 ${
+        v.featured ? "border-2" : "border"
+      }`}
+    >
+      <div className="flex items-center justify-between gap-4">
+        <div className="flex flex-wrap items-center gap-3">
+          <span className="relative block h-9 w-9 shrink-0">
+            <Image
+              src={v.logo}
+              alt={`${v.name} logo`}
+              fill
+              className="object-contain"
+              sizes="36px"
+            />
+          </span>
+          <h3 className="text-xl font-bold sm:text-2xl">{v.name}</h3>
+          {v.featured && (
+            <span className="border border-black px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest">
+              flagship
+            </span>
+          )}
+        </div>
+        <span aria-hidden className="transition-transform group-hover:translate-x-1">
+          →
+        </span>
+      </div>
+
+      <p className="mt-4 w-fit border border-black px-2 py-1 text-xs font-bold">
+        {v.highlight}
+      </p>
+      <p className="mt-4 max-w-3xl text-sm leading-relaxed text-black/80">
+        {v.blurb}
+      </p>
+      <p className="mt-4 text-xs text-black/50">{v.tech}</p>
+      <span className="mt-4 inline-block text-xs underline underline-offset-2 group-hover:no-underline">
+        {v.url.replace("https://", "").replace(/\/$/, "")}
+      </span>
+    </a>
+  );
+}
 
 export default function Ventures() {
   const { lang } = useLang();
@@ -9,24 +57,9 @@ export default function Ventures() {
   return (
     <section id="work" className="border-b border-black px-4 py-16 sm:px-8">
       <h2 className="mb-8 text-lg font-bold">{c.venturesHeading}</h2>
-      <div className="grid gap-6 sm:grid-cols-2">
+      <div className="space-y-6">
         {c.ventures.map((v, i) => (
-          <a
-            key={i}
-            href={v.url}
-            target="_blank"
-            rel="noopener"
-            className="group border border-black p-6 transition-colors hover:bg-black hover:text-white"
-          >
-            <div className="flex items-center justify-between">
-              <h3 className="text-lg font-bold">{v.name}</h3>
-              <span aria-hidden>→</span>
-            </div>
-            <p className="mt-3 text-sm opacity-80">{v.blurb}</p>
-            <p className="mt-4 text-xs opacity-60">
-              {v.url.replace("https://", "")}
-            </p>
-          </a>
+          <VentureCard key={i} v={v} />
         ))}
       </div>
     </section>

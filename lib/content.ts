@@ -5,6 +5,7 @@ export interface Job {
   org: string;
   url: string;
   period: string;
+  kind: "founder" | "employee";
   bullets: string[];
 }
 export interface Project {
@@ -16,6 +17,10 @@ export interface Venture {
   name: string;
   url: string;
   blurb: string;
+  highlight: string;
+  tech: string;
+  logo: string;
+  featured?: boolean;
 }
 export interface SiteContent {
   nav: { about: string; work: string; projects: string; contact: string };
@@ -36,6 +41,10 @@ export interface SiteContent {
   skillsHeading: string;
   educationHeading: string;
   certificationsHeading: string;
+  moreCertsLabel: string;
+  topLangsLabel: string;
+  roleTags: { founder: string; employee: string };
+  cta2: { heading: string; subtext: string };
   xHeading: string;
   xPending: string;
   contact: { heading: string; email: string; phone: string };
@@ -46,6 +55,7 @@ export interface Credential {
   org: string;
   period: string;
   url?: string;
+  secondary?: boolean;
 }
 
 export const NAME = "Emmanuel Agüero Rojas";
@@ -70,6 +80,9 @@ export const SKILLS = [
   "AWS", "Azure", "Supabase", "MongoDB", "Git", "CI/CD", "Starknet", "Ethereum",
 ];
 
+// Most-used languages shown under the GitHub grid. Edit freely.
+export const TOP_LANGUAGES = ["TypeScript", "Cairo", "Solidity", "Java", "Python"];
+
 // Most recent first.
 export const EDUCATION: Credential[] = [
   {
@@ -88,28 +101,31 @@ export const EDUCATION: Credential[] = [
 // Most recent first.
 export const CERTIFICATIONS: Credential[] = [
   {
-    title: "Introduction to Data Science",
-    org: "Cisco",
-    period: "Oct 2023",
-    url: "https://www.credly.com/badges/390a35e6-a130-441f-a19b-c4dc2be7faa2/linked_in_profile",
-  },
-  {
-    title: "Python Essentials 1",
-    org: "Cisco",
-    period: "Sep 2023",
-    url: "https://www.credly.com/badges/ab001455-5d5d-4e28-81c5-eb41ea549d81/linked_in_profile",
-  },
-  {
     title: "Scrum Fundamentals Certified (SFC)",
     org: "SCRUMstudy",
     period: "May 2022",
     url: "https://www.scrumstudy.com/certification/verify?type=SFC&number=918103",
   },
   {
+    title: "Introduction to Data Science",
+    org: "Cisco",
+    period: "Oct 2023",
+    url: "https://www.credly.com/badges/390a35e6-a130-441f-a19b-c4dc2be7faa2/linked_in_profile",
+    secondary: true,
+  },
+  {
+    title: "Python Essentials 1",
+    org: "Cisco",
+    period: "Sep 2023",
+    url: "https://www.credly.com/badges/ab001455-5d5d-4e28-81c5-eb41ea549d81/linked_in_profile",
+    secondary: true,
+  },
+  {
     title: "Postman Student Expert",
     org: "Canvas Credentials (Badgr)",
     period: "May 2022",
     url: "https://badges.parchment.com/public/assertions/TDAAH0Q3Ru2vGOYqaUptkA",
+    secondary: true,
   },
 ];
 
@@ -117,9 +133,9 @@ export const content: Record<Lang, SiteContent> = {
   en: {
     nav: { about: "about", work: "work", projects: "projects", contact: "contact" },
     hero: {
-      role: "Software Engineer — Backend & Full-Stack · Blockchain / Web3",
+      role: "Backend & Full-Stack Software Engineer · Blockchain / Web3",
       summary:
-        "Backend and full-stack engineer with 3+ years shipping production systems in fintech and Web3.",
+        "I own production backends that gate real revenue at Snap Finance — and I co-found startups that ship: Cavos, embedded-wallet infra live on Starknet ($25K pre-seed), and Framezz, live at Ironman and Disney races.",
       location: "Alajuela, Costa Rica · GMT-6 · Remote-eligible",
       cta: { cv: "View CV", github: "GitHub", linkedin: "LinkedIn", x: "X", book: "Book a call", email: "Email" },
     },
@@ -136,6 +152,7 @@ export const content: Record<Lang, SiteContent> = {
         org: "Snap Finance",
         url: "",
         period: "Jan 2023 – Present · Alajuela, CR",
+        kind: "employee",
         bullets: [
           "Own the end-to-end user onboarding backend that gates new-user revenue — design, delivery, and on-call incident response for production traffic.",
           "Diagnosed recurring onboarding failures to root cause and shipped targeted backend fixes that measurably improved completion reliability.",
@@ -148,6 +165,7 @@ export const content: Record<Lang, SiteContent> = {
         org: "Cavos",
         url: "https://cavos.xyz/",
         period: "Apr 2025 – Present · Remote",
+        kind: "founder",
         bullets: [
           "Co-founded Cavos, embedded-wallet infrastructure for Starknet apps — onboard users into self-custodial smart accounts with a Google or Apple login, no seed phrase.",
           "Architected and shipped the full stack (Next.js, React, Solidity, Cairo) live on Ethereum mainnet and Starknet, including the production integration with Jokers of Neon.",
@@ -159,6 +177,7 @@ export const content: Record<Lang, SiteContent> = {
         org: "Studio Framezz",
         url: "https://studioframezz.com/en",
         period: "May 2025 – Present · Remote",
+        kind: "founder",
         bullets: [
           "Co-founded Framezz, a selfie-search photo platform for event photography (endurance races, marathons) with IVA-compliant invoicing for Costa Rica.",
           "Built the platform end-to-end with Next.js and TypeScript, backed by AWS (S3-driven storage and delivery) that indexes and serves photos from live events.",
@@ -168,8 +187,25 @@ export const content: Record<Lang, SiteContent> = {
     ],
     venturesHeading: "// ventures",
     ventures: [
-      { name: "Cavos", url: "https://cavos.xyz/", blurb: "Embedded-wallet infrastructure for Starknet." },
-      { name: "Studio Framezz", url: "https://studioframezz.com/en", blurb: "Selfie-search photo platform for events." },
+      {
+        name: "Cavos",
+        url: "https://cavos.xyz/",
+        blurb:
+          "Embedded-wallet infrastructure for Starknet apps. Onboard users into self-custodial smart accounts with a Google or Apple login — no seed phrase, no extension. Live on Ethereum mainnet and Starknet, including the production integration with Jokers of Neon.",
+        highlight: "$25K pre-seed · Live on Starknet mainnet",
+        tech: "Next.js · React · Solidity · Cairo",
+        logo: "/images/cavos.png",
+        featured: true,
+      },
+      {
+        name: "Studio Framezz",
+        url: "https://studioframezz.com/en",
+        blurb:
+          "Selfie-search photo platform for event photography — endurance races and marathons — with IVA-compliant e-invoicing for Costa Rica. Built end-to-end on Next.js and an AWS S3 pipeline that indexes and serves photos from live events.",
+        highlight: "4 live events · Ironman & Disney",
+        tech: "Next.js · TypeScript · AWS S3",
+        logo: "/images/framezz.png",
+      },
     ],
     projectsHeading: "// projects",
     projects: [
@@ -179,6 +215,14 @@ export const content: Record<Lang, SiteContent> = {
     skillsHeading: "// skills",
     educationHeading: "// education",
     certificationsHeading: "// certifications",
+    moreCertsLabel: "See more certifications",
+    topLangsLabel: "Most used",
+    roleTags: { founder: "founder", employee: "employee" },
+    cta2: {
+      heading: "// let's talk",
+      subtext:
+        "Open to backend & full-stack roles and to Web3 collaborations. Grab 15 minutes or send my CV to your team.",
+    },
     xHeading: "// on X",
     xPending: "X feed coming soon — follow me on X.",
     contact: { heading: "// contact", email: "emmanuelaguerorojas@gmail.com", phone: "+506 8433-9541" },
@@ -186,9 +230,9 @@ export const content: Record<Lang, SiteContent> = {
   es: {
     nav: { about: "sobre-mí", work: "trabajo", projects: "proyectos", contact: "contacto" },
     hero: {
-      role: "Ingeniero de Software — Backend & Full-Stack · Blockchain / Web3",
+      role: "Ingeniero de Software Backend & Full-Stack · Blockchain / Web3",
       summary:
-        "Ingeniero backend y full-stack con más de 3 años entregando sistemas en producción en fintech y Web3.",
+        "Soy dueño de backends en producción que habilitan ingresos reales en Snap Finance — y cofundo startups que entregan: Cavos, infraestructura de wallets embebidas en vivo en Starknet ($25K pre-seed), y Framezz, en vivo en carreras Ironman y Disney.",
       location: "Alajuela, Costa Rica · GMT-6 · Disponible en remoto",
       cta: { cv: "Ver CV", github: "GitHub", linkedin: "LinkedIn", x: "X", book: "Agendar llamada", email: "Email" },
     },
@@ -205,6 +249,7 @@ export const content: Record<Lang, SiteContent> = {
         org: "Snap Finance",
         url: "",
         period: "Ene 2023 – Presente · Alajuela, CR",
+        kind: "employee",
         bullets: [
           "Responsable del backend de onboarding de usuarios que habilita los ingresos de nuevos usuarios — diseño, entrega y respuesta a incidentes on-call en producción.",
           "Diagnostiqué fallas recurrentes de onboarding hasta su causa raíz y entregué correcciones de backend que mejoraron de forma medible la confiabilidad de finalización.",
@@ -217,6 +262,7 @@ export const content: Record<Lang, SiteContent> = {
         org: "Cavos",
         url: "https://cavos.xyz/",
         period: "Abr 2025 – Presente · Remoto",
+        kind: "founder",
         bullets: [
           "Cofundé Cavos, infraestructura de wallets embebidas para apps de Starknet — onboarding a cuentas inteligentes auto-custodiadas con login de Google o Apple, sin frase semilla.",
           "Diseñé y entregué el stack completo (Next.js, React, Solidity, Cairo) en vivo en Ethereum mainnet y Starknet, incluida la integración en producción con Jokers of Neon.",
@@ -228,6 +274,7 @@ export const content: Record<Lang, SiteContent> = {
         org: "Studio Framezz",
         url: "https://studioframezz.com/en",
         period: "May 2025 – Presente · Remoto",
+        kind: "founder",
         bullets: [
           "Cofundé Framezz, plataforma de fotos con búsqueda por selfie para eventos (carreras de resistencia, maratones) con facturación conforme al IVA para Costa Rica.",
           "Construí la plataforma de punta a punta con Next.js y TypeScript, sobre AWS (almacenamiento y entrega con S3) que indexa y sirve fotos de eventos en vivo.",
@@ -237,8 +284,25 @@ export const content: Record<Lang, SiteContent> = {
     ],
     venturesHeading: "// emprendimientos",
     ventures: [
-      { name: "Cavos", url: "https://cavos.xyz/", blurb: "Infraestructura de wallets embebidas para Starknet." },
-      { name: "Studio Framezz", url: "https://studioframezz.com/en", blurb: "Plataforma de fotos con búsqueda por selfie para eventos." },
+      {
+        name: "Cavos",
+        url: "https://cavos.xyz/",
+        blurb:
+          "Infraestructura de wallets embebidas para apps de Starknet. Onboarding a cuentas inteligentes auto-custodiadas con login de Google o Apple — sin frase semilla, sin extensión. En vivo en Ethereum mainnet y Starknet, con la integración en producción con Jokers of Neon.",
+        highlight: "$25K pre-seed · En vivo en Starknet mainnet",
+        tech: "Next.js · React · Solidity · Cairo",
+        logo: "/images/cavos.png",
+        featured: true,
+      },
+      {
+        name: "Studio Framezz",
+        url: "https://studioframezz.com/en",
+        blurb:
+          "Plataforma de fotos con búsqueda por selfie para eventos deportivos — carreras de resistencia y maratones — con factura electrónica (IVA) para Costa Rica. Construida de punta a punta con Next.js y un pipeline AWS S3 que indexa y sirve fotos de eventos en vivo.",
+        highlight: "4 eventos en vivo · Ironman y Disney",
+        tech: "Next.js · TypeScript · AWS S3",
+        logo: "/images/framezz.png",
+      },
     ],
     projectsHeading: "// proyectos",
     projects: [
@@ -248,6 +312,14 @@ export const content: Record<Lang, SiteContent> = {
     skillsHeading: "// habilidades",
     educationHeading: "// educación",
     certificationsHeading: "// certificaciones",
+    moreCertsLabel: "Ver más certificaciones",
+    topLangsLabel: "Más usados",
+    roleTags: { founder: "fundador", employee: "empleado" },
+    cta2: {
+      heading: "// hablemos",
+      subtext:
+        "Abierto a roles backend & full-stack y a colaboraciones Web3. Aparta 15 minutos o envía mi CV a tu equipo.",
+    },
     xHeading: "// en X",
     xPending: "El feed de X llegará pronto — sígueme en X.",
     contact: { heading: "// contacto", email: "emmanuelaguerorojas@gmail.com", phone: "+506 8433-9541" },

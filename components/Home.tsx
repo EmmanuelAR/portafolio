@@ -11,6 +11,7 @@ import Ventures from "./Ventures";
 import Experience from "./Experience";
 import Skills from "./Skills";
 import Education from "./Education";
+import CTASection from "./CTASection";
 import CVModal from "./CVModal";
 import Footer from "./Footer";
 
@@ -33,6 +34,7 @@ export default function Home({
           <Experience />
           <Skills />
           <Education />
+          <CTASection />
           <Footer />
         </main>
       </div>
