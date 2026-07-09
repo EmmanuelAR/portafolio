@@ -43,6 +43,7 @@ export interface SiteContent {
   certificationsHeading: string;
   moreCertsLabel: string;
   topLangsLabel: string;
+  githubStats: { commits: string; prs: string };
   roleTags: { founder: string; employee: string };
   cta2: { heading: string; subtext: string };
   xHeading: string;
@@ -217,7 +218,8 @@ export const content: Record<Lang, SiteContent> = {
     certificationsHeading: "// certifications",
     moreCertsLabel: "See more certifications",
     topLangsLabel: "Most used",
-    roleTags: { founder: "founder", employee: "employee" },
+    githubStats: { commits: "commits", prs: "PRs" },
+    roleTags: { founder: "cofounder", employee: "employee" },
     cta2: {
       heading: "// let's talk",
       subtext:
@@ -314,7 +316,8 @@ export const content: Record<Lang, SiteContent> = {
     certificationsHeading: "// certificaciones",
     moreCertsLabel: "Ver más certificaciones",
     topLangsLabel: "Más usados",
-    roleTags: { founder: "fundador", employee: "empleado" },
+    githubStats: { commits: "commits", prs: "PRs" },
+    roleTags: { founder: "cofundador", employee: "empleado" },
     cta2: {
       heading: "// hablemos",
       subtext:

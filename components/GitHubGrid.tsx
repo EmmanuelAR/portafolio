@@ -1,7 +1,7 @@
 "use client";
 
 import { useLang } from "@/lib/i18n";
-import { content, LINKS, TOP_LANGUAGES } from "@/lib/content";
+import { content, LINKS } from "@/lib/content";
 import type { ContributionData } from "@/lib/github";
 
 const LEVELS = ["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"];
@@ -42,14 +42,21 @@ export default function GitHubGrid({ data }: { data: ContributionData }) {
           </div>
         </div>
       )}
-      <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-2 text-xs">
-        <span className="text-black/50">{c.topLangsLabel}:</span>
-        {TOP_LANGUAGES.map((l) => (
-          <span key={l} className="border border-black/30 px-2 py-0.5">
-            {l}
-          </span>
-        ))}
-      </div>
+      {data.stats && (
+        <p className="mt-5 text-xs text-black/60">
+          {data.stats.commits} {c.githubStats.commits}
+          {" · "}
+          {data.stats.pullRequests} {c.githubStats.prs}
+          {data.stats.currentStreak > 0 && (
+            <>
+              {" · "}
+              {lang === "es"
+                ? `racha de ${data.stats.currentStreak} días`
+                : `${data.stats.currentStreak}-day streak`}
+            </>
+          )}
+        </p>
+      )}
     </section>
   );
 }
