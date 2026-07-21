@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useLang } from "@/lib/i18n";
 import { content, type Venture } from "@/lib/content";
+import { StatChips } from "./Stat";
 
 function VentureCard({ v }: { v: Venture }) {
   return (
@@ -37,9 +38,7 @@ function VentureCard({ v }: { v: Venture }) {
         </span>
       </div>
 
-      <p className="mt-4 w-fit border border-black px-2 py-1 text-xs font-bold">
-        {v.highlight}
-      </p>
+      <StatChips items={v.stats} className="mt-4" />
       <p className="mt-4 max-w-3xl text-sm leading-relaxed text-black/80">
         {v.blurb}
       </p>

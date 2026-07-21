@@ -3,6 +3,7 @@
 import { useLang } from "@/lib/i18n";
 import { content, NAME, LINKS, X_HANDLE } from "@/lib/content";
 import BookCall from "./BookCall";
+import { StatStrip } from "./Stat";
 
 function openCv() {
   window.dispatchEvent(new CustomEvent("open-cv"));
@@ -19,6 +20,14 @@ export default function Hero() {
     <section className="border-b border-black px-4 py-20 sm:px-8">
       <h1 className="cursor-blink text-3xl font-bold sm:text-5xl">{NAME}</h1>
       <p className="mt-4 text-base sm:text-lg">{c.hero.role}</p>
+      <p className="mt-4 inline-flex items-center gap-2 border border-black px-3 py-1 text-xs font-bold">
+        <span aria-hidden className="relative flex h-2 w-2">
+          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-black/40" />
+          <span className="relative inline-flex h-2 w-2 rounded-full bg-black" />
+        </span>
+        {c.hero.availability}
+      </p>
+      <StatStrip items={c.hero.stats} className="mt-6 max-w-2xl" />
       <p className="mt-6 max-w-2xl text-sm text-black/80 sm:text-base">
         {c.hero.summary}
       </p>

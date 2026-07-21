@@ -1,11 +1,16 @@
 import type { Lang } from "./i18n";
 
+export interface StatItem {
+  value: string;
+  label: string;
+}
 export interface Job {
   role: string;
   org: string;
   url: string;
   period: string;
   kind: "founder" | "employee";
+  stats?: string[];
   bullets: string[];
 }
 export interface Project {
@@ -17,7 +22,7 @@ export interface Venture {
   name: string;
   url: string;
   blurb: string;
-  highlight: string;
+  stats: string[];
   tech: string;
   logo: string;
   featured?: boolean;
@@ -26,8 +31,10 @@ export interface SiteContent {
   nav: { about: string; work: string; projects: string; contact: string };
   hero: {
     role: string;
+    availability: string;
     summary: string;
     location: string;
+    stats: StatItem[];
     cta: { cv: string; github: string; linkedin: string; x: string; book: string; email: string };
   };
   about: { heading: string; body: string };
@@ -135,15 +142,21 @@ export const content: Record<Lang, SiteContent> = {
     nav: { about: "about", work: "work", projects: "projects", contact: "contact" },
     hero: {
       role: "Backend & Full-Stack Software Engineer · Blockchain / Web3",
+      availability: "Available for full-time",
       summary:
-        "I own production backends that gate real revenue at Snap Finance — and I co-found startups that ship: Cavos, embedded-wallet infra live on Starknet ($25K pre-seed), and Framezz, live at Ironman and Disney races.",
+        "I own a Snap Finance onboarding backend gating ~$95M/month in application volume — from design through on-call. On the side, I've co-founded and shipped two products, Cavos and Framezz, which keep my Web3 and end-to-end delivery sharp. Looking for a full-time backend or full-stack role.",
       location: "Alajuela, Costa Rica · GMT-6 · Remote-eligible",
+      stats: [
+        { value: "~$95M/mo", label: "application volume gated" },
+        { value: "70% ↓", label: "onboarding drop-off" },
+        { value: "3+ yrs", label: "production fintech / Web3" },
+      ],
       cta: { cv: "View CV", github: "GitHub", linkedin: "LinkedIn", x: "X", book: "Book a call", email: "Email" },
     },
     about: {
       heading: "// about",
       body:
-        "I own mission-critical onboarding infrastructure at Snap Finance and co-founded two companies: Cavos (embedded-wallet infrastructure for Starknet) and Framezz (selfie-search photo platform for event photography). I'm comfortable owning a service from design through on-call — and equally comfortable pitching investors.",
+        "Backend and full-stack engineer with 3+ years shipping production systems in fintech and Web3. I own a Snap Finance onboarding backend gating ~$95M/month in application volume, and I've co-founded two companies on the side: Cavos (embedded-wallet infrastructure for Starknet) and Framezz (selfie-search photo platform for event photography). Comfortable owning a service from design through on-call — and equally comfortable pitching investors.",
     },
     githubHeading: "// github",
     experienceHeading: "// experience",
@@ -154,9 +167,10 @@ export const content: Record<Lang, SiteContent> = {
         url: "",
         period: "Jan 2023 – Present · Alajuela, CR",
         kind: "employee",
+        stats: ["~$95M/mo volume", "70% ↓ drop-off", "Intern → SDE II in 2 yrs"],
         bullets: [
-          "Own the end-to-end user onboarding backend that gates new-user revenue — design, delivery, and on-call incident response for production traffic.",
-          "Diagnosed recurring onboarding failures to root cause and shipped targeted backend fixes that measurably improved completion reliability.",
+          "Own the onboarding backend that gates new-user revenue — ~$95M/month in application volume — across design, delivery, and on-call incident response for production traffic.",
+          "Cut onboarding drop-off by 70% by diagnosing recurring failures to root cause and shipping targeted backend fixes.",
           "Build and maintain microservices in Java, Spring Boot, and Node.js on AWS, deployed via CI/CD under Agile sprints.",
           "Promoted Intern → SDE I → SDE II in two years by owning projects end-to-end.",
         ],
@@ -167,6 +181,7 @@ export const content: Record<Lang, SiteContent> = {
         url: "https://cavos.xyz/",
         period: "Apr 2025 – Present · Remote",
         kind: "founder",
+        stats: ["Account abstraction", "Live: Starknet + Ethereum", "$25K pre-seed (side)"],
         bullets: [
           "Co-founded Cavos, embedded-wallet infrastructure for Starknet apps — onboard users into self-custodial smart accounts with a Google or Apple login, no seed phrase.",
           "Architected and shipped the full stack (Next.js, React, Solidity, Cairo) live on Ethereum mainnet and Starknet, including the production integration with Jokers of Neon.",
@@ -179,10 +194,11 @@ export const content: Record<Lang, SiteContent> = {
         url: "https://studioframezz.com/en",
         period: "May 2025 – Present · Remote",
         kind: "founder",
+        stats: ["40K+ photos", "12+ live events", "AWS S3 pipeline"],
         bullets: [
-          "Co-founded Framezz, a selfie-search photo platform for event photography (endurance races, marathons) with IVA-compliant invoicing for Costa Rica.",
-          "Built the platform end-to-end with Next.js and TypeScript, backed by AWS (S3-driven storage and delivery) that indexes and serves photos from live events.",
-          "Live at Ironman 70.3 CapCana, Disney Princess Half Marathon (Orlando), BMW Lindora Run, and Clásica Palmarín MTB; technical lead.",
+          "Co-founded Framezz, a selfie-search photo platform for event photography with IVA-compliant invoicing for Costa Rica — ~$2K in revenue within the first two months in production.",
+          "Built the platform end-to-end with Next.js and TypeScript on an AWS S3 storage and delivery pipeline that indexes and serves 40K+ photos across 12+ live races (~3K per event).",
+          "Live at Ironman 70.3 CapCana (Dominican Republic), Disney Princess Half Marathon (Orlando), BMW Lindora Run, and Clásica Palmarín MTB; on-site technical lead.",
         ],
       },
     ],
@@ -192,8 +208,8 @@ export const content: Record<Lang, SiteContent> = {
         name: "Cavos",
         url: "https://cavos.xyz/",
         blurb:
-          "Embedded-wallet infrastructure for Starknet apps. Onboard users into self-custodial smart accounts with a Google or Apple login — no seed phrase, no extension. Live on Ethereum mainnet and Starknet, including the production integration with Jokers of Neon.",
-        highlight: "$25K pre-seed · Live on Starknet mainnet",
+          "Invisible wallets for crypto apps. Users onboard into self-custodial smart accounts with just a Google or Apple login — no seed phrase, no browser extension. Under the hood it's account abstraction: the social login provisions and controls an on-chain smart account, so wallet UX disappears for the end user. Live on Ethereum mainnet and Starknet, including the production integration with Jokers of Neon.",
+        stats: ["Account abstraction", "Live on Starknet + Ethereum", "$25K pre-seed (side)"],
         tech: "Next.js · React · Solidity · Cairo",
         logo: "/images/cavos.png",
         featured: true,
@@ -202,8 +218,8 @@ export const content: Record<Lang, SiteContent> = {
         name: "Studio Framezz",
         url: "https://studioframezz.com/en",
         blurb:
-          "Selfie-search photo platform for event photography — endurance races and marathons — with IVA-compliant e-invoicing for Costa Rica. Built end-to-end on Next.js and an AWS S3 pipeline that indexes and serves photos from live events.",
-        highlight: "4 live events · Ironman & Disney",
+          "Selfie-search photo platform for endurance races and marathons, with IVA-compliant e-invoicing for Costa Rica. An AWS pipeline (S3 storage + image processing) indexes and serves 40K+ photos across 12+ live events — search your face, get your race photos in seconds.",
+        stats: ["40K+ photos", "12+ live events", "AWS S3 pipeline"],
         tech: "Next.js · TypeScript · AWS S3",
         logo: "/images/framezz.png",
       },
@@ -223,7 +239,7 @@ export const content: Record<Lang, SiteContent> = {
     cta2: {
       heading: "// let's talk",
       subtext:
-        "Open to backend & full-stack roles and to Web3 collaborations. Grab 15 minutes or send my CV to your team.",
+        "I'm actively looking for a full-time backend or full-stack role (remote-friendly, GMT-6). If your team is hiring, grab 15 minutes below or send my CV — I'll get back to you fast.",
     },
     xHeading: "// on X",
     xPending: "X feed coming soon — follow me on X.",
@@ -233,15 +249,21 @@ export const content: Record<Lang, SiteContent> = {
     nav: { about: "sobre-mí", work: "trabajo", projects: "proyectos", contact: "contacto" },
     hero: {
       role: "Ingeniero de Software Backend & Full-Stack · Blockchain / Web3",
+      availability: "Disponible para full-time",
       summary:
-        "Soy dueño de backends en producción que habilitan ingresos reales en Snap Finance — y cofundo startups que entregan: Cavos, infraestructura de wallets embebidas en vivo en Starknet ($25K pre-seed), y Framezz, en vivo en carreras Ironman y Disney.",
+        "Soy dueño de un backend de onboarding en Snap Finance que habilita ~$95M/mes en volumen de solicitudes — desde el diseño hasta el on-call. En paralelo, cofundé y entregué dos productos, Cavos y Framezz, que mantienen afiladas mis habilidades de Web3 y entrega de punta a punta. Busco un puesto full-time backend o full-stack.",
       location: "Alajuela, Costa Rica · GMT-6 · Disponible en remoto",
+      stats: [
+        { value: "~$95M/mes", label: "volumen de solicitudes" },
+        { value: "70% ↓", label: "abandono en onboarding" },
+        { value: "3+ años", label: "producción fintech / Web3" },
+      ],
       cta: { cv: "Ver CV", github: "GitHub", linkedin: "LinkedIn", x: "X", book: "Agendar llamada", email: "Email" },
     },
     about: {
       heading: "// sobre mí",
       body:
-        "Soy responsable de la infraestructura crítica de onboarding en Snap Finance y cofundé dos empresas: Cavos (infraestructura de wallets embebidas para Starknet) y Framezz (plataforma de fotos con búsqueda por selfie para eventos). Me manejo bien tanto diseñando y operando un servicio de punta a punta como presentándolo ante inversionistas.",
+        "Ingeniero de software backend y full-stack con 3+ años entregando sistemas en producción en fintech y Web3. Soy dueño de un backend de onboarding en Snap Finance que habilita ~$95M/mes en volumen de solicitudes, y en paralelo cofundé dos empresas: Cavos (infraestructura de wallets embebidas para Starknet) y Framezz (plataforma de fotos con búsqueda por selfie para eventos). Me manejo bien tanto diseñando y operando un servicio de punta a punta como presentándolo ante inversionistas.",
     },
     githubHeading: "// github",
     experienceHeading: "// experiencia",
@@ -252,9 +274,10 @@ export const content: Record<Lang, SiteContent> = {
         url: "",
         period: "Ene 2023 – Presente · Alajuela, CR",
         kind: "employee",
+        stats: ["~$95M/mes volumen", "70% ↓ abandono", "Intern → SDE II en 2 años"],
         bullets: [
-          "Responsable del backend de onboarding de usuarios que habilita los ingresos de nuevos usuarios — diseño, entrega y respuesta a incidentes on-call en producción.",
-          "Diagnostiqué fallas recurrentes de onboarding hasta su causa raíz y entregué correcciones de backend que mejoraron de forma medible la confiabilidad de finalización.",
+          "Responsable del backend de onboarding que habilita los ingresos de nuevos usuarios — ~$95M/mes en volumen de solicitudes — en diseño, entrega y respuesta a incidentes on-call en producción.",
+          "Reduje el abandono en el onboarding en un 70% diagnosticando fallas recurrentes hasta su causa raíz y entregando correcciones de backend puntuales.",
           "Construyo y mantengo microservicios en Java, Spring Boot y Node.js sobre AWS, desplegados con CI/CD bajo sprints ágiles.",
           "Ascendido de Intern → SDE I → SDE II en dos años por hacerme cargo de proyectos de punta a punta.",
         ],
@@ -265,6 +288,7 @@ export const content: Record<Lang, SiteContent> = {
         url: "https://cavos.xyz/",
         period: "Abr 2025 – Presente · Remoto",
         kind: "founder",
+        stats: ["Account abstraction", "En vivo: Starknet + Ethereum", "$25K pre-seed (side)"],
         bullets: [
           "Cofundé Cavos, infraestructura de wallets embebidas para apps de Starknet — onboarding a cuentas inteligentes auto-custodiadas con login de Google o Apple, sin frase semilla.",
           "Diseñé y entregué el stack completo (Next.js, React, Solidity, Cairo) en vivo en Ethereum mainnet y Starknet, incluida la integración en producción con Jokers of Neon.",
@@ -277,10 +301,11 @@ export const content: Record<Lang, SiteContent> = {
         url: "https://studioframezz.com/en",
         period: "May 2025 – Presente · Remoto",
         kind: "founder",
+        stats: ["40K+ fotos", "12+ eventos en vivo", "pipeline AWS S3"],
         bullets: [
-          "Cofundé Framezz, plataforma de fotos con búsqueda por selfie para eventos (carreras de resistencia, maratones) con facturación conforme al IVA para Costa Rica.",
-          "Construí la plataforma de punta a punta con Next.js y TypeScript, sobre AWS (almacenamiento y entrega con S3) que indexa y sirve fotos de eventos en vivo.",
-          "En vivo en Ironman 70.3 CapCana, Disney Princess Half Marathon (Orlando), BMW Lindora Run y Clásica Palmarín MTB; líder técnico.",
+          "Cofundé Framezz, plataforma de fotos con búsqueda por selfie para eventos con facturación conforme al IVA para Costa Rica — ~$2K en ingresos dentro de los primeros dos meses en producción.",
+          "Construí la plataforma de punta a punta con Next.js y TypeScript sobre un pipeline de almacenamiento y entrega en AWS S3 que indexa y sirve 40K+ fotos en 12+ carreras en vivo (~3K por evento).",
+          "En vivo en Ironman 70.3 CapCana (República Dominicana), Disney Princess Half Marathon (Orlando), BMW Lindora Run y Clásica Palmarín MTB; líder técnico en sitio.",
         ],
       },
     ],
@@ -290,8 +315,8 @@ export const content: Record<Lang, SiteContent> = {
         name: "Cavos",
         url: "https://cavos.xyz/",
         blurb:
-          "Infraestructura de wallets embebidas para apps de Starknet. Onboarding a cuentas inteligentes auto-custodiadas con login de Google o Apple — sin frase semilla, sin extensión. En vivo en Ethereum mainnet y Starknet, con la integración en producción con Jokers of Neon.",
-        highlight: "$25K pre-seed · En vivo en Starknet mainnet",
+          "Wallets invisibles para apps cripto. Los usuarios entran a cuentas inteligentes auto-custodiadas con solo un login de Google o Apple — sin frase semilla, sin extensión de navegador. Por debajo es account abstraction: el login social provisiona y controla una smart account on-chain, así la UX de wallet desaparece para el usuario final. En vivo en Ethereum mainnet y Starknet, con la integración en producción con Jokers of Neon.",
+        stats: ["Account abstraction", "En vivo en Starknet + Ethereum", "$25K pre-seed (side)"],
         tech: "Next.js · React · Solidity · Cairo",
         logo: "/images/cavos.png",
         featured: true,
@@ -300,8 +325,8 @@ export const content: Record<Lang, SiteContent> = {
         name: "Studio Framezz",
         url: "https://studioframezz.com/en",
         blurb:
-          "Plataforma de fotos con búsqueda por selfie para eventos deportivos — carreras de resistencia y maratones — con factura electrónica (IVA) para Costa Rica. Construida de punta a punta con Next.js y un pipeline AWS S3 que indexa y sirve fotos de eventos en vivo.",
-        highlight: "4 eventos en vivo · Ironman y Disney",
+          "Plataforma de fotos con búsqueda por selfie para carreras de resistencia y maratones, con factura electrónica (IVA) para Costa Rica. Un pipeline en AWS (almacenamiento S3 + procesamiento de imágenes) indexa y sirve 40K+ fotos en 12+ eventos en vivo — busca tu cara y obtén tus fotos de la carrera en segundos.",
+        stats: ["40K+ fotos", "12+ eventos en vivo", "pipeline AWS S3"],
         tech: "Next.js · TypeScript · AWS S3",
         logo: "/images/framezz.png",
       },
@@ -321,7 +346,7 @@ export const content: Record<Lang, SiteContent> = {
     cta2: {
       heading: "// hablemos",
       subtext:
-        "Abierto a roles backend & full-stack y a colaboraciones Web3. Aparta 15 minutos o envía mi CV a tu equipo.",
+        "Estoy buscando activamente un puesto full-time backend o full-stack (remote-friendly, GMT-6). Si tu equipo está contratando, aparta 15 minutos abajo o envía mi CV — te respondo rápido.",
     },
     xHeading: "// en X",
     xPending: "El feed de X llegará pronto — sígueme en X.",

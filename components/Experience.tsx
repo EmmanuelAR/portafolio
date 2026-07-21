@@ -2,6 +2,7 @@
 
 import { useLang } from "@/lib/i18n";
 import { content } from "@/lib/content";
+import { StatChips } from "./Stat";
 
 export default function Experience() {
   const { lang } = useLang();
@@ -46,6 +47,7 @@ export default function Experience() {
                 </div>
                 <span className="text-xs text-black/60">{job.period}</span>
               </div>
+              {job.stats && <StatChips items={job.stats} className="mt-3" />}
               <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-black/80">
                 {job.bullets.map((b, bi) => (
                   <li key={bi}>{b}</li>
