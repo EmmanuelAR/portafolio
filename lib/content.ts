@@ -163,12 +163,12 @@ export const content: Record<Lang, SiteContent> = {
     jobs: [
       {
         role: "Community Ambassador",
-        org: "Cursor Community",
-        url: "https://cursor.com/",
+        org: "SpaceXAI",
+        url: "",
         period: "Aug 2026 – Present · Remote",
         kind: "employee",
         bullets: [
-          "Drive adoption of AI-native software development across the developer ecosystem by growing the Cursor community and building connections across startups, universities, and tech organizations.",
+          "Drive adoption of AI-native software development across the developer ecosystem by growing the SpaceXAI community and building connections across startups, universities, and tech organizations.",
           "Help developers apply AI tools to real-world workflows by leading educational initiatives, organizing workshops and hackathons, and growing strategic partnerships and technical content.",
         ],
       },
@@ -281,12 +281,12 @@ export const content: Record<Lang, SiteContent> = {
     jobs: [
       {
         role: "Community Ambassador",
-        org: "Cursor Community",
-        url: "https://cursor.com/",
+        org: "SpaceXAI",
+        url: "",
         period: "Ago 2026 – Presente · Remoto",
         kind: "employee",
         bullets: [
-          "Impulso la adopción de desarrollo de software AI-native en el ecosistema de developers, haciendo crecer la comunidad de Cursor y construyendo conexiones con startups, universidades y organizaciones tech.",
+          "Impulso la adopción de desarrollo de software AI-native en el ecosistema de developers, haciendo crecer la comunidad de SpaceXAI y construyendo conexiones con startups, universidades y organizaciones tech.",
           "Ayudo a developers a aplicar herramientas de IA en flujos de trabajo reales, liderando iniciativas educativas, organizando workshops y hackathons, y haciendo crecer partnerships estratégicos y contenido técnico.",
         ],
       },
