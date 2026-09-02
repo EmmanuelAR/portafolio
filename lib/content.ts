@@ -12,6 +12,7 @@ export interface Job {
   kind: "founder" | "employee";
   stats?: string[];
   bullets: string[];
+  logo?: string;
 }
 export interface Project {
   name: string;
@@ -165,6 +166,7 @@ export const content: Record<Lang, SiteContent> = {
         role: "Community Ambassador",
         org: "SpaceXAI",
         url: "",
+        logo: "/images/spacexai.svg",
         period: "Aug 2026 – Present · Remote",
         kind: "employee",
         bullets: [
@@ -283,6 +285,7 @@ export const content: Record<Lang, SiteContent> = {
         role: "Community Ambassador",
         org: "SpaceXAI",
         url: "",
+        logo: "/images/spacexai.svg",
         period: "Ago 2026 – Presente · Remoto",
         kind: "employee",
         bullets: [

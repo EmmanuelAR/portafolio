@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useLang } from "@/lib/i18n";
 import { content } from "@/lib/content";
 import { StatChips } from "./Stat";
@@ -20,6 +21,17 @@ export default function Experience() {
             >
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div className="flex flex-wrap items-center gap-2">
+                  {job.logo && (
+                    <span className="relative block h-6 w-6 shrink-0">
+                      <Image
+                        src={job.logo}
+                        alt={`${job.org} logo`}
+                        fill
+                        className="object-contain"
+                        sizes="24px"
+                      />
+                    </span>
+                  )}
                   <span
                     className={`px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest ${
                       founder
