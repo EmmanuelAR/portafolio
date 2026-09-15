@@ -1,28 +1,26 @@
 "use client";
 
-import Image from "next/image";
 import { useLang } from "@/lib/i18n";
 import { content } from "@/lib/content";
+import Section from "./Section";
+import Marked from "./Marked";
 
 export default function About() {
   const { lang } = useLang();
   const c = content[lang];
+  const [first, ...rest] = c.about.paragraphs;
   return (
-    <section id="about" className="border-b border-black px-4 py-16 sm:px-8">
-      <h2 className="mb-8 text-lg font-bold">{c.about.heading}</h2>
-      <div className="grid gap-8 md:grid-cols-[280px_1fr] md:items-start">
-        <Image
-          src="/emmanuel.jpg"
-          alt="Emmanuel Agüero"
-          width={280}
-          height={373}
-          className="w-full max-w-[280px] border border-black grayscale"
-          priority
-        />
-        <p className="max-w-2xl text-sm leading-relaxed sm:text-base">
-          {c.about.body}
-        </p>
+    <Section id="about" index="02" label={c.about.heading}>
+      <p data-reveal className="max-w-[22ch] text-title font-medium tracking-tight-brand text-balance wrap-anywhere">
+        <Marked text={first} />
+      </p>
+      <div className="mt-8 max-w-[52ch] space-y-5 text-lg leading-[1.5] text-ink/80 sm:mt-10">
+        {rest.map((p, i) => (
+          <p key={i} data-reveal>
+            <Marked text={p} />
+          </p>
+        ))}
       </div>
-    </section>
+    </Section>
   );
 }

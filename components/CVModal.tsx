@@ -38,32 +38,24 @@ export default function CVModal() {
   if (!open) return null;
 
   return (
-    <div
-      role="dialog"
-      aria-modal="true"
-      className="fixed inset-0 z-50 flex flex-col bg-white"
-    >
-      <div className="flex items-center justify-between border-b border-black px-4 py-3">
-        <span className="text-sm font-bold">{c.hero.cta.cv}</span>
-        <div className="flex gap-3 text-sm">
-          <a
-            href={LINKS.cv}
-            download
-            className="border border-black px-3 py-1 hover:bg-black hover:text-white"
-          >
-            {lang === "en" ? "Download" : "Descargar"}
+    <div role="dialog" aria-modal="true" aria-label={c.cta.cv} className="fixed inset-0 z-50 flex flex-col bg-paper">
+      <div className="flex flex-col gap-3 border-b border-ink/10 px-5 py-3 pt-[max(0.75rem,env(safe-area-inset-top))] sm:flex-row sm:items-center sm:justify-between sm:px-8 lg:px-12">
+        <span className="text-sm font-medium tracking-tight-brand">{c.cta.cv}</span>
+        <div className="flex gap-2">
+          <a href={LINKS.cv} download className="btn btn-secondary flex-1 px-4 py-2 text-sm sm:flex-none">
+            {c.cta.download}
           </a>
           <button
             ref={closeButtonRef}
             onClick={() => setOpen(false)}
-            aria-label="Close CV"
-            className="border border-black px-3 py-1 hover:bg-black hover:text-white"
+            aria-label={c.cta.close}
+            className="btn btn-primary flex-1 px-4 py-2 text-sm sm:flex-none"
           >
-            ✕
+            {c.cta.close} <span aria-hidden>esc</span>
           </button>
         </div>
       </div>
-      <iframe src={LINKS.cv} title="CV" className="flex-1 w-full" />
+      <iframe src={LINKS.cv} title="CV" className="w-full flex-1" />
     </div>
   );
 }

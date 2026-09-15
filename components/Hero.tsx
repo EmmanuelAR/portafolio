@@ -1,54 +1,98 @@
 "use client";
 
+import { useRef } from "react";
 import { useLang } from "@/lib/i18n";
-import { content, NAME, LINKS, X_HANDLE } from "@/lib/content";
+import { content } from "@/lib/content";
+import { gsap, SplitText, useGSAP, MOTION_OK, REDUCED } from "@/lib/gsap";
+import { INTRO_EVENT } from "./Loader";
 import BookCall from "./BookCall";
-import { StatStrip } from "./Stat";
-
-function openCv() {
-  window.dispatchEvent(new CustomEvent("open-cv"));
-}
+import Marked from "./Marked";
 
 export default function Hero() {
   const { lang } = useLang();
   const c = content[lang];
-  const primary =
-    "shrink-0 border border-black bg-black px-5 py-2.5 text-center text-sm font-bold text-white hover:bg-white hover:text-black transition-colors";
-  const secondary =
-    "shrink-0 border border-black/30 px-5 py-2.5 text-center text-sm text-black/70 hover:border-black hover:bg-black hover:text-white transition-colors";
+  const root = useRef<HTMLElement>(null);
+
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia();
+
+      mm.add(MOTION_OK, () => {
+        const heads = gsap.utils.toArray<HTMLElement>("[data-split]");
+        const splits = heads.map((h) =>
+          SplitText.create(h, { type: "lines", mask: "lines", linesClass: "split-line" })
+        );
+        const lines = splits.flatMap((s) => s.lines);
+        const marks = gsap.utils.toArray<HTMLElement>(".hl[data-draw]");
+        const rest = gsap.utils.toArray<HTMLElement>("[data-reveal]");
+
+        const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+        tl.set(heads, { autoAlpha: 1 })
+          .from(lines, { yPercent: 110, duration: 1.1, stagger: 0.09 })
+          .to(marks, { backgroundSize: "100% 100%", duration: 0.7, ease: "power2.inOut" }, "-=0.55")
+          .to(rest, { opacity: 1, y: 0, duration: 0.9, stagger: 0.08 }, "-=0.7");
+
+        const play = () => tl.play();
+        if (document.documentElement.classList.contains("intro")) {
+          window.addEventListener(INTRO_EVENT, play, { once: true });
+        } else {
+          play();
+        }
+        return () => {
+          window.removeEventListener(INTRO_EVENT, play);
+          splits.forEach((s) => s.revert());
+        };
+      });
+
+      mm.add(REDUCED, () => {
+        gsap.set("[data-split], [data-reveal]", { autoAlpha: 1, y: 0 });
+        gsap.set(".hl[data-draw]", { backgroundSize: "100% 100%" });
+      });
+    },
+    { scope: root, dependencies: [lang], revertOnUpdate: true }
+  );
+
   return (
-    <section className="border-b border-black px-4 py-20 sm:px-8">
-      <h1 className="cursor-blink text-3xl font-bold sm:text-5xl">{NAME}</h1>
-      <p className="mt-4 text-base sm:text-lg">{c.hero.role}</p>
-      <p className="mt-4 inline-flex items-center gap-2 border border-black px-3 py-1 text-xs font-bold">
-        <span aria-hidden className="relative flex h-2 w-2">
-          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-black/40" />
-          <span className="relative inline-flex h-2 w-2 rounded-full bg-black" />
-        </span>
-        {c.hero.availability}
-      </p>
-      <StatStrip items={c.hero.stats} className="mt-6 max-w-2xl" />
-      <p className="mt-6 max-w-2xl text-sm text-black/80 sm:text-base">
-        {c.hero.summary}
-      </p>
-      <p className="mt-2 text-xs text-black/60">{c.hero.location}</p>
-      <div className="mt-8 grid max-w-2xl grid-cols-2 gap-3 sm:grid-cols-3">
-        <button onClick={openCv} className={primary}>[ {c.hero.cta.cv} ]</button>
-        <BookCall className={primary} />
-        <a href={`mailto:${LINKS.email}`} className={primary}>[ {c.hero.cta.email} ]</a>
-        <a href={LINKS.github} target="_blank" rel="noopener" className={secondary}>[ {c.hero.cta.github} ]</a>
-        <a href={LINKS.linkedin} target="_blank" rel="noopener" className={secondary}>[ {c.hero.cta.linkedin} ]</a>
-        <a
-          href={X_HANDLE ? `https://x.com/${X_HANDLE}` : "https://x.com"}
-          target="_blank"
-          rel="noopener"
-          className={secondary}
+    <section
+      ref={root}
+      data-motion-own
+     
+      className="relative flex min-h-dvh flex-col justify-end"
+    >
+      <div className="shell w-full pb-16 pt-32 sm:pb-20 lg:pb-24">
+        {/* Keyed by language: SplitText rewrites these nodes, so React must
+            re-create them (not patch text) when the copy changes. */}
+        <h1
+          key={`h1-${lang}`}
+          data-split
+          className="max-w-[12ch] text-display font-medium tracking-brand text-balance wrap-anywhere [.js_&]:invisible"
         >
-          [ {c.hero.cta.x} ]
-        </a>
-        <a href={LINKS.instagram} target="_blank" rel="noopener" className={secondary}>[ Instagram ]</a>
-        <a href={LINKS.telegram} target="_blank" rel="noopener" className={secondary}>[ Telegram ]</a>
-        <a href={LINKS.whatsapp} target="_blank" rel="noopener" className={secondary}>[ WhatsApp ]</a>
+          {c.hero.greeting}
+        </h1>
+        <p
+          key={`h2-${lang}`}
+          data-split
+          className="mt-3 max-w-[22ch] text-title font-medium tracking-tight-brand text-balance wrap-anywhere [.js_&]:invisible sm:mt-5"
+        >
+          <Marked text={c.hero.headline} />
+        </p>
+
+        <div className="mt-10 flex flex-col gap-8 sm:mt-14">
+          <p data-reveal className="max-w-[40ch] text-lead text-ink/75">
+            <Marked text={c.hero.lead} />
+          </p>
+          <div data-reveal className="flex w-full max-w-md flex-col gap-3 sm:max-w-none sm:flex-row sm:flex-wrap">
+            <BookCall label={c.hero.cta.primary} className="btn btn-primary w-full sm:w-auto" />
+            <a href="#work" className="btn btn-secondary w-full sm:w-auto">
+              {c.hero.cta.secondary}
+              <span aria-hidden>↓</span>
+            </a>
+          </div>
+        </div>
+
+        <p data-reveal className="mono-label mt-14 sm:mt-20">
+          {c.hero.location}
+        </p>
       </div>
     </section>
   );

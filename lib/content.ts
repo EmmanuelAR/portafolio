@@ -1,9 +1,12 @@
 import type { Lang } from "./i18n";
 
-export interface StatItem {
-  value: string;
-  label: string;
-}
+/**
+ * Inline highlight markup used across copy, rendered by <Marked />:
+ *   ==word==          blue marker (brand default)
+ *   ==red:word==      red marker (tension / problem)
+ *   ==accent:word==   orange text (single emphasis word)
+ */
+
 export interface Job {
   role: string;
   org: string;
@@ -18,45 +21,70 @@ export interface Project {
   name: string;
   stack: string;
   blurb: string;
+  url?: string;
 }
 export interface Venture {
   name: string;
   url: string;
+  tagline: string;
   blurb: string;
   stats: string[];
   tech: string;
   logo: string;
   featured?: boolean;
 }
+export interface NowItem {
+  status: string;
+  text: string;
+  url?: string;
+}
+export interface SkillGroup {
+  label: string;
+  items: string[];
+}
 export interface SiteContent {
-  nav: { about: string; work: string; projects: string; contact: string };
+  nav: { about: string; work: string; talk: string; cv: string; menu: string; close: string };
   hero: {
-    role: string;
-    availability: string;
-    summary: string;
+    greeting: string;
+    headline: string;
+    lead: string;
     location: string;
-    stats: StatItem[];
-    cta: { cv: string; github: string; linkedin: string; x: string; book: string; email: string };
+    cta: { primary: string; secondary: string };
   };
-  about: { heading: string; body: string };
-  githubHeading: string;
-  experienceHeading: string;
-  jobs: Job[];
-  venturesHeading: string;
-  ventures: Venture[];
-  projectsHeading: string;
-  projects: Project[];
-  skillsHeading: string;
-  educationHeading: string;
-  certificationsHeading: string;
-  moreCertsLabel: string;
-  topLangsLabel: string;
-  githubStats: { commits: string; prs: string };
+  now: { heading: string; items: NowItem[] };
+  about: { heading: string; paragraphs: string[] };
+  github: {
+    heading: string;
+    unavailable: string;
+    contributions: string;
+    commits: string;
+    prs: string;
+    streak: (n: number) => string;
+    topLangs: string;
+  };
+  work: {
+    heading: string;
+    intro: string;
+    experimentsHeading: string;
+    ventures: Venture[];
+    projects: Project[];
+  };
+  experience: { heading: string; intro: string; jobs: Job[] };
   roleTags: { founder: string; employee: string };
-  cta2: { heading: string; subtext: string };
-  xHeading: string;
-  xPending: string;
-  contact: { heading: string; email: string; phone: string };
+  skills: { heading: string; groups: SkillGroup[] };
+  education: {
+    heading: string;
+    certificationsHeading: string;
+    moreCertsLabel: string;
+    credentialLabel: string;
+  };
+  talk: {
+    heading: string;
+    body: string;
+    socialsLabel: string;
+  };
+  cta: { cv: string; book: string; email: string; download: string; close: string };
+  footer: { tagline: string; built: string };
 }
 
 export interface Credential {
@@ -68,6 +96,7 @@ export interface Credential {
 }
 
 export const NAME = "Emmanuel Agüero Rojas";
+export const BRAND = "ear.dev";
 export const X_HANDLE = "EmmanuelDevCr";
 // Your PUBLIC Cal.com booking link, e.g. "emmanuel-aguero" or "emmanuel-aguero/30min".
 // Leave empty to hide the "Book a call" button.
@@ -77,19 +106,39 @@ export const LINKS = {
   github: "https://github.com/EmmanuelAR",
   linkedin: "https://linkedin.com/in/emmanuelaguerorojas",
   instagram: "https://www.instagram.com/ear__rae/",
+  x: `https://x.com/${X_HANDLE}`,
   telegram: "https://t.me/EmmanuelDevCr",
   whatsapp: "https://wa.me/50684339541",
   email: "emmanuelaguerorojas@gmail.com",
   cv: "/EmmanuelAguero_CV_2026.pdf",
 };
 
-export const SKILLS = [
-  "Java", "TypeScript", "JavaScript", "Python", "C++", "SQL", "Cairo", "Solidity",
-  "Spring Boot", "Node.js", "Next.js", "React", "PostgreSQL", "REST APIs",
-  "AWS", "Azure", "Supabase", "MongoDB", "Git", "CI/CD", "Starknet", "Ethereum",
+export const SOCIALS: { label: string; href: string }[] = [
+  { label: "github", href: LINKS.github },
+  { label: "linkedin", href: LINKS.linkedin },
+  { label: "x", href: LINKS.x },
+  { label: "instagram", href: LINKS.instagram },
 ];
 
-// Most-used languages shown under the GitHub grid. Edit freely.
+const SKILL_GROUPS_EN: SkillGroup[] = [
+  { label: "languages", items: ["TypeScript", "JavaScript", "Java", "Python", "C++", "SQL", "Cairo", "Solidity"] },
+  { label: "backend", items: ["Spring Boot", "Node.js", "REST APIs", "PostgreSQL", "MongoDB", "Supabase"] },
+  { label: "web", items: ["Next.js", "React"] },
+  { label: "cloud & delivery", items: ["AWS", "Azure", "CI/CD", "Git"] },
+  { label: "onchain", items: ["Starknet", "Ethereum", "Account abstraction"] },
+];
+const SKILL_GROUPS_ES: SkillGroup[] = [
+  { label: "lenguajes", items: SKILL_GROUPS_EN[0].items },
+  { label: "backend", items: SKILL_GROUPS_EN[1].items },
+  { label: "web", items: SKILL_GROUPS_EN[2].items },
+  { label: "cloud & entrega", items: SKILL_GROUPS_EN[3].items },
+  { label: "onchain", items: SKILL_GROUPS_EN[4].items },
+];
+
+/** Flat list, kept for tests and JSON-LD. */
+export const SKILLS = SKILL_GROUPS_EN.flatMap((g) => g.items);
+
+// Most-used languages shown under the GitHub grid when the API has no data.
 export const TOP_LANGUAGES = ["TypeScript", "Cairo", "Solidity", "Java", "Python"];
 
 // Most recent first.
@@ -140,241 +189,301 @@ export const CERTIFICATIONS: Credential[] = [
 
 export const content: Record<Lang, SiteContent> = {
   en: {
-    nav: { about: "about", work: "work", projects: "projects", contact: "contact" },
+    nav: { about: "about", work: "work", talk: "talk", cv: "cv", menu: "menu", close: "close" },
     hero: {
-      role: "Backend & Full-Stack Software Engineer · Blockchain / Web3",
-      availability: "Available for full-time",
-      summary:
-        "I own a Snap Finance onboarding backend gating ~$95M/month in application volume — from design through on-call. On the side, I've co-founded and shipped two products, Cavos and Framezz, which keep my Web3 and end-to-end delivery sharp. Looking for a full-time backend or full-stack role.",
-      location: "Alajuela, Costa Rica · GMT-6 · Remote-eligible",
-      stats: [
-        { value: "~$95M/mo", label: "application volume gated" },
-        { value: "70% ↓", label: "onboarding drop-off" },
-        { value: "3+ yrs", label: "production fintech / Web3" },
+      greeting: "hi. i'm emmanuel.",
+      headline: "i build ==products.== cavos, framezz.",
+      lead: "two companies, live. by day i run onboarding for a fintech moving ==~$95m a month==.",
+      location: "alajuela, costa rica · gmt-6",
+      cta: { primary: "book a call", secondary: "see the work" },
+    },
+    now: {
+      heading: "now",
+      items: [
+        {
+          status: "shipping",
+          text: "==cavos== — invisible wallets for crypto apps. live on starknet and ethereum.",
+          url: "https://cavos.xyz/",
+        },
+        {
+          status: "live",
+          text: "==framezz== — selfie-search photos for races. 40k+ photos, 12+ events.",
+          url: "https://studioframezz.com/en",
+        },
+        {
+          status: "ambassador",
+          text: "==spacexai== — a community of people building software with ai.",
+        },
+        {
+          status: "next",
+          text: "==ear.dev== — a space to talk tech without anyone selling you a course.",
+        },
       ],
-      cta: { cv: "View CV", github: "GitHub", linkedin: "LinkedIn", x: "X", book: "Book a call", email: "Email" },
     },
     about: {
-      heading: "// about",
-      body:
-        "Backend and full-stack engineer with 3+ years shipping production systems in fintech and Web3. I own a Snap Finance onboarding backend gating ~$95M/month in application volume, and I've co-founded two companies on the side: Cavos (embedded-wallet infrastructure for Starknet) and Framezz (selfie-search photo platform for event photography). Comfortable owning a service from design through on-call — and equally comfortable pitching investors.",
+      heading: "about",
+      paragraphs: [
+        "i'm from costa rica. i make software and gather people who do too.",
+        "intern → sde ii at snap. two companies on the side. sometimes you have to hit esc and ==accent:restart==.",
+      ],
     },
-    githubHeading: "// github",
-    experienceHeading: "// experience",
-    jobs: [
-      {
-        role: "Community Ambassador",
-        org: "SpaceXAI",
-        url: "",
-        logo: "/images/spacexai.svg",
-        period: "Aug 2026 – Present · Remote",
-        kind: "employee",
-        bullets: [
-          "Drive adoption of AI-native software development across the developer ecosystem by growing the SpaceXAI community and building connections across startups, universities, and tech organizations.",
-          "Help developers apply AI tools to real-world workflows by leading educational initiatives, organizing workshops and hackathons, and growing strategic partnerships and technical content.",
-        ],
-      },
-      {
-        role: "Software Development Engineer II",
-        org: "Snap Finance",
-        url: "",
-        period: "Jan 2023 – Present · Alajuela, CR",
-        kind: "employee",
-        stats: ["~$95M/mo volume", "70% ↓ drop-off", "Intern → SDE II in 2 yrs"],
-        bullets: [
-          "Own the onboarding backend that gates new-user revenue — ~$95M/month in application volume — across design, delivery, and on-call incident response for production traffic.",
-          "Cut onboarding drop-off by 70% by diagnosing recurring failures to root cause and shipping targeted backend fixes.",
-          "Build and maintain microservices in Java, Spring Boot, and Node.js on AWS, deployed via CI/CD under Agile sprints.",
-          "Promoted Intern → SDE I → SDE II in two years by owning projects end-to-end.",
-        ],
-      },
-      {
-        role: "Co-Founder / Software Engineer",
-        org: "Cavos",
-        url: "https://cavos.xyz/",
-        period: "Apr 2025 – Present · Remote",
-        kind: "founder",
-        stats: ["Account abstraction", "Live: Starknet + Ethereum", "$25K pre-seed (side)"],
-        bullets: [
-          "Co-founded Cavos, embedded-wallet infrastructure for Starknet apps — onboard users into self-custodial smart accounts with a Google or Apple login, no seed phrase.",
-          "Architected and shipped the full stack (Next.js, React, Solidity, Cairo) live on Ethereum mainnet and Starknet, including the production integration with Jokers of Neon.",
-          "Raised $25K pre-seed and represented Cavos at Devcon Cannes 2025 and Devconnect Argentina 2025.",
-        ],
-      },
-      {
-        role: "Co-Founder / Software Engineer",
-        org: "Studio Framezz",
-        url: "https://studioframezz.com/en",
-        period: "May 2025 – Present · Remote",
-        kind: "founder",
-        stats: ["40K+ photos", "12+ live events", "AWS S3 pipeline"],
-        bullets: [
-          "Co-founded Framezz, a selfie-search photo platform for event photography with IVA-compliant invoicing for Costa Rica — ~$2K in revenue within the first two months in production.",
-          "Built the platform end-to-end with Next.js and TypeScript on an AWS S3 storage and delivery pipeline that indexes and serves 40K+ photos across 12+ live races (~3K per event).",
-          "Live at Ironman 70.3 CapCana (Dominican Republic), Disney Princess Half Marathon (Orlando), BMW Lindora Run, and Clásica Palmarín MTB; on-site technical lead.",
-        ],
-      },
-    ],
-    venturesHeading: "// ventures",
-    ventures: [
-      {
-        name: "Cavos",
-        url: "https://cavos.xyz/",
-        blurb:
-          "Invisible wallets for crypto apps. Users onboard into self-custodial smart accounts with just a Google or Apple login — no seed phrase, no browser extension. Under the hood it's account abstraction: the social login provisions and controls an on-chain smart account, so wallet UX disappears for the end user. Live on Ethereum mainnet and Starknet, including the production integration with Jokers of Neon.",
-        stats: ["Account abstraction", "Live on Starknet + Ethereum", "$25K pre-seed (side)"],
-        tech: "Next.js · React · Solidity · Cairo",
-        logo: "/images/cavos.png",
-        featured: true,
-      },
-      {
-        name: "Studio Framezz",
-        url: "https://studioframezz.com/en",
-        blurb:
-          "Selfie-search photo platform for endurance races and marathons, with IVA-compliant e-invoicing for Costa Rica. An AWS pipeline (S3 storage + image processing) indexes and serves 40K+ photos across 12+ live events — search your face, get your race photos in seconds.",
-        stats: ["40K+ photos", "12+ live events", "AWS S3 pipeline"],
-        tech: "Next.js · TypeScript · AWS S3",
-        logo: "/images/framezz.png",
-      },
-    ],
-    projectsHeading: "// projects",
-    projects: [
-      { name: "Lumos", stack: "Next.js · Cairo", blurb: "CLMM liquidity manager — impermanent-loss estimation, full-range vs. concentrated simulations, automated position optimization." },
-      { name: "Go Stark Me", stack: "Next.js · Cairo", blurb: "Decentralized fundraising on Starknet using Cairo smart contracts for low-cost, non-technical-friendly Web3 donations." },
-    ],
-    skillsHeading: "// skills",
-    educationHeading: "// education",
-    certificationsHeading: "// certifications",
-    moreCertsLabel: "See more certifications",
-    topLangsLabel: "Most used",
-    githubStats: { commits: "commits", prs: "PRs" },
-    roleTags: { founder: "cofounder", employee: "employee" },
-    cta2: {
-      heading: "// let's talk",
-      subtext:
-        "I'm actively looking for a full-time backend or full-stack role (remote-friendly, GMT-6). If your team is hiring, grab 15 minutes below or send my CV — I'll get back to you fast.",
+    github: {
+      heading: "proof of work",
+      unavailable: "contribution data unavailable right now.",
+      contributions: "contributions in the last year",
+      commits: "commits",
+      prs: "pull requests",
+      streak: (n) => `${n}-day streak`,
+      topLangs: "most used",
     },
-    xHeading: "// on X",
-    xPending: "X feed coming soon — follow me on X.",
-    contact: { heading: "// contact", email: "emmanuelaguerorojas@gmail.com", phone: "+506 8433-9541" },
+    work: {
+      heading: "work",
+      intro: "",
+      experimentsHeading: "experiments",
+      ventures: [
+        {
+          name: "cavos",
+          url: "https://cavos.xyz/",
+          tagline: "==invisible wallets== for crypto apps.",
+          blurb: "google or apple login into a self-custodial wallet. no seed phrase. live on starknet and ethereum.",
+          stats: ["live on starknet + ethereum", "$25k pre-seed"],
+          tech: "account abstraction",
+          logo: "/images/cavos.png",
+          featured: true,
+        },
+        {
+          name: "framezz",
+          url: "https://studioframezz.com/en",
+          tagline: "==selfie-search== for race photos.",
+          blurb: "take a selfie, get your race photos. live at ironman 70.3 and the disney half.",
+          stats: ["40k+ photos", "12+ events", "ironman 70.3"],
+          tech: "next.js · aws",
+          logo: "/images/framezz.png",
+        },
+      ],
+      projects: [
+        {
+          name: "lumos",
+          stack: "next.js · cairo",
+          blurb: "clmm liquidity manager — impermanent-loss estimates and position simulations.",
+        },
+        {
+          name: "go stark me",
+          stack: "next.js · cairo",
+          blurb: "fundraising on starknet for people who don't want a wallet lecture.",
+        },
+      ],
+    },
+    experience: {
+      heading: "story",
+      intro: "intern → sde ii → co-founder.",
+      jobs: [
+        {
+          role: "community ambassador",
+          org: "SpaceXAI",
+          url: "",
+          logo: "/images/spacexai.svg",
+          period: "2026 —",
+          kind: "employee",
+          bullets: [],
+        },
+        {
+          role: "sde ii, onboarding",
+          org: "Snap Finance",
+          url: "",
+          period: "2023 —",
+          kind: "employee",
+          stats: ["~$95m/mo", "intern → sde ii"],
+          bullets: [],
+        },
+        {
+          role: "co-founder",
+          org: "Cavos",
+          url: "https://cavos.xyz/",
+          logo: "/images/cavos.png",
+          period: "2025 —",
+          kind: "founder",
+          stats: ["$25k pre-seed", "starknet + ethereum"],
+          bullets: [],
+        },
+        {
+          role: "co-founder",
+          org: "Studio Framezz",
+          url: "https://studioframezz.com/en",
+          logo: "/images/framezz.png",
+          period: "2025 —",
+          kind: "founder",
+          stats: ["40k+ photos", "12+ events"],
+          bullets: [],
+        },
+      ],
+    },
+    roleTags: { founder: "co-founder", employee: "team" },
+    skills: { heading: "craft", groups: SKILL_GROUPS_EN },
+    education: {
+      heading: "education",
+      certificationsHeading: "certifications",
+      moreCertsLabel: "more certifications",
+      credentialLabel: "credential",
+    },
+    talk: {
+      heading: "if you're building something, ==accent:let's talk==.",
+      body: "founders, engineers, communities — i answer fast.",
+      socialsLabel: "elsewhere",
+    },
+    cta: { cv: "view cv", book: "book a call", email: "email me", download: "download", close: "close" },
+    footer: {
+      tagline: "ear.dev · alajuela, costa rica",
+      built: "built with next.js · no cookies, no tracking",
+    },
   },
   es: {
-    nav: { about: "sobre-mí", work: "trabajo", projects: "proyectos", contact: "contacto" },
+    nav: { about: "sobre mí", work: "trabajo", talk: "hablemos", cv: "cv", menu: "menú", close: "cerrar" },
     hero: {
-      role: "Ingeniero de Software Backend & Full-Stack · Blockchain / Web3",
-      availability: "Disponible para full-time",
-      summary:
-        "Soy dueño de un backend de onboarding en Snap Finance que habilita ~$95M/mes en volumen de solicitudes — desde el diseño hasta el on-call. En paralelo, cofundé y entregué dos productos, Cavos y Framezz, que mantienen afiladas mis habilidades de Web3 y entrega de punta a punta. Busco un puesto full-time backend o full-stack.",
-      location: "Alajuela, Costa Rica · GMT-6 · Disponible en remoto",
-      stats: [
-        { value: "~$95M/mes", label: "volumen de solicitudes" },
-        { value: "70% ↓", label: "abandono en onboarding" },
-        { value: "3+ años", label: "producción fintech / Web3" },
+      greeting: "hola. soy emmanuel.",
+      headline: "construyo ==productos.== cavos, framezz.",
+      lead: "dos empresas, en vivo. de día llevo el onboarding de una fintech que mueve ==~$95m al mes==.",
+      location: "alajuela, costa rica · gmt-6",
+      cta: { primary: "agendar llamada", secondary: "ver el trabajo" },
+    },
+    now: {
+      heading: "ahora",
+      items: [
+        {
+          status: "shipping",
+          text: "==cavos== — wallets invisibles para apps cripto. en vivo en starknet y ethereum.",
+          url: "https://cavos.xyz/",
+        },
+        {
+          status: "en vivo",
+          text: "==framezz== — tus fotos de carrera con una selfie. 40k+ fotos, 12+ eventos.",
+          url: "https://studioframezz.com/en",
+        },
+        {
+          status: "ambassador",
+          text: "==spacexai== — comunidad de gente que construye software con ai.",
+        },
+        {
+          status: "lo que sigue",
+          text: "==ear.dev== — un espacio para hablar de tech sin que te vendan un curso.",
+        },
       ],
-      cta: { cv: "Ver CV", github: "GitHub", linkedin: "LinkedIn", x: "X", book: "Agendar llamada", email: "Email" },
     },
     about: {
-      heading: "// sobre mí",
-      body:
-        "Ingeniero de software backend y full-stack con 3+ años entregando sistemas en producción en fintech y Web3. Soy dueño de un backend de onboarding en Snap Finance que habilita ~$95M/mes en volumen de solicitudes, y en paralelo cofundé dos empresas: Cavos (infraestructura de wallets embebidas para Starknet) y Framezz (plataforma de fotos con búsqueda por selfie para eventos). Me manejo bien tanto diseñando y operando un servicio de punta a punta como presentándolo ante inversionistas.",
+      heading: "sobre mí",
+      paragraphs: [
+        "soy de costa rica. hago software y junto gente que también.",
+        "intern → sde ii en snap. dos empresas en paralelo. a veces hay que apretar esc y ==accent:reiniciar==.",
+      ],
     },
-    githubHeading: "// github",
-    experienceHeading: "// experiencia",
-    jobs: [
-      {
-        role: "Community Ambassador",
-        org: "SpaceXAI",
-        url: "",
-        logo: "/images/spacexai.svg",
-        period: "Ago 2026 – Presente · Remoto",
-        kind: "employee",
-        bullets: [
-          "Impulso la adopción de desarrollo de software AI-native en el ecosistema de developers, haciendo crecer la comunidad de SpaceXAI y construyendo conexiones con startups, universidades y organizaciones tech.",
-          "Ayudo a developers a aplicar herramientas de IA en flujos de trabajo reales, liderando iniciativas educativas, organizando workshops y hackathons, y haciendo crecer partnerships estratégicos y contenido técnico.",
-        ],
-      },
-      {
-        role: "Software Development Engineer II",
-        org: "Snap Finance",
-        url: "",
-        period: "Ene 2023 – Presente · Alajuela, CR",
-        kind: "employee",
-        stats: ["~$95M/mes volumen", "70% ↓ abandono", "Intern → SDE II en 2 años"],
-        bullets: [
-          "Responsable del backend de onboarding que habilita los ingresos de nuevos usuarios — ~$95M/mes en volumen de solicitudes — en diseño, entrega y respuesta a incidentes on-call en producción.",
-          "Reduje el abandono en el onboarding en un 70% diagnosticando fallas recurrentes hasta su causa raíz y entregando correcciones de backend puntuales.",
-          "Construyo y mantengo microservicios en Java, Spring Boot y Node.js sobre AWS, desplegados con CI/CD bajo sprints ágiles.",
-          "Ascendido de Intern → SDE I → SDE II en dos años por hacerme cargo de proyectos de punta a punta.",
-        ],
-      },
-      {
-        role: "Cofundador / Ingeniero de Software",
-        org: "Cavos",
-        url: "https://cavos.xyz/",
-        period: "Abr 2025 – Presente · Remoto",
-        kind: "founder",
-        stats: ["Account abstraction", "En vivo: Starknet + Ethereum", "$25K pre-seed (side)"],
-        bullets: [
-          "Cofundé Cavos, infraestructura de wallets embebidas para apps de Starknet — onboarding a cuentas inteligentes auto-custodiadas con login de Google o Apple, sin frase semilla.",
-          "Diseñé y entregué el stack completo (Next.js, React, Solidity, Cairo) en vivo en Ethereum mainnet y Starknet, incluida la integración en producción con Jokers of Neon.",
-          "Levanté $25K pre-seed y representé a Cavos en Devcon Cannes 2025 y Devconnect Argentina 2025.",
-        ],
-      },
-      {
-        role: "Cofundador / Ingeniero de Software",
-        org: "Studio Framezz",
-        url: "https://studioframezz.com/en",
-        period: "May 2025 – Presente · Remoto",
-        kind: "founder",
-        stats: ["40K+ fotos", "12+ eventos en vivo", "pipeline AWS S3"],
-        bullets: [
-          "Cofundé Framezz, plataforma de fotos con búsqueda por selfie para eventos con facturación conforme al IVA para Costa Rica — ~$2K en ingresos dentro de los primeros dos meses en producción.",
-          "Construí la plataforma de punta a punta con Next.js y TypeScript sobre un pipeline de almacenamiento y entrega en AWS S3 que indexa y sirve 40K+ fotos en 12+ carreras en vivo (~3K por evento).",
-          "En vivo en Ironman 70.3 CapCana (República Dominicana), Disney Princess Half Marathon (Orlando), BMW Lindora Run y Clásica Palmarín MTB; líder técnico en sitio.",
-        ],
-      },
-    ],
-    venturesHeading: "// emprendimientos",
-    ventures: [
-      {
-        name: "Cavos",
-        url: "https://cavos.xyz/",
-        blurb:
-          "Wallets invisibles para apps cripto. Los usuarios entran a cuentas inteligentes auto-custodiadas con solo un login de Google o Apple — sin frase semilla, sin extensión de navegador. Por debajo es account abstraction: el login social provisiona y controla una smart account on-chain, así la UX de wallet desaparece para el usuario final. En vivo en Ethereum mainnet y Starknet, con la integración en producción con Jokers of Neon.",
-        stats: ["Account abstraction", "En vivo en Starknet + Ethereum", "$25K pre-seed (side)"],
-        tech: "Next.js · React · Solidity · Cairo",
-        logo: "/images/cavos.png",
-        featured: true,
-      },
-      {
-        name: "Studio Framezz",
-        url: "https://studioframezz.com/en",
-        blurb:
-          "Plataforma de fotos con búsqueda por selfie para carreras de resistencia y maratones, con factura electrónica (IVA) para Costa Rica. Un pipeline en AWS (almacenamiento S3 + procesamiento de imágenes) indexa y sirve 40K+ fotos en 12+ eventos en vivo — busca tu cara y obtén tus fotos de la carrera en segundos.",
-        stats: ["40K+ fotos", "12+ eventos en vivo", "pipeline AWS S3"],
-        tech: "Next.js · TypeScript · AWS S3",
-        logo: "/images/framezz.png",
-      },
-    ],
-    projectsHeading: "// proyectos",
-    projects: [
-      { name: "Lumos", stack: "Next.js · Cairo", blurb: "Gestor de liquidez CLMM — estimación de pérdida impermanente, simulaciones de rango completo vs. concentrado y optimización automática de posiciones." },
-      { name: "Go Stark Me", stack: "Next.js · Cairo", blurb: "Recaudación descentralizada en Starknet con contratos Cairo para donaciones Web3 de bajo costo y amigables para no técnicos." },
-    ],
-    skillsHeading: "// habilidades",
-    educationHeading: "// educación",
-    certificationsHeading: "// certificaciones",
-    moreCertsLabel: "Ver más certificaciones",
-    topLangsLabel: "Más usados",
-    githubStats: { commits: "commits", prs: "PRs" },
-    roleTags: { founder: "cofundador", employee: "empleado" },
-    cta2: {
-      heading: "// hablemos",
-      subtext:
-        "Estoy buscando activamente un puesto full-time backend o full-stack (remote-friendly, GMT-6). Si tu equipo está contratando, aparta 15 minutos abajo o envía mi CV — te respondo rápido.",
+    github: {
+      heading: "prueba de trabajo",
+      unavailable: "datos de contribuciones no disponibles por ahora.",
+      contributions: "contribuciones en el último año",
+      commits: "commits",
+      prs: "pull requests",
+      streak: (n) => `racha de ${n} días`,
+      topLangs: "más usados",
     },
-    xHeading: "// en X",
-    xPending: "El feed de X llegará pronto — sígueme en X.",
-    contact: { heading: "// contacto", email: "emmanuelaguerorojas@gmail.com", phone: "+506 8433-9541" },
+    work: {
+      heading: "trabajo",
+      intro: "",
+      experimentsHeading: "experimentos",
+      ventures: [
+        {
+          name: "cavos",
+          url: "https://cavos.xyz/",
+          tagline: "==wallets invisibles== para apps cripto.",
+          blurb: "login de google o apple a una wallet auto-custodiada. sin frase semilla. en vivo en starknet y ethereum.",
+          stats: ["en vivo en starknet + ethereum", "$25k pre-seed"],
+          tech: "account abstraction",
+          logo: "/images/cavos.png",
+          featured: true,
+        },
+        {
+          name: "framezz",
+          url: "https://studioframezz.com/en",
+          tagline: "==búsqueda por selfie== para fotos de carrera.",
+          blurb: "una selfie y salen tus fotos. en vivo en ironman 70.3 y en la disney half.",
+          stats: ["40k+ fotos", "12+ eventos", "ironman 70.3"],
+          tech: "next.js · aws",
+          logo: "/images/framezz.png",
+        },
+      ],
+      projects: [
+        {
+          name: "lumos",
+          stack: "next.js · cairo",
+          blurb: "gestor de liquidez clmm — pérdida impermanente y simulaciones de posición.",
+        },
+        {
+          name: "go stark me",
+          stack: "next.js · cairo",
+          blurb: "recaudación en starknet para quien no quiere una clase de wallets.",
+        },
+      ],
+    },
+    experience: {
+      heading: "historia",
+      intro: "intern → sde ii → cofundador.",
+      jobs: [
+        {
+          role: "community ambassador",
+          org: "SpaceXAI",
+          url: "",
+          logo: "/images/spacexai.svg",
+          period: "2026 —",
+          kind: "employee",
+          bullets: [],
+        },
+        {
+          role: "sde ii, onboarding",
+          org: "Snap Finance",
+          url: "",
+          period: "2023 —",
+          kind: "employee",
+          stats: ["~$95m/mes", "intern → sde ii"],
+          bullets: [],
+        },
+        {
+          role: "cofundador",
+          org: "Cavos",
+          url: "https://cavos.xyz/",
+          logo: "/images/cavos.png",
+          period: "2025 —",
+          kind: "founder",
+          stats: ["$25k pre-seed", "starknet + ethereum"],
+          bullets: [],
+        },
+        {
+          role: "cofundador",
+          org: "Studio Framezz",
+          url: "https://studioframezz.com/en",
+          logo: "/images/framezz.png",
+          period: "2025 —",
+          kind: "founder",
+          stats: ["40k+ fotos", "12+ eventos"],
+          bullets: [],
+        },
+      ],
+    },
+    roleTags: { founder: "cofundador", employee: "equipo" },
+    skills: { heading: "oficio", groups: SKILL_GROUPS_ES },
+    education: {
+      heading: "educación",
+      certificationsHeading: "certificaciones",
+      moreCertsLabel: "más certificaciones",
+      credentialLabel: "credencial",
+    },
+    talk: {
+      heading: "si estás construyendo algo, ==accent:hablemos==.",
+      body: "founders, ingenieros, comunidades — respondo rápido.",
+      socialsLabel: "también en",
+    },
+    cta: { cv: "ver cv", book: "agendar llamada", email: "escríbeme", download: "descargar", close: "cerrar" },
+    footer: {
+      tagline: "ear.dev · alajuela, costa rica",
+      built: "hecho con next.js · sin cookies, sin tracking",
+    },
   },
 };

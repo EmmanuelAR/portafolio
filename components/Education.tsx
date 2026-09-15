@@ -2,26 +2,27 @@
 
 import { useLang } from "@/lib/i18n";
 import { content, EDUCATION, CERTIFICATIONS, type Credential } from "@/lib/content";
+import Section from "./Section";
 
-function Row({ item, small }: { item: Credential; small?: boolean }) {
+function Row({ item, label }: { item: Credential; label: string }) {
   return (
-    <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-      <div>
-        <h3 className={small ? "text-sm font-bold" : "font-bold"}>{item.title}</h3>
-        <p className="text-xs text-black/60">{item.org}</p>
-      </div>
-      <div className="flex items-center gap-3">
+    <div className="grid min-w-0 gap-1 py-5 lg:grid-cols-[180px_minmax(0,1fr)] lg:gap-10">
+      <span className="font-mono text-xs leading-relaxed tracking-wide text-ink/55">{item.period}</span>
+      <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+        <div>
+          <h3 className="text-lg font-medium tracking-tight-brand">{item.title}</h3>
+          <p className="mt-0.5 text-sm text-ink/55">{item.org}</p>
+        </div>
         {item.url && (
           <a
             href={item.url}
             target="_blank"
             rel="noopener"
-            className="text-xs underline underline-offset-2 hover:no-underline"
+            className="link-grow font-mono text-xs tracking-wide text-ink/60 hover:text-ink"
           >
-            credential ↗
+            {label} ↗
           </a>
         )}
-        <span className="shrink-0 text-xs text-black/50">{item.period}</span>
       </div>
     </div>
   );
@@ -33,36 +34,35 @@ export default function Education() {
   const primaryCerts = CERTIFICATIONS.filter((e) => !e.secondary);
   const moreCerts = CERTIFICATIONS.filter((e) => e.secondary);
   return (
-    <section className="border-b border-black px-4 py-16 sm:px-8">
-      <h2 className="mb-6 text-lg font-bold">{c.educationHeading}</h2>
-      <div className="space-y-6">
+    <Section index="07" label={c.education.heading}>
+      <div data-reveal className="divide-y divide-ink/10">
         {EDUCATION.map((e, i) => (
-          <Row key={i} item={e} />
+          <Row key={i} item={e} label={c.education.credentialLabel} />
         ))}
       </div>
 
-      <h2 className="mb-6 mt-12 text-lg font-bold">{c.certificationsHeading}</h2>
-      <div className="space-y-5">
+      <p data-reveal className="mono-label mt-14 mb-2">{c.education.certificationsHeading}</p>
+      <div data-reveal className="divide-y divide-ink/10">
         {primaryCerts.map((e, i) => (
-          <Row key={i} item={e} small />
+          <Row key={i} item={e} label={c.education.credentialLabel} />
         ))}
       </div>
 
       {moreCerts.length > 0 && (
-        <details className="group mt-5">
-          <summary className="cursor-pointer list-none text-xs text-black/60 underline underline-offset-2 hover:text-black">
-            {c.moreCertsLabel} ({moreCerts.length}){" "}
-            <span className="inline-block transition-transform group-open:rotate-90">
+        <details data-reveal className="group mt-2">
+          <summary className="link-grow inline-block cursor-pointer list-none py-3 font-mono text-xs tracking-wide text-ink/60 hover:text-ink [&::-webkit-details-marker]:hidden">
+            {c.education.moreCertsLabel} ({moreCerts.length}){" "}
+            <span aria-hidden className="inline-block transition-transform duration-300 group-open:rotate-90">
               →
             </span>
           </summary>
-          <div className="mt-5 space-y-5">
+          <div className="divide-y divide-ink/10">
             {moreCerts.map((e, i) => (
-              <Row key={i} item={e} small />
+              <Row key={i} item={e} label={c.education.credentialLabel} />
             ))}
           </div>
         </details>
       )}
-    </section>
+    </Section>
   );
 }

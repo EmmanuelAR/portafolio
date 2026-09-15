@@ -3,53 +3,35 @@
 import Image from "next/image";
 import { useLang } from "@/lib/i18n";
 import { content } from "@/lib/content";
-import { StatChips } from "./Stat";
+import Section from "./Section";
+import { Metrics } from "./Stat";
 
 export default function Experience() {
   const { lang } = useLang();
   const c = content[lang];
   return (
-    <section className="border-b border-black px-4 py-16 sm:px-8">
-      <h2 className="mb-8 text-lg font-bold">{c.experienceHeading}</h2>
-      <div className="space-y-10">
-        {c.jobs.map((job, i) => {
-          const founder = job.kind === "founder";
-          return (
-            <div
+    <Section id="story" index="05" label={c.experience.heading}>
+      <p data-reveal className="mb-10 max-w-[24ch] text-title font-medium tracking-tight-brand text-balance sm:mb-12">
+        {c.experience.intro}
+      </p>
+      <ol>
+        {c.experience.jobs.map((job, i) => (
+            <li
               key={i}
-              className={`border-l-2 pl-4 ${founder ? "border-black" : "border-black/30"}`}
+              data-reveal
+              className="grid min-w-0 items-baseline gap-2 border-t border-ink/10 py-6 sm:grid-cols-[7rem_minmax(0,1fr)] sm:gap-10 sm:py-7"
             >
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <div className="flex flex-wrap items-center gap-2">
+              <span className="font-mono text-xs tracking-wide text-ink/45">{job.period}</span>
+              <div className="min-w-0">
+                <div className="flex flex-wrap items-center gap-3">
                   {job.logo && (
                     <span className="relative block h-6 w-6 shrink-0">
-                      <Image
-                        src={job.logo}
-                        alt={`${job.org} logo`}
-                        fill
-                        className="object-contain"
-                        sizes="24px"
-                      />
+                      <Image src={job.logo} alt="" fill sizes="24px" className="object-contain" />
                     </span>
                   )}
-                  <span
-                    className={`px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest ${
-                      founder
-                        ? "border border-black bg-black text-white"
-                        : "border border-black/40 text-black/60"
-                    }`}
-                  >
-                    {c.roleTags[job.kind]}
-                  </span>
-                  <h3 className="font-bold">
-                    {job.role} —{" "}
+                  <h3 className="text-lg font-medium tracking-tight-brand sm:text-xl">
                     {job.url ? (
-                      <a
-                        href={job.url}
-                        target="_blank"
-                        rel="noopener"
-                        className="underline"
-                      >
+                      <a href={job.url} target="_blank" rel="noopener" className="link-grow">
                         {job.org}
                       </a>
                     ) : (
@@ -57,18 +39,12 @@ export default function Experience() {
                     )}
                   </h3>
                 </div>
-                <span className="text-xs text-black/60">{job.period}</span>
+                <p className="mt-1 text-[15px] text-ink/55">{job.role}</p>
+                {job.stats && <Metrics items={job.stats} className="mt-2" />}
               </div>
-              {job.stats && <StatChips items={job.stats} className="mt-3" />}
-              <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-black/80">
-                {job.bullets.map((b, bi) => (
-                  <li key={bi}>{b}</li>
-                ))}
-              </ul>
-            </div>
-          );
-        })}
-      </div>
-    </section>
+            </li>
+        ))}
+      </ol>
+    </Section>
   );
 }

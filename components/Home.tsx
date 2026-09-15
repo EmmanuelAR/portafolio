@@ -5,15 +5,16 @@ import type { ContributionData } from "@/lib/github";
 import Loader from "./Loader";
 import Nav from "./Nav";
 import Hero from "./Hero";
+import Now from "./Now";
 import About from "./About";
+import Work from "./Work";
 import GitHubGrid from "./GitHubGrid";
-import Ventures from "./Ventures";
 import Experience from "./Experience";
 import Skills from "./Skills";
-import Education from "./Education";
-import CTASection from "./CTASection";
-import CVModal from "./CVModal";
+import Talk from "./Talk";
 import Footer from "./Footer";
+import CVModal from "./CVModal";
+import MotionRoot from "./MotionRoot";
 
 export default function Home({
   contributions,
@@ -26,17 +27,19 @@ export default function Home({
       <CVModal />
       <div id="top">
         <Nav />
-        <main>
-          <Hero />
-          <About />
-          <GitHubGrid data={contributions} />
-          <Ventures />
-          <Experience />
-          <Skills />
-          <Education />
-          <CTASection />
+        <MotionRoot>
+          <main>
+            <Hero />
+            <Now />
+            <About />
+            <Work />
+            <GitHubGrid data={contributions} />
+            <Experience />
+            <Skills />
+            <Talk />
+          </main>
           <Footer />
-        </main>
+        </MotionRoot>
       </div>
     </LanguageProvider>
   );
