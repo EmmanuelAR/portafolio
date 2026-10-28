@@ -224,7 +224,7 @@ export const content: Record<Lang, SiteContent> = {
       heading: "about",
       paragraphs: [
         "i'm from costa rica. i make software and gather people who do too.",
-        "intern → sde ii at snap. two companies on the side. sometimes you have to hit esc and ==accent:restart==.",
+        "intern → sde iii at snap. three promotions, two companies on the side. sometimes you have to hit esc and ==accent:restart==.",
       ],
     },
     github: {
@@ -276,7 +276,7 @@ export const content: Record<Lang, SiteContent> = {
     },
     experience: {
       heading: "story",
-      intro: "intern → sde ii → co-founder.",
+      intro: "intern → sde iii → co-founder.",
       jobs: [
         {
           role: "community ambassador",
@@ -288,12 +288,12 @@ export const content: Record<Lang, SiteContent> = {
           bullets: [],
         },
         {
-          role: "sde ii, onboarding",
+          role: "sde iii, onboarding",
           org: "Snap Finance",
           url: "",
           period: "2023 —",
           kind: "employee",
-          stats: ["~$95m/mo", "intern → sde ii"],
+          stats: ["~$95m/mo", "intern → sde iii"],
           bullets: [],
         },
         {
@@ -373,7 +373,7 @@ export const content: Record<Lang, SiteContent> = {
       heading: "sobre mí",
       paragraphs: [
         "soy de costa rica. hago software y junto gente que también.",
-        "intern → sde ii en snap. dos empresas en paralelo. a veces hay que apretar esc y ==accent:reiniciar==.",
+        "intern → sde iii en snap. tres promociones, dos empresas en paralelo. a veces hay que apretar esc y ==accent:reiniciar==.",
       ],
     },
     github: {
@@ -425,7 +425,7 @@ export const content: Record<Lang, SiteContent> = {
     },
     experience: {
       heading: "historia",
-      intro: "intern → sde ii → cofundador.",
+      intro: "intern → sde iii → cofundador.",
       jobs: [
         {
           role: "community ambassador",
@@ -437,12 +437,12 @@ export const content: Record<Lang, SiteContent> = {
           bullets: [],
         },
         {
-          role: "sde ii, onboarding",
+          role: "sde iii, onboarding",
           org: "Snap Finance",
           url: "",
           period: "2023 —",
           kind: "employee",
-          stats: ["~$95m/mes", "intern → sde ii"],
+          stats: ["~$95m/mes", "intern → sde iii"],
           bullets: [],
         },
         {
