@@ -84,7 +84,7 @@ export interface SiteContent {
     socialsLabel: string;
   };
   cta: { cv: string; book: string; email: string; download: string; close: string };
-  footer: { tagline: string; built: string };
+  footer: { tagline: string };
 }
 
 export interface Credential {
@@ -332,10 +332,7 @@ export const content: Record<Lang, SiteContent> = {
       socialsLabel: "elsewhere",
     },
     cta: { cv: "view cv", book: "book a call", email: "email me", download: "download", close: "close" },
-    footer: {
-      tagline: "ear.dev · alajuela, costa rica",
-      built: "built with next.js · no cookies, no tracking",
-    },
+    footer: { tagline: "ear.dev · alajuela, costa rica" },
   },
   es: {
     nav: { about: "sobre mí", work: "trabajo", talk: "hablemos", cv: "cv", menu: "menú", close: "cerrar" },
@@ -481,9 +478,6 @@ export const content: Record<Lang, SiteContent> = {
       socialsLabel: "también en",
     },
     cta: { cv: "ver cv", book: "agendar llamada", email: "escríbeme", download: "descargar", close: "cerrar" },
-    footer: {
-      tagline: "ear.dev · alajuela, costa rica",
-      built: "hecho con next.js · sin cookies, sin tracking",
-    },
+    footer: { tagline: "ear.dev · alajuela, costa rica" },
   },
 };

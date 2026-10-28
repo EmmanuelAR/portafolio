@@ -8,12 +8,11 @@ export default function Footer() {
   const c = content[lang];
   return (
     <footer className="border-t border-ink/10">
-      <div className="shell flex flex-col gap-3 py-10 pb-[max(2.5rem,env(safe-area-inset-bottom))] font-mono text-xs tracking-wide text-ink/50 sm:flex-row sm:items-center sm:justify-between">
+      <div className="shell py-10 pb-[max(2.5rem,env(safe-area-inset-bottom))] font-mono text-xs tracking-wide text-ink/50">
         <p>
           {c.footer.tagline}
           <span className="mx-2 text-ink/25">·</span>© {new Date().getFullYear()} {NAME}
         </p>
-        <p>{c.footer.built}</p>
       </div>
     </footer>
   );
