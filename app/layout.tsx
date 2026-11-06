@@ -37,6 +37,8 @@ export const metadata: Metadata = {
     "founder",
     "software engineer",
     "costa rica",
+    "asesorías",
+    "automation",
     "cavos",
     "framezz",
     "starknet",

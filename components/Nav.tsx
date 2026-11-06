@@ -79,6 +79,9 @@ export default function Nav() {
       <a href="#talk" className={link} onClick={close}>
         {c.nav.talk}
       </a>
+      <a href="/asesorias" className={link} onClick={close}>
+        {c.nav.asesorias}
+      </a>
       <button onClick={() => { close(); openCv(); }} className={`${link} cursor-pointer`}>
         {c.nav.cv}
       </button>
@@ -91,7 +94,7 @@ export default function Nav() {
       className={`group/nav fixed inset-x-0 top-0 z-40 transition-[background-color,border-color] duration-300 [&.is-scrolled]:border-b [&.is-scrolled]:border-ink/10 [&.is-scrolled]:bg-paper/85 [&.is-scrolled]:backdrop-blur-md ${open ? "bottom-0 flex flex-col bg-paper" : "bg-paper/0"}`}
     >
       <div className="shell flex items-center justify-between pt-[max(0.75rem,env(safe-area-inset-top))] pb-3">
-        <a href="#top" aria-label={`${BRAND} — home`} className="flex min-h-11 items-center gap-2.5" onClick={close}>
+        <a href="/" aria-label={`${BRAND} — home`} className="flex min-h-11 items-center gap-2.5" onClick={close}>
           <span className="relative block h-7 w-7">
             <Image src={AVATARS.logo} alt="" fill unoptimized className="object-contain" priority />
           </span>
@@ -147,6 +150,9 @@ export default function Nav() {
           </a>
           <a href="#talk" className="flex min-h-14 items-center text-3xl font-medium tracking-tight-brand" onClick={close}>
             {c.nav.talk}
+          </a>
+          <a href="/asesorias" className="flex min-h-14 items-center text-3xl font-medium tracking-tight-brand" onClick={close}>
+            {c.nav.asesorias}
           </a>
           <button
             onClick={() => { close(); openCv(); }}

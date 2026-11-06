@@ -43,7 +43,15 @@ export interface SkillGroup {
   items: string[];
 }
 export interface SiteContent {
-  nav: { about: string; work: string; talk: string; cv: string; menu: string; close: string };
+  nav: {
+    about: string;
+    work: string;
+    talk: string;
+    cv: string;
+    asesorias: string;
+    menu: string;
+    close: string;
+  };
   hero: {
     greeting: string;
     headline: string;
@@ -189,7 +197,15 @@ export const CERTIFICATIONS: Credential[] = [
 
 export const content: Record<Lang, SiteContent> = {
   en: {
-    nav: { about: "about", work: "work", talk: "talk", cv: "cv", menu: "menu", close: "close" },
+    nav: {
+      about: "about",
+      work: "work",
+      talk: "talk",
+      cv: "cv",
+      asesorias: "advisories",
+      menu: "menu",
+      close: "close",
+    },
     hero: {
       greeting: "hi. i'm emmanuel.",
       headline: "i build ==products.== cavos, framezz.",
@@ -334,7 +350,15 @@ export const content: Record<Lang, SiteContent> = {
     footer: { tagline: "ear.dev · alajuela, costa rica" },
   },
   es: {
-    nav: { about: "sobre mí", work: "trabajo", talk: "hablemos", cv: "cv", menu: "menú", close: "cerrar" },
+    nav: {
+      about: "sobre mí",
+      work: "trabajo",
+      talk: "hablemos",
+      cv: "cv",
+      asesorias: "asesorías",
+      menu: "menú",
+      close: "cerrar",
+    },
     hero: {
       greeting: "hola. soy emmanuel.",
       headline: "construyo ==productos.== cavos, framezz.",
