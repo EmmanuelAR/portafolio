@@ -416,7 +416,7 @@ export const content: Record<Lang, SiteContent> = {
       contributions: "contribuciones en el último año",
       commits: "commits",
       prs: "pull requests",
-      streak: (n) => `racha de ${n} días`,
+      streak: (n) => (n === 1 ? "racha de 1 día" : `racha de ${n} días`),
       topLangs: "más usados",
     },
     work: {

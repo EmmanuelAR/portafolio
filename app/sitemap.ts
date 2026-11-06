@@ -4,14 +4,15 @@ import { SITE_URL } from "@/lib/site";
 
 function entry(path: string, priority: number): MetadataRoute.Sitemap[number] {
   const url = path === "/" ? `${SITE_URL}/` : `${SITE_URL}${path}`;
-  const es = path === "/" ? `${SITE_URL}/?lang=es` : `${SITE_URL}${path}?lang=es`;
+  const en = path === "/" ? `${SITE_URL}/?lang=en` : `${SITE_URL}${path}?lang=en`;
   return {
     url,
     lastModified: new Date(),
     changeFrequency: "monthly",
     priority,
     alternates: {
-      languages: { en: url, es },
+      // Spanish is the default (bare URL); English is explicit.
+      languages: { es: url, en },
     },
   };
 }

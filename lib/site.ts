@@ -4,4 +4,4 @@ export const SITE_URL = (
 ).replace(/\/$/, "");
 export const SITE_TITLE = "emmanuel agüero — founder & software engineer · ear.dev";
 export const SITE_DESCRIPTION =
-  "i build products from costa rica for the world. co-founder of cavos (invisible wallets) and framezz (selfie-search race photos), build ambassador in the spacexsi community, backend engineer in fintech.";
+  "construyo productos desde costa rica para el mundo. cofundador de cavos (wallets invisibles) y framezz (fotos de carrera con selfie), build ambassador en la spacexsi community, backend engineer en fintech.";

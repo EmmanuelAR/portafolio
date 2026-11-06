@@ -2,7 +2,11 @@ import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { LINKS, NAME, X_HANDLE } from "@/lib/content";
-import { SITE_DESCRIPTION, SITE_NAME, SITE_TITLE, SITE_URL } from "@/lib/site";
+import { hubMeta, pageAlternates, portafolioMeta } from "@/lib/meta";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
+
+const defaultMeta = hubMeta.es;
+const portfolioFallback = portafolioMeta.es;
 
 const inter = Inter({
   subsets: ["latin", "latin-ext"],
@@ -26,8 +30,8 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: SITE_TITLE,
-  description: SITE_DESCRIPTION,
+  title: defaultMeta.title,
+  description: defaultMeta.description,
   applicationName: SITE_NAME,
   authors: [{ name: NAME, url: SITE_URL }],
   creator: NAME,
@@ -46,18 +50,15 @@ export const metadata: Metadata = {
     "fintech",
     "backend",
   ],
-  alternates: {
-    canonical: "/",
-    languages: { en: "/", es: "/?lang=es", "x-default": "/" },
-  },
+  alternates: pageAlternates("/"),
   openGraph: {
     type: "profile",
     url: "/",
     siteName: SITE_NAME,
-    title: SITE_TITLE,
-    description: SITE_DESCRIPTION,
-    locale: "en_US",
-    alternateLocale: ["es_CR"],
+    title: defaultMeta.title,
+    description: defaultMeta.description,
+    locale: "es_CR",
+    alternateLocale: ["en_US"],
     firstName: "Emmanuel",
     lastName: "Agüero Rojas",
     username: X_HANDLE,
@@ -66,8 +67,8 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     site: `@${X_HANDLE}`,
     creator: `@${X_HANDLE}`,
-    title: SITE_TITLE,
-    description: SITE_DESCRIPTION,
+    title: defaultMeta.title,
+    description: defaultMeta.description,
   },
   robots: {
     index: true,
@@ -84,7 +85,7 @@ const personJsonLd = {
   url: SITE_URL,
   image: `${SITE_URL}/brand/avatar-logo.png`,
   jobTitle: "Founder & Software Engineer",
-  description: SITE_DESCRIPTION,
+  description: portfolioFallback.description,
   email: `mailto:${LINKS.email}`,
   nationality: { "@type": "Country", name: "Costa Rica" },
   address: {

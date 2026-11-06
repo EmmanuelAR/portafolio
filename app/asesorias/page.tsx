@@ -1,28 +1,21 @@
 import type { Metadata } from "next";
 import AdvisoryList from "@/components/asesorias/AdvisoryList";
-import { SITE_NAME, SITE_URL } from "@/lib/site";
+import {
+  asesoriasCatalogMeta,
+  langFromSearchParams,
+  localizedPageMeta,
+  type PageSearchParams,
+} from "@/lib/meta";
 
-const title = `Advisories · ${SITE_NAME}`;
-const description =
-  "Automation advisories for founders — practical sessions to diagnose, automate, and leave with a clear next map.";
-
-export const metadata: Metadata = {
-  title,
-  description,
-  alternates: {
-    canonical: "/asesorias",
-    languages: {
-      en: "/asesorias",
-      es: "/asesorias?lang=es",
-      "x-default": "/asesorias",
-    },
-  },
-  openGraph: {
-    url: `${SITE_URL}/asesorias`,
-    title,
-    description,
-  },
-};
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: PageSearchParams;
+}): Promise<Metadata> {
+  const lang = langFromSearchParams(await searchParams);
+  const { title, description } = asesoriasCatalogMeta[lang];
+  return localizedPageMeta({ path: "/asesorias", lang, title, description });
+}
 
 export default function AsesoriasPage() {
   return <AdvisoryList />;

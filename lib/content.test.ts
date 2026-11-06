@@ -25,3 +25,9 @@ test("brand voice: hero copy is lowercase and founder-first", () => {
     expect(JSON.stringify(content[lang])).not.toMatch(/full-time/i);
   }
 });
+
+test("spanish github streak uses singular día for 1", () => {
+  expect(content.es.github.streak(1)).toBe("racha de 1 día");
+  expect(content.es.github.streak(2)).toBe("racha de 2 días");
+  expect(content.es.github.streak(12)).toBe("racha de 12 días");
+});

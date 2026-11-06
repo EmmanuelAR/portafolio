@@ -2,7 +2,12 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import AdvisoryDetail from "@/components/asesorias/AdvisoryDetail";
 import { advisorySlugs, getAdvisory } from "@/lib/asesorias";
-import { SITE_NAME, SITE_URL } from "@/lib/site";
+import { SITE_NAME } from "@/lib/site";
+import {
+  langFromSearchParams,
+  localizedPageMeta,
+  type PageSearchParams,
+} from "@/lib/meta";
 
 export function generateStaticParams() {
   return advisorySlugs().map((slug) => ({ slug }));
@@ -10,34 +15,23 @@ export function generateStaticParams() {
 
 export async function generateMetadata({
   params,
+  searchParams,
 }: {
   params: Promise<{ slug: string }>;
+  searchParams: PageSearchParams;
 }): Promise<Metadata> {
   const { slug } = await params;
   const advisory = getAdvisory(slug);
   if (!advisory) return {};
 
-  const title = `${advisory.en.title} · ${SITE_NAME}`;
-  const description = advisory.en.tagline;
-  const path = `/asesorias/${slug}`;
-
-  return {
-    title,
-    description,
-    alternates: {
-      canonical: path,
-      languages: {
-        en: path,
-        es: `${path}?lang=es`,
-        "x-default": path,
-      },
-    },
-    openGraph: {
-      url: `${SITE_URL}${path}`,
-      title,
-      description,
-    },
-  };
+  const lang = langFromSearchParams(await searchParams);
+  const copy = advisory[lang];
+  return localizedPageMeta({
+    path: `/asesorias/${slug}`,
+    lang,
+    title: `${copy.title} · ${SITE_NAME}`,
+    description: copy.tagline,
+  });
 }
 
 export default async function AdvisoryPage({
