@@ -30,7 +30,7 @@ export async function generateMetadata({
     path: `/asesorias/${slug}`,
     lang,
     title: `${copy.title} · ${SITE_NAME}`,
-    description: copy.tagline,
+    description: copy.metaDescription,
   });
 }
 

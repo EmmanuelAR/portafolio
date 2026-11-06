@@ -4,6 +4,8 @@ import { LINKS } from "./content";
 export interface AdvisoryCopy {
   title: string;
   tagline: string;
+  /** SEO / Open Graph description (not shown on the page body). */
+  metaDescription: string;
   /** Short pain-point line for the catalog card subtitle. */
   hookShort: string;
   hookLabel: string;
@@ -63,6 +65,8 @@ const empleadoQueNoSeCansa: Advisory = {
   es: {
     title: "El empleado que no se cansa",
     tagline: "Asesoría de automatización para emprendedores",
+    metaDescription:
+      "¿Seguís respondiendo mensajes, cotizaciones y recordatorios a mano? En 90 minutos dejamos tu primera tarea automatizada con Grok Bot.",
     hookShort:
       "¿Seguís respondiendo los mismos mensajes, cotizaciones y recordatorios a mano?",
     hookLabel: "El problema",
@@ -104,6 +108,8 @@ const empleadoQueNoSeCansa: Advisory = {
   en: {
     title: "The employee who never gets tired",
     tagline: "Automation advisory for founders",
+    metaDescription:
+      "Still answering messages, quotes, and reminders by hand? In 90 minutes we set up your first automated task with Grok Bot.",
     hookShort: "Still answering the same messages, quotes, and reminders by hand?",
     hookLabel: "The problem",
     hookTitle: "Still answering the same messages, quotes, and reminders by hand?",
