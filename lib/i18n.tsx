@@ -24,17 +24,28 @@ function isLang(v: unknown): v is Lang {
   return v === "en" || v === "es";
 }
 
+/** Browser language → site lang. Only `en*` is English; everything else Spanish. */
+export function detectBrowserLang(
+  language = typeof navigator !== "undefined" ? navigator.language : "es"
+): Lang {
+  return language.toLowerCase().startsWith("en") ? "en" : "es";
+}
+
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [lang, setLangState] = useState<Lang>("en");
+  // Spanish is the default for SSR / first paint; hydrate from URL, saved
+  // preference, or browser language on mount.
+  const [lang, setLangState] = useState<Lang>("es");
 
   useEffect(() => {
-    // SSR-safe: default to "en" on server/first render, then hydrate the
-    // preference on mount. `?lang=es` (shareable) wins over the saved value.
     const fromUrl = new URLSearchParams(window.location.search).get("lang");
     const saved = localStorage.getItem(STORAGE_KEY);
-    const next = isLang(fromUrl) ? fromUrl : isLang(saved) ? saved : null;
+    const next = isLang(fromUrl)
+      ? fromUrl
+      : isLang(saved)
+        ? saved
+        : detectBrowserLang(navigator.language);
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (next) setLangState(next);
+    setLangState(next);
   }, []);
 
   useEffect(() => {

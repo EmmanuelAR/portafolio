@@ -91,7 +91,14 @@ export interface SiteContent {
     body: string;
     socialsLabel: string;
   };
-  cta: { cv: string; book: string; email: string; download: string; close: string };
+  cta: {
+    cv: string;
+    book: string;
+    email: string;
+    asesorias: string;
+    download: string;
+    close: string;
+  };
   footer: { tagline: string };
 }
 
@@ -228,7 +235,7 @@ export const content: Record<Lang, SiteContent> = {
         },
         {
           status: "ambassador",
-          text: "==spacexai== — a community of people building software with ai.",
+          text: "==build ambassador==, ==spacexsi community==. a community of people building software with ai.",
         },
         {
           status: "next",
@@ -295,8 +302,8 @@ export const content: Record<Lang, SiteContent> = {
       intro: "intern → sde iii → co-founder.",
       jobs: [
         {
-          role: "community ambassador",
-          org: "SpaceXAI",
+          role: "build ambassador",
+          org: "SpaceXSI Community",
           url: "",
           period: "2026 —",
           kind: "employee",
@@ -346,7 +353,14 @@ export const content: Record<Lang, SiteContent> = {
       body: "founders, engineers, communities — i answer fast.",
       socialsLabel: "elsewhere",
     },
-    cta: { cv: "view cv", book: "book a call", email: "email me", download: "download", close: "close" },
+    cta: {
+      cv: "view cv",
+      book: "book a call",
+      email: "email me",
+      asesorias: "advisories for founders →",
+      download: "download",
+      close: "close",
+    },
     footer: { tagline: "ear.dev · alajuela, costa rica" },
   },
   es: {
@@ -381,7 +395,7 @@ export const content: Record<Lang, SiteContent> = {
         },
         {
           status: "ambassador",
-          text: "==spacexai== — comunidad de gente que construye software con ai.",
+          text: "==build ambassador==, ==spacexsi community==. una comunidad de gente que construye software con ai.",
         },
         {
           status: "lo que sigue",
@@ -448,8 +462,8 @@ export const content: Record<Lang, SiteContent> = {
       intro: "intern → sde iii → cofundador.",
       jobs: [
         {
-          role: "community ambassador",
-          org: "SpaceXAI",
+          role: "build ambassador",
+          org: "SpaceXSI Community",
           url: "",
           period: "2026 —",
           kind: "employee",
@@ -499,7 +513,14 @@ export const content: Record<Lang, SiteContent> = {
       body: "founders, ingenieros, comunidades — respondo rápido.",
       socialsLabel: "también en",
     },
-    cta: { cv: "ver cv", book: "agendar llamada", email: "escríbeme", download: "descargar", close: "cerrar" },
+    cta: {
+      cv: "ver cv",
+      book: "agendar llamada",
+      email: "escríbeme",
+      asesorias: "asesorías para emprendedores →",
+      download: "descargar",
+      close: "cerrar",
+    },
     footer: { tagline: "ear.dev · alajuela, costa rica" },
   },
 };

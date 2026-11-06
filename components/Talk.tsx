@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useLang } from "@/lib/i18n";
 import { content, LINKS, SOCIALS } from "@/lib/content";
 import { useMagnetic } from "@/lib/useMagnetic";
@@ -24,11 +25,17 @@ export default function Talk() {
           {c.talk.body}
         </p>
 
-        <div data-reveal className="mt-10 flex w-full max-w-md flex-col gap-3 sm:max-w-none sm:flex-row sm:flex-wrap">
+        <div data-reveal className="mt-10 flex w-full max-w-md flex-col gap-3 sm:max-w-none sm:flex-row sm:flex-wrap sm:items-center">
           <BookCall className="btn btn-primary w-full sm:w-auto" />
           <a ref={emailRef} href={`mailto:${LINKS.email}`} className="btn btn-secondary w-full sm:w-auto">
             {c.cta.email}
           </a>
+          <Link
+            href="/asesorias"
+            className="link-grow inline-flex min-h-11 items-center text-base text-ink/70 hover:text-ink"
+          >
+            {c.cta.asesorias}
+          </Link>
         </div>
 
         <div data-reveal className="mt-14 flex flex-wrap items-baseline gap-x-6 gap-y-3 sm:mt-16">

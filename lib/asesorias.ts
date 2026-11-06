@@ -4,6 +4,11 @@ import { LINKS } from "./content";
 export interface AdvisoryCopy {
   title: string;
   tagline: string;
+  /** Short pain-point line for the catalog card subtitle. */
+  hookShort: string;
+  hookLabel: string;
+  hookTitle: string;
+  hookBody: string;
   serviceLabel: string;
   aboutHeading: string;
   about: string[];
@@ -58,6 +63,13 @@ const empleadoQueNoSeCansa: Advisory = {
   es: {
     title: "El empleado que no se cansa",
     tagline: "Asesoría de automatización para emprendedores",
+    hookShort:
+      "¿Seguís respondiendo los mismos mensajes, cotizaciones y recordatorios a mano?",
+    hookLabel: "El problema",
+    hookTitle:
+      "¿Seguís respondiendo los mismos mensajes, cotizaciones y recordatorios a mano?",
+    hookBody:
+      "Cada hora que se te va en tareas repetitivas es una hora que no le dedicás a vender ni a crecer. En 90 minutos dejamos funcionando tu primera tarea automatizada para que la haga Grok Bot, no vos.",
     serviceLabel: "Servicio",
     aboutHeading: "De qué trata",
     about: [
@@ -87,11 +99,16 @@ const empleadoQueNoSeCansa: Advisory = {
     ],
     whatsappCta: "Escribime por WhatsApp",
     whatsappMessage:
-      "Hola Emmanuel, me interesa la asesoría «El empleado que no se cansa». ¿Me contás disponibilidad y detalles?",
+      "Hola Emmanuel, me interesa la asesoría «El empleado que no se cansa». ¿Me compartís disponibilidad y detalles?",
   },
   en: {
     title: "The employee who never gets tired",
     tagline: "Automation advisory for founders",
+    hookShort: "Still answering the same messages, quotes, and reminders by hand?",
+    hookLabel: "The problem",
+    hookTitle: "Still answering the same messages, quotes, and reminders by hand?",
+    hookBody:
+      "Every hour spent on repetitive tasks is an hour you're not selling or growing. In 90 minutes we set up your first automated task so Grok Bot does it, not you.",
     serviceLabel: "Service",
     aboutHeading: "What it's about",
     about: [

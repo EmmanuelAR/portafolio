@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { LanguageProvider, useLang } from "@/lib/i18n";
 import { BRAND } from "@/lib/content";
 import { hubCopy } from "@/lib/hub";
@@ -69,7 +70,7 @@ function HubInner() {
 
         <div className="mt-14 grid border-t border-ink/10 sm:mt-16 sm:grid-cols-2">
           {paths.map((path) => (
-            <a
+            <Link
               key={path.href}
               href={path.href}
               data-reveal
@@ -92,7 +93,7 @@ function HubInner() {
               >
                 →
               </span>
-            </a>
+            </Link>
           ))}
         </div>
       </main>

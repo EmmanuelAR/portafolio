@@ -80,7 +80,7 @@ export default async function Image() {
             color: "rgba(0,0,0,0.6)",
           }}
         >
-          cavos · framezz · spacexai · costa rica
+          cavos · framezz · spacexsi community · costa rica
         </div>
         <div
           style={{

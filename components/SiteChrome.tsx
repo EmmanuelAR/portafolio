@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useLang } from "@/lib/i18n";
 import { BRAND } from "@/lib/content";
 import { asesoriasUi } from "@/lib/asesorias";
@@ -25,20 +26,20 @@ export default function SiteChrome({
   return (
     <header className="fixed inset-x-0 top-0 z-40 bg-paper/0">
       <div className="shell flex items-center justify-between pt-[max(0.75rem,env(safe-area-inset-top))] pb-3">
-        <a href="/" aria-label={`${BRAND} — home`} className="flex min-h-11 items-center gap-2.5">
+        <Link href="/" aria-label={`${BRAND} — home`} className="flex min-h-11 items-center gap-2.5">
           <span className="relative block h-7 w-7">
             <Image src={AVATARS.logo} alt="" fill unoptimized className="object-contain" priority />
           </span>
           <span className="text-[17px] font-medium tracking-brand">{BRAND}</span>
-        </a>
+        </Link>
 
         <div className="flex items-center gap-4 sm:gap-6">
-          <a
+          <Link
             href={crossHref}
             className="link-grow inline-flex min-h-11 items-center text-sm text-ink/70 transition-colors hover:text-ink"
           >
             {label}
-          </a>
+          </Link>
           <button
             onClick={toggle}
             aria-label="Toggle language"

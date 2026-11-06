@@ -102,7 +102,6 @@ const personJsonLd = {
     { "@type": "Organization", name: "Cavos", url: "https://cavos.xyz/" },
     { "@type": "Organization", name: "Studio Framezz", url: "https://studioframezz.com/en" },
     { "@type": "Organization", name: "Snap Finance" },
-    { "@type": "Organization", name: "SpaceXAI" },
   ],
   alumniOf: [
     { "@type": "CollegeOrUniversity", name: "Universidad Nacional, Costa Rica" },
@@ -125,7 +124,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="es" suppressHydrationWarning>
       <head>
         {/* Before first paint: flag JS availability (reveal styles only apply when
             GSAP can run) and whether the brand intro should play this session. */}

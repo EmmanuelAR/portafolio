@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { LanguageProvider, useLang } from "@/lib/i18n";
 import {
   asesoriasUi,
@@ -19,12 +20,12 @@ function DetailInner({ advisory }: { advisory: Advisory }) {
     <div className="min-h-dvh bg-paper text-ink">
       <SiteChrome crossHref="/portafolio" />
       <main className="shell pb-24 pt-28 sm:pb-32 sm:pt-32">
-        <a
+        <Link
           href="/asesorias"
           className="link-grow mono-label inline-flex min-h-11 items-center text-ink/55 transition-colors hover:text-ink"
         >
           ← {ui.backToList}
-        </a>
+        </Link>
 
         <p className="mono-label mt-8">{copy.serviceLabel}</p>
         <h1 className="mt-4 max-w-[16ch] text-display font-medium tracking-brand text-balance">
@@ -33,6 +34,22 @@ function DetailInner({ advisory }: { advisory: Advisory }) {
         <p className="mt-4 max-w-[36ch] text-lead text-ink/70 text-balance">{copy.tagline}</p>
 
         <section className="mt-16 border-t border-ink/10 pt-12 sm:mt-20 sm:pt-16">
+          <div className="grid gap-y-6 md:grid-cols-[minmax(9rem,12rem)_minmax(0,1fr)] md:gap-x-12">
+            <p className="mono-label">
+              <span className="text-ink/35">00</span>
+              <span className="mx-2 text-ink/25">—</span>
+              {copy.hookLabel}
+            </p>
+            <div className="max-w-[48ch]">
+              <h2 className="text-title font-medium tracking-tight-brand text-balance">
+                {copy.hookTitle}
+              </h2>
+              <p className="mt-4 text-lg leading-snug text-ink/70 sm:text-xl">{copy.hookBody}</p>
+            </div>
+          </div>
+        </section>
+
+        <section className="mt-12 border-t border-ink/10 pt-12 sm:mt-16 sm:pt-16">
           <div className="grid gap-y-6 md:grid-cols-[minmax(9rem,12rem)_minmax(0,1fr)] md:gap-x-12">
             <p className="mono-label">
               <span className="text-ink/35">01</span>

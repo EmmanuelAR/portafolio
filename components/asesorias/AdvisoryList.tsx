@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { LanguageProvider, useLang } from "@/lib/i18n";
 import { asesoriasUi, getAdvisories, advisoryCopy } from "@/lib/asesorias";
 import SiteChrome from "../SiteChrome";
@@ -28,7 +29,7 @@ function ListInner() {
             const copy = advisoryCopy(advisory, lang);
             return (
               <li key={advisory.slug} className="border-b border-ink/10">
-                <a
+                <Link
                   href={`/asesorias/${advisory.slug}`}
                   className="group grid gap-3 py-8 transition-colors hover:bg-ink/[0.02] sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end sm:gap-8 sm:py-10"
                 >
@@ -37,10 +38,10 @@ function ListInner() {
                     <h2 className="mt-3 text-title font-medium tracking-tight-brand text-balance">
                       <span className="link-grow">{copy.title}</span>
                     </h2>
-                    <p className="mt-3 max-w-[40ch] text-base text-ink/60 sm:text-lg">{copy.tagline}</p>
+                    <p className="mt-3 max-w-[40ch] text-base text-ink/60 sm:text-lg">{copy.hookShort}</p>
                   </div>
                   <p className="mono-label sm:text-right">{copy.duration}</p>
-                </a>
+                </Link>
               </li>
             );
           })}

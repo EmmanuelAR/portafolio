@@ -13,7 +13,7 @@ existing Next.js + Tailwind + bilingual content architecture.
 
 ## Positioning
 
-Founder & engineer who builds products (Cavos, Framezz, ear.dev, SpaceXAI ambassador).
+Founder & engineer who builds products (Cavos, Framezz, ear.dev; build ambassador in the SpaceXSI Community).
 Hiring/CV is secondary: no "available for full-time" language anywhere. Primary CTA is
 "book a call"; the CV is a tertiary link in the nav and the Talk section.
 
@@ -23,7 +23,7 @@ Hiring/CV is secondary: no "available for full-time" language anywhere. Primary 
 - One marker highlight per idea, on the word that carries it.
 - Display copy is lowercase, including product names. Dense CV bullets (experience)
   keep sentence case and proper nouns for readability.
-- English default (global audience); Spanish via toggle or `?lang=es`.
+- Spanish default; English when the browser language starts with `en`, or via toggle / `?lang=`.
 
 ## Tokens (`app/globals.css`)
 
