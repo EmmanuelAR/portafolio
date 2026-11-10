@@ -1,9 +1,11 @@
 import type { Metadata, Viewport } from "next";
+import { headers } from "next/headers";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { LINKS, NAME, X_HANDLE } from "@/lib/content";
 import { hubMeta, pageAlternates, portafolioMeta } from "@/lib/meta";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
+import type { Lang } from "@/lib/i18n";
 
 const defaultMeta = hubMeta.es;
 const portfolioFallback = portafolioMeta.es;
@@ -119,13 +121,17 @@ const personJsonLd = {
   ],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const headersList = await headers();
+  const langHeader = headersList.get("x-lang");
+  const lang: Lang = langHeader === "en" ? "en" : "es";
+
   return (
-    <html lang="es" suppressHydrationWarning>
+    <html lang={lang} suppressHydrationWarning>
       <head>
         {/* Before first paint: flag JS availability (reveal styles only apply when
             GSAP can run) and whether the brand intro should play this session. */}

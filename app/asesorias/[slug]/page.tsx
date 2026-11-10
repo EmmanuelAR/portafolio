@@ -41,11 +41,13 @@ function serviceJsonLd(slug: string) {
     "@context": "https://schema.org",
     "@type": "Service",
     name: "El empleado que no se cansa",
+    serviceType: "Asesoría de automatización con inteligencia artificial",
     description:
       "Sesión de asesoría de aproximadamente 90 minutos para emprendedores: diagnóstico del negocio, una tarea automatizada en vivo con Grok Bot, prompts listos para copiar, las 3 tareas siguientes por automatizar, y 7 días de disponibilidad para resolver dudas.",
     provider: {
       "@type": "Person",
       name: NAME,
+      url: SITE_URL,
     },
     areaServed: {
       "@type": "Country",

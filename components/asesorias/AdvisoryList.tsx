@@ -1,12 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { LanguageProvider, useLang, type Lang } from "@/lib/i18n";
+import { LanguageProvider, useLang, useLinkWithLang, type Lang } from "@/lib/i18n";
 import { asesoriasUi, getAdvisories, advisoryCopy, whatsappUrl } from "@/lib/asesorias";
 import SiteChrome from "../SiteChrome";
 
 function ListInner() {
   const { lang } = useLang();
+  const linkWithLang = useLinkWithLang();
   const ui = asesoriasUi[lang];
   const advisories = getAdvisories();
   const firstAdvisory = advisories[0];
@@ -73,7 +74,7 @@ function ListInner() {
                 return (
                   <li key={advisory.slug} className="border-b border-ink/10 last:border-b-0">
                     <Link
-                      href={`/asesorias/${advisory.slug}`}
+                      href={linkWithLang(`/asesorias/${advisory.slug}`)}
                       className="group grid gap-3 py-8 transition-colors hover:bg-ink/[0.02] sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end sm:gap-8 sm:py-10"
                     >
                       <div>

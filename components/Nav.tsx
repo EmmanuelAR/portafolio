@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { useLang } from "@/lib/i18n";
+import { useLang, useAlternateUrl, useLinkWithLang } from "@/lib/i18n";
 import { content, BRAND } from "@/lib/content";
 import { gsap, ScrollTrigger, useGSAP, MOTION_OK } from "@/lib/gsap";
 import { AVATARS } from "./Avatar";
@@ -13,7 +13,9 @@ function openCv() {
 }
 
 export default function Nav() {
-  const { lang, toggle } = useLang();
+  const { lang } = useLang();
+  const { esUrl, enUrl } = useAlternateUrl();
+  const linkWithLang = useLinkWithLang();
   const c = content[lang];
   const root = useRef<HTMLElement>(null);
   const [open, setOpen] = useState(false);
@@ -80,7 +82,7 @@ export default function Nav() {
       <a href="#talk" className={link} onClick={close}>
         {c.nav.talk}
       </a>
-      <Link href="/asesorias" className={link} onClick={close}>
+      <Link href={linkWithLang("/asesorias")} className={link} onClick={close}>
         {c.nav.asesorias}
       </Link>
       <button onClick={() => { close(); openCv(); }} className={`${link} cursor-pointer`}>
@@ -95,24 +97,30 @@ export default function Nav() {
       className={`group/nav fixed inset-x-0 top-0 z-40 bg-paper transition-[border-color,box-shadow] duration-300 [&.is-scrolled]:border-b [&.is-scrolled]:border-ink/10 [&.is-scrolled]:shadow-sm ${open ? "bottom-0 flex flex-col" : ""}`}
     >
       <div className="shell flex items-center justify-between pt-[max(0.75rem,env(safe-area-inset-top))] pb-3">
-        <Link href="/" aria-label={`${BRAND} — home`} className="flex min-h-11 items-center gap-2.5" onClick={close}>
+        <Link href={linkWithLang("/")} aria-label={`${BRAND} — home`} className="flex min-h-11 items-center gap-2.5" onClick={close}>
           <span className="relative block h-7 w-7">
-            <Image src={AVATARS.logo} alt="" fill unoptimized className="object-contain" priority />
+            <Image src={AVATARS.logo} alt={BRAND} fill unoptimized className="object-contain" priority />
           </span>
           <span className="text-[17px] font-medium tracking-brand">{BRAND}</span>
         </Link>
 
         <div className="flex items-center gap-1 sm:gap-6">
           <div className="hidden items-center gap-6 sm:flex">{links}</div>
-          <button
-            onClick={toggle}
-            aria-label="Toggle language"
-            className="inline-flex h-11 min-w-11 items-center justify-center font-mono text-xs tracking-[0.12em] text-ink/70 transition-colors hover:text-ink"
-          >
-            <span className={lang === "en" ? "text-ink" : ""}>en</span>
+          <nav aria-label="Language" className="inline-flex h-11 min-w-11 items-center justify-center font-mono text-xs tracking-[0.12em]">
+            <a
+              href={enUrl}
+              className={`transition-colors hover:text-ink ${lang === "en" ? "text-ink" : "text-ink/70"}`}
+            >
+              en
+            </a>
             <span className="mx-1 text-ink/30">/</span>
-            <span className={lang === "es" ? "text-ink" : ""}>es</span>
-          </button>
+            <a
+              href={esUrl}
+              className={`transition-colors hover:text-ink ${lang === "es" ? "text-ink" : "text-ink/70"}`}
+            >
+              es
+            </a>
+          </nav>
           <button
             type="button"
             className="inline-flex h-11 w-11 items-center justify-center sm:hidden"
@@ -152,7 +160,7 @@ export default function Nav() {
           <a href="#talk" className="flex min-h-14 items-center text-3xl font-medium tracking-tight-brand" onClick={close}>
             {c.nav.talk}
           </a>
-          <Link href="/asesorias" className="flex min-h-14 items-center text-3xl font-medium tracking-tight-brand" onClick={close}>
+          <Link href={linkWithLang("/asesorias")} className="flex min-h-14 items-center text-3xl font-medium tracking-tight-brand" onClick={close}>
             {c.nav.asesorias}
           </Link>
           <button

@@ -3,7 +3,7 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { BRAND } from "@/lib/content";
 
-export const alt = "hi. i'm emmanuel. i build products. cavos, framezz, ear.dev.";
+export const alt = "Emmanuel Agüero Rojas — fundador e ingeniero de software";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -80,7 +80,7 @@ export default async function Image() {
             color: "rgba(0,0,0,0.6)",
           }}
         >
-          cavos · framezz · spacexsi community · costa rica
+          cavos · framezz · costa rica
         </div>
         <div
           style={{
