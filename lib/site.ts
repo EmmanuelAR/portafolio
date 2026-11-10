@@ -1,6 +1,6 @@
 export const SITE_NAME = "ear.dev";
 export const SITE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://ear.dev"
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://emmanuelaguerorojas.com"
 ).replace(/\/$/, "");
 export const SITE_TITLE = "emmanuel agüero — founder & software engineer · ear.dev";
 export const SITE_DESCRIPTION =
