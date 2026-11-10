@@ -34,29 +34,64 @@ export interface Advisory {
   es: AdvisoryCopy;
 }
 
-export const asesoriasUi: Record<
-  Lang,
-  {
-    catalogHeading: string;
-    catalogIntro: string;
-    portfolioLink: string;
-    advisoriesLink: string;
-    backToList: string;
-  }
-> = {
-  en: {
-    catalogHeading: "advisories",
-    catalogIntro: "practical sessions for founders who want to automate real work.",
-    portfolioLink: "portfolio",
-    advisoriesLink: "advisories",
-    backToList: "all advisories",
-  },
+export interface AsesoriasUiCopy {
+  portfolioLink: string;
+  advisoriesLink: string;
+  backToList: string;
+  heroHeading: string;
+  heroSubtitle: string;
+  painHeading: string;
+  painIntro: string;
+  painBullets: string[];
+  painClosing: string;
+  solutionText: string;
+  ctaButton: string;
+}
+
+export const asesoriasUi: Record<Lang, AsesoriasUiCopy> = {
   es: {
-    catalogHeading: "asesorías",
-    catalogIntro: "sesiones prácticas para emprendedores que quieren automatizar trabajo real.",
     portfolioLink: "portafolio",
     advisoriesLink: "asesorías",
     backToList: "todas las asesorías",
+    heroHeading: "Tu negocio necesita un empleado más. Que no se canse.",
+    heroSubtitle:
+      "Te ayudo a automatizar con inteligencia artificial las tareas que te roban el día, sin que tengás que saber programar.",
+    painHeading:
+      "Seamos honestos: tu negocio no está creciendo porque vos sos el cuello de botella.",
+    painIntro:
+      "Arrancaste para ser dueño de tu tiempo y hoy sos el empleado más cansado de tu propio negocio.",
+    painBullets: [
+      "Las redes se quedan sin publicar semanas enteras y los mensajes de clientes esperan hasta la noche.",
+      "Las cuentas, los cobros y los gastos viven en un enredo de chats y hojas, y no sabés con certeza cuánto estás ganando.",
+      "Te enterás de que se acabó el inventario cuando el cliente ya te lo está pidiendo.",
+    ],
+    painClosing:
+      "Mientras hacés todo a mano, otros negocios con menos talento que el tuyo ya están creciendo con IA.",
+    solutionText:
+      "En la asesoría «El empleado que no se cansa» (unos 90 minutos) hacemos juntos un diagnóstico de tu negocio, elegimos la tarea que más te pesa y la dejamos funcionando en vivo con Grok Bot. Te vas con los prompts listos, un plan para tus próximas 3 tareas y 7 días para escribirme tus dudas. Redes, plata e inventario son ejemplos de lo que podemos atacar; cada sesión arranca por lo que más te frena.",
+    ctaButton: "Quiero mi empleado que no se cansa",
+  },
+  en: {
+    portfolioLink: "portfolio",
+    advisoriesLink: "advisories",
+    backToList: "all advisories",
+    heroHeading: "Your business needs one more employee. One who doesn't get tired.",
+    heroSubtitle:
+      "I help you automate with AI the tasks that steal your day, without needing to know how to code.",
+    painHeading:
+      "Let's be honest: your business isn't growing because you are the bottleneck.",
+    painIntro:
+      "You started to own your time and today you're the most exhausted employee of your own business.",
+    painBullets: [
+      "Social media goes unpublished for weeks and customer messages wait until night.",
+      "Finances, invoices, and expenses live in a tangle of chats and spreadsheets, and you don't know for sure how much you're making.",
+      "You find out inventory ran out when the customer is already asking for it.",
+    ],
+    painClosing:
+      "While you do everything by hand, other businesses with less talent than yours are already growing with AI.",
+    solutionText:
+      "In the advisory «The employee who never gets tired» (about 90 minutes) we do a diagnosis of your business together, choose the task that weighs on you most, and get it running live with Grok Bot. You leave with ready prompts, a plan for your next 3 tasks, and 7 days to message me your questions. Social media, finances, and inventory are examples of what we can tackle; each session starts with what's slowing you down most.",
+    ctaButton: "I want my employee who never gets tired",
   },
 };
 
