@@ -17,6 +17,11 @@ export async function generateMetadata({
   return localizedPageMeta({ path: "/", lang, title, description });
 }
 
-export default function Page() {
-  return <Hub />;
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: PageSearchParams;
+}) {
+  const lang = langFromSearchParams(await searchParams);
+  return <Hub lang={lang} />;
 }

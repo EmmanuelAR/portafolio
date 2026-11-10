@@ -1,6 +1,6 @@
 "use client";
 
-import { LanguageProvider } from "@/lib/i18n";
+import { LanguageProvider, type Lang } from "@/lib/i18n";
 import type { ContributionData } from "@/lib/github";
 import Loader from "./Loader";
 import Nav from "./Nav";
@@ -18,11 +18,13 @@ import MotionRoot from "./MotionRoot";
 
 export default function Home({
   contributions,
+  lang,
 }: {
   contributions: ContributionData;
+  lang?: Lang;
 }) {
   return (
-    <LanguageProvider>
+    <LanguageProvider initialLang={lang}>
       <Loader />
       <CVModal />
       <div id="top">

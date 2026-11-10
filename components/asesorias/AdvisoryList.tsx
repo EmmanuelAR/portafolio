@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { LanguageProvider, useLang } from "@/lib/i18n";
+import { LanguageProvider, useLang, type Lang } from "@/lib/i18n";
 import { asesoriasUi, getAdvisories, advisoryCopy, whatsappUrl } from "@/lib/asesorias";
 import SiteChrome from "../SiteChrome";
 
@@ -98,9 +98,9 @@ function ListInner() {
   );
 }
 
-export default function AdvisoryList() {
+export default function AdvisoryList({ lang }: { lang?: Lang }) {
   return (
-    <LanguageProvider>
+    <LanguageProvider initialLang={lang}>
       <ListInner />
     </LanguageProvider>
   );

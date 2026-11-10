@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { LanguageProvider, useLang } from "@/lib/i18n";
+import { LanguageProvider, useLang, type Lang } from "@/lib/i18n";
 import { BRAND } from "@/lib/content";
 import { hubCopy } from "@/lib/hub";
 import { gsap, useGSAP, MOTION_OK, REDUCED } from "@/lib/gsap";
@@ -101,9 +101,9 @@ function HubInner() {
   );
 }
 
-export default function Hub() {
+export default function Hub({ lang }: { lang?: Lang }) {
   return (
-    <LanguageProvider>
+    <LanguageProvider initialLang={lang}>
       <HubInner />
     </LanguageProvider>
   );

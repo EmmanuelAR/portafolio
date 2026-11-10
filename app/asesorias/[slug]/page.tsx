@@ -57,12 +57,15 @@ function serviceJsonLd(slug: string) {
 
 export default async function AdvisoryPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ slug: string }>;
+  searchParams: PageSearchParams;
 }) {
   const { slug } = await params;
   const advisory = getAdvisory(slug);
   if (!advisory) notFound();
+  const lang = langFromSearchParams(await searchParams);
   const jsonLd = serviceJsonLd(slug);
   return (
     <>
@@ -72,7 +75,7 @@ export default async function AdvisoryPage({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       )}
-      <AdvisoryDetail advisory={advisory} />
+      <AdvisoryDetail advisory={advisory} lang={lang} />
     </>
   );
 }

@@ -17,6 +17,11 @@ export async function generateMetadata({
   return localizedPageMeta({ path: "/asesorias", lang, title, description });
 }
 
-export default function AsesoriasPage() {
-  return <AdvisoryList />;
+export default async function AsesoriasPage({
+  searchParams,
+}: {
+  searchParams: PageSearchParams;
+}) {
+  const lang = langFromSearchParams(await searchParams);
+  return <AdvisoryList lang={lang} />;
 }
