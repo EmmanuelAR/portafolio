@@ -15,11 +15,16 @@ export function langFromSearchParams(
   return v === "en" ? "en" : "es";
 }
 
-/** hreflang: Spanish is the bare path; English uses `?lang=en`. */
-export function pageAlternates(path: string): Metadata["alternates"] {
+/**
+ * hreflang and self-referencing canonical.
+ * Spanish is the bare path; English uses `?lang=en`.
+ * Each language's canonical points to itself.
+ */
+export function pageAlternates(path: string, lang: Lang): Metadata["alternates"] {
   const en = path.includes("?") ? `${path}&lang=en` : `${path}?lang=en`;
+  const canonical = lang === "en" ? en : path;
   return {
-    canonical: path,
+    canonical,
     languages: {
       es: path,
       en,
@@ -43,7 +48,7 @@ export function localizedPageMeta({
   return {
     title,
     description,
-    alternates: pageAlternates(path),
+    alternates: pageAlternates(path, lang),
     openGraph: {
       url,
       siteName: SITE_NAME,
@@ -89,13 +94,13 @@ export const asesoriasCatalogMeta: Record<
   { title: string; description: string }
 > = {
   es: {
-    title: `Asesorías · ${SITE_NAME}`,
+    title: "Asesoría de automatización con IA para emprendedores en Costa Rica",
     description:
-      "Asesorías de automatización para emprendedores — sesiones prácticas para diagnosticar, automatizar y salir con un mapa claro.",
+      "¿Sin tiempo para redes, con las cuentas enredadas o el inventario a mano? En una sesión de 90 minutos armamos tu primer «empleado» con IA que te quita esas tareas.",
   },
   en: {
-    title: `Advisories · ${SITE_NAME}`,
+    title: "AI Automation Advisory for Entrepreneurs in Costa Rica",
     description:
-      "Automation advisories for founders — practical sessions to diagnose, automate, and leave with a clear next map.",
+      "No time for social media, finances tangled, or inventory tracked by hand? In a 90-minute session we build your first AI 'employee' that takes those tasks off your plate.",
   },
 };
