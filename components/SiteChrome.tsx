@@ -24,7 +24,7 @@ export default function SiteChrome({
     (crossHref.startsWith("/portafolio") ? ui.portfolioLink : ui.advisoriesLink);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-40 bg-paper/0">
+    <header className="fixed inset-x-0 top-0 z-40 bg-paper">
       <div className="shell flex items-center justify-between pt-[max(0.75rem,env(safe-area-inset-top))] pb-3">
         <Link href="/" aria-label={`${BRAND} — home`} className="flex min-h-11 items-center gap-2.5">
           <span className="relative block h-7 w-7">

@@ -34,7 +34,7 @@ function HubInner() {
 
   return (
     <div className="min-h-dvh bg-paper text-ink">
-      <header className="fixed inset-x-0 top-0 z-40">
+      <header className="fixed inset-x-0 top-0 z-40 bg-paper">
         <div className="shell flex items-center justify-between pt-[max(0.75rem,env(safe-area-inset-top))] pb-3">
           <span className="flex min-h-11 items-center gap-2.5" aria-label={BRAND}>
             <span className="relative block h-7 w-7">
