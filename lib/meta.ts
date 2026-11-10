@@ -59,6 +59,7 @@ export function localizedPageMeta({
       locale: lang === "es" ? "es_CR" : "en_US",
     },
     twitter: {
+      card: "summary_large_image",
       title,
       description,
     },
