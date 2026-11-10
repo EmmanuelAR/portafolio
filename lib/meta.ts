@@ -67,9 +67,9 @@ export function localizedPageMeta({
 
 export const hubMeta: Record<Lang, { title: string; description: string }> = {
   es: {
-    title: SITE_TITLE,
+    title: "Emmanuel Agüero Rojas — fundador e ingeniero de software",
     description:
-      "Founder & software engineer. Asesorías para emprendedores, o el portafolio — elegí un camino.",
+      "Fundador e ingeniero de software. Asesorías para emprendedores, o el portafolio — elegí un camino.",
   },
   en: {
     title: SITE_TITLE,
