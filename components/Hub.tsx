@@ -3,14 +3,16 @@
 import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { LanguageProvider, useLang, type Lang } from "@/lib/i18n";
+import { LanguageProvider, useLang, useAlternateUrl, useLinkWithLang, type Lang } from "@/lib/i18n";
 import { BRAND } from "@/lib/content";
 import { hubCopy } from "@/lib/hub";
 import { gsap, useGSAP, MOTION_OK, REDUCED } from "@/lib/gsap";
 import { AVATARS } from "./Avatar";
 
 function HubInner() {
-  const { lang, toggle } = useLang();
+  const { lang } = useLang();
+  const { esUrl, enUrl } = useAlternateUrl();
+  const linkWithLang = useLinkWithLang();
   const c = hubCopy[lang];
   const root = useRef<HTMLElement>(null);
   const paths = [c.paths.advisories, c.paths.portfolio];
@@ -38,19 +40,25 @@ function HubInner() {
         <div className="shell flex items-center justify-between pt-[max(0.75rem,env(safe-area-inset-top))] pb-3">
           <span className="flex min-h-11 items-center gap-2.5" aria-label={BRAND}>
             <span className="relative block h-7 w-7">
-              <Image src={AVATARS.logo} alt="" fill unoptimized className="object-contain" priority />
+              <Image src={AVATARS.logo} alt={BRAND} fill unoptimized className="object-contain" priority />
             </span>
             <span className="text-[17px] font-medium tracking-brand">{BRAND}</span>
           </span>
-          <button
-            onClick={toggle}
-            aria-label="Toggle language"
-            className="inline-flex h-11 min-w-11 items-center justify-center font-mono text-xs tracking-[0.12em] text-ink/70 transition-colors hover:text-ink"
-          >
-            <span className={lang === "en" ? "text-ink" : ""}>en</span>
+          <nav aria-label="Language" className="inline-flex h-11 min-w-11 items-center justify-center font-mono text-xs tracking-[0.12em]">
+            <a
+              href={enUrl}
+              className={`transition-colors hover:text-ink ${lang === "en" ? "text-ink" : "text-ink/70"}`}
+            >
+              en
+            </a>
             <span className="mx-1 text-ink/30">/</span>
-            <span className={lang === "es" ? "text-ink" : ""}>es</span>
-          </button>
+            <a
+              href={esUrl}
+              className={`transition-colors hover:text-ink ${lang === "es" ? "text-ink" : "text-ink/70"}`}
+            >
+              es
+            </a>
+          </nav>
         </div>
       </header>
 
@@ -72,7 +80,7 @@ function HubInner() {
           {paths.map((path) => (
             <Link
               key={path.href}
-              href={path.href}
+              href={linkWithLang(path.href)}
               data-reveal
               className="group flex flex-col justify-between gap-6 border-b border-ink/10 py-8 transition-colors hover:bg-ink/[0.02] sm:border-b-0 sm:px-8 sm:py-10 sm:first:pl-0 sm:first:border-r sm:last:pr-0"
             >

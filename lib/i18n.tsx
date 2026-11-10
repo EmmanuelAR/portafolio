@@ -7,6 +7,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
 
 export type Lang = "en" | "es";
 
@@ -73,4 +74,30 @@ export function useLang(): LangCtx {
   const ctx = useContext(Ctx);
   if (!ctx) throw new Error("useLang must be used within LanguageProvider");
   return ctx;
+}
+
+export function useAlternateUrl(): { esUrl: string; enUrl: string } {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  
+  const esParams = new URLSearchParams(searchParams.toString());
+  esParams.delete("lang");
+  const esQuery = esParams.toString();
+  const esUrl = esQuery ? `${pathname}?${esQuery}` : pathname;
+  
+  const enParams = new URLSearchParams(searchParams.toString());
+  enParams.set("lang", "en");
+  const enUrl = `${pathname}?${enParams.toString()}`;
+  
+  return { esUrl, enUrl };
+}
+
+export function useLinkWithLang(): (href: string) => string {
+  const { lang } = useLang();
+  return (href: string) => {
+    if (lang !== "en") return href;
+    if (href.startsWith("http") || href.startsWith("#")) return href;
+    const separator = href.includes("?") ? "&" : "?";
+    return `${href}${separator}lang=en`;
+  };
 }

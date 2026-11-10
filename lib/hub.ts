@@ -31,7 +31,7 @@ export const hubCopy: Record<
   },
   es: {
     name: "emmanuel agüero",
-    role: "founder & software engineer",
+    role: "fundador e ingeniero de software",
     lead: "elegí a dónde querés ir.",
     paths: {
       advisories: {

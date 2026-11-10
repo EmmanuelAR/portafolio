@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { LanguageProvider, useLang, type Lang } from "@/lib/i18n";
+import { LanguageProvider, useLang, useLinkWithLang, type Lang } from "@/lib/i18n";
 import {
   asesoriasUi,
   advisoryCopy,
@@ -12,6 +12,7 @@ import SiteChrome from "../SiteChrome";
 
 function DetailInner({ advisory }: { advisory: Advisory }) {
   const { lang } = useLang();
+  const linkWithLang = useLinkWithLang();
   const ui = asesoriasUi[lang];
   const copy = advisoryCopy(advisory, lang);
   const wa = whatsappUrl(copy.whatsappMessage);
@@ -21,7 +22,7 @@ function DetailInner({ advisory }: { advisory: Advisory }) {
       <SiteChrome crossHref="/portafolio" />
       <main className="shell pb-24 pt-28 sm:pb-32 sm:pt-32">
         <Link
-          href="/asesorias"
+          href={linkWithLang("/asesorias")}
           className="link-grow mono-label inline-flex min-h-11 items-center text-ink/55 transition-colors hover:text-ink"
         >
           ← {ui.backToList}
