@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     "fintech",
     "backend",
   ],
-  alternates: pageAlternates("/"),
+  alternates: pageAlternates("/", "es"),
   openGraph: {
     type: "profile",
     url: "/",

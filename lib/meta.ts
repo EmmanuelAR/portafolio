@@ -15,11 +15,16 @@ export function langFromSearchParams(
   return v === "en" ? "en" : "es";
 }
 
-/** hreflang: Spanish is the bare path; English uses `?lang=en`. */
-export function pageAlternates(path: string): Metadata["alternates"] {
+/**
+ * hreflang and self-referencing canonical.
+ * Spanish is the bare path; English uses `?lang=en`.
+ * Each language's canonical points to itself.
+ */
+export function pageAlternates(path: string, lang: Lang): Metadata["alternates"] {
   const en = path.includes("?") ? `${path}&lang=en` : `${path}?lang=en`;
+  const canonical = lang === "en" ? en : path;
   return {
-    canonical: path,
+    canonical,
     languages: {
       es: path,
       en,
@@ -43,7 +48,7 @@ export function localizedPageMeta({
   return {
     title,
     description,
-    alternates: pageAlternates(path),
+    alternates: pageAlternates(path, lang),
     openGraph: {
       url,
       siteName: SITE_NAME,
