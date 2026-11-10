@@ -2,7 +2,7 @@ import { content, SKILLS, NAME, BRAND, SOCIALS } from "./content";
 
 test("content has both languages with matching structure", () => {
   expect(NAME).toContain("Emmanuel");
-  expect(BRAND).toBe("ear.dev");
+  expect(BRAND).toBe("Emmanuel Agüero Rojas");
   expect(content.en.experience.jobs.length).toBe(4);
   expect(content.es.experience.jobs.length).toBe(4);
   expect(content.en.experience.jobs[0].org).toBe(content.es.experience.jobs[0].org);

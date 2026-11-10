@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   creator: NAME,
   keywords: [
     "emmanuel agüero",
-    "ear.dev",
+    "emmanuel agüero rojas",
     "founder",
     "software engineer",
     "costa rica",
@@ -81,7 +81,7 @@ const personJsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: NAME,
-  alternateName: "ear.dev",
+  alternateName: "emmanuel agüero",
   url: SITE_URL,
   image: `${SITE_URL}/brand/avatar-logo.png`,
   jobTitle: "Founder & Software Engineer",

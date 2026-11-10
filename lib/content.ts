@@ -111,7 +111,7 @@ export interface Credential {
 }
 
 export const NAME = "Emmanuel Agüero Rojas";
-export const BRAND = "ear.dev";
+export const BRAND = "Emmanuel Agüero Rojas";
 export const X_HANDLE = "EmmanuelDevCr";
 // Your PUBLIC Cal.com booking link, e.g. "emmanuel-aguero" or "emmanuel-aguero/30min".
 // Leave empty to hide the "Book a call" button.
@@ -361,7 +361,7 @@ export const content: Record<Lang, SiteContent> = {
       download: "download",
       close: "close",
     },
-    footer: { tagline: "ear.dev · alajuela, costa rica" },
+    footer: { tagline: "Emmanuel Agüero Rojas · alajuela, costa rica" },
   },
   es: {
     nav: {
@@ -521,6 +521,6 @@ export const content: Record<Lang, SiteContent> = {
       download: "descargar",
       close: "cerrar",
     },
-    footer: { tagline: "ear.dev · alajuela, costa rica" },
+    footer: { tagline: "Emmanuel Agüero Rojas · alajuela, costa rica" },
   },
 };
