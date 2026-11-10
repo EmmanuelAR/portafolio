@@ -94,7 +94,7 @@ export default function Nav() {
   return (
     <nav
       ref={root}
-      className={`group/nav fixed inset-x-0 top-0 z-40 transition-[background-color,border-color] duration-300 [&.is-scrolled]:border-b [&.is-scrolled]:border-ink/10 [&.is-scrolled]:bg-paper/85 [&.is-scrolled]:backdrop-blur-md ${open ? "bottom-0 flex flex-col bg-paper" : "bg-paper/0"}`}
+      className={`group/nav fixed inset-x-0 top-0 z-40 bg-paper transition-[border-color,box-shadow] duration-300 [&.is-scrolled]:border-b [&.is-scrolled]:border-ink/10 [&.is-scrolled]:shadow-sm ${open ? "bottom-0 flex flex-col" : ""}`}
     >
       <div className="shell flex items-center justify-between pt-[max(0.75rem,env(safe-area-inset-top))] pb-3">
         <Link href={linkWithLang("/")} aria-label={`${BRAND} — home`} className="flex min-h-11 items-center gap-2.5" onClick={close}>
