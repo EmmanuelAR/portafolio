@@ -6,14 +6,12 @@ export function middleware(request: NextRequest) {
   const langParam = searchParams.get("lang");
   const lang = langParam === "en" ? "en" : "es";
 
-  const response = NextResponse.next();
-  response.cookies.set("lang", lang, {
-    path: "/",
-    maxAge: 60 * 60 * 24 * 365,
-    sameSite: "lax",
-  });
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("x-lang", lang);
 
-  return response;
+  return NextResponse.next({
+    request: { headers: requestHeaders },
+  });
 }
 
 export const config = {

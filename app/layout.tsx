@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { cookies } from "next/headers";
+import { headers } from "next/headers";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { LINKS, NAME, X_HANDLE } from "@/lib/content";
@@ -126,9 +126,9 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const cookieStore = await cookies();
-  const langCookie = cookieStore.get("lang");
-  const lang: Lang = langCookie?.value === "en" ? "en" : "es";
+  const headersList = await headers();
+  const langHeader = headersList.get("x-lang");
+  const lang: Lang = langHeader === "en" ? "en" : "es";
 
   return (
     <html lang={lang} suppressHydrationWarning>

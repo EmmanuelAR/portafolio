@@ -3,7 +3,7 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { BRAND } from "@/lib/content";
 
-export const alt = "Emmanuel Agüero Rojas — founder & software engineer";
+export const alt = "Emmanuel Agüero Rojas — fundador e ingeniero de software";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
