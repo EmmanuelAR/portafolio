@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { LanguageProvider, useLang } from "@/lib/i18n";
+import { LanguageProvider, useLang, type Lang } from "@/lib/i18n";
 import {
   asesoriasUi,
   advisoryCopy,
@@ -124,9 +124,15 @@ function DetailInner({ advisory }: { advisory: Advisory }) {
   );
 }
 
-export default function AdvisoryDetail({ advisory }: { advisory: Advisory }) {
+export default function AdvisoryDetail({
+  advisory,
+  lang,
+}: {
+  advisory: Advisory;
+  lang?: Lang;
+}) {
   return (
-    <LanguageProvider>
+    <LanguageProvider initialLang={lang}>
       <DetailInner advisory={advisory} />
     </LanguageProvider>
   );

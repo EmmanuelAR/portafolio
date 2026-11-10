@@ -31,10 +31,14 @@ export function detectBrowserLang(
   return language.toLowerCase().startsWith("en") ? "en" : "es";
 }
 
-export function LanguageProvider({ children }: { children: ReactNode }) {
-  // Spanish is the default for SSR / first paint; hydrate from URL, saved
-  // preference, or browser language on mount.
-  const [lang, setLangState] = useState<Lang>("es");
+export function LanguageProvider({
+  children,
+  initialLang = "es",
+}: {
+  children: ReactNode;
+  initialLang?: Lang;
+}) {
+  const [lang, setLangState] = useState<Lang>(initialLang);
 
   useEffect(() => {
     const fromUrl = new URLSearchParams(window.location.search).get("lang");
@@ -44,8 +48,11 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       : isLang(saved)
         ? saved
         : detectBrowserLang(navigator.language);
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setLangState(next);
+    if (next !== lang) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setLangState(next);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

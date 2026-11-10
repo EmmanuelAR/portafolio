@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type { Lang } from "./i18n";
-import { SITE_NAME, SITE_URL } from "./site";
+import { SITE_NAME, SITE_TITLE, SITE_URL } from "./site";
 
 export type PageSearchParams = Promise<
   Record<string, string | string[] | undefined>
@@ -44,7 +44,9 @@ export function localizedPageMeta({
   title: string;
   description: string;
 }): Metadata {
-  const url = path === "/" ? `${SITE_URL}/` : `${SITE_URL}${path}`;
+  const basePath = path === "/" ? `${SITE_URL}/` : `${SITE_URL}${path}`;
+  const enPath = path === "/" ? `${SITE_URL}/?lang=en` : `${SITE_URL}${path}?lang=en`;
+  const url = lang === "en" ? enPath : basePath;
   return {
     title,
     description,
@@ -65,12 +67,12 @@ export function localizedPageMeta({
 
 export const hubMeta: Record<Lang, { title: string; description: string }> = {
   es: {
-    title: `Emmanuel Agüero Rojas · ${SITE_NAME}`,
+    title: SITE_TITLE,
     description:
       "Founder & software engineer. Asesorías para emprendedores, o el portafolio — elegí un camino.",
   },
   en: {
-    title: `Emmanuel Agüero Rojas · ${SITE_NAME}`,
+    title: SITE_TITLE,
     description:
       "Founder & software engineer. Advisories for founders, or the portfolio — pick a path.",
   },

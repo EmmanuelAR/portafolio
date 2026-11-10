@@ -18,7 +18,12 @@ export async function generateMetadata({
   return localizedPageMeta({ path: "/portafolio", lang, title, description });
 }
 
-export default async function PortafolioPage() {
+export default async function PortafolioPage({
+  searchParams,
+}: {
+  searchParams: PageSearchParams;
+}) {
+  const lang = langFromSearchParams(await searchParams);
   const contributions = await getContributions("EmmanuelAR");
-  return <Home contributions={contributions} />;
+  return <Home contributions={contributions} lang={lang} />;
 }
