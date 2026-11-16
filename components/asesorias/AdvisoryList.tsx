@@ -16,7 +16,7 @@ function ListInner() {
 
   return (
     <div className="min-h-dvh bg-paper text-ink">
-      <SiteChrome crossHref="/portafolio" />
+      <SiteChrome />
       <main className="shell pb-20 pt-28 sm:pb-28 sm:pt-32">
         <section>
           <h1 className="max-w-[18ch] text-display font-medium tracking-brand text-balance">

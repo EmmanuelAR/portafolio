@@ -49,6 +49,7 @@ export interface SiteContent {
     talk: string;
     cv: string;
     asesorias: string;
+    portafolio: string;
     menu: string;
     close: string;
   };
@@ -209,7 +210,8 @@ export const content: Record<Lang, SiteContent> = {
       work: "work",
       talk: "talk",
       cv: "cv",
-      asesorias: "advisories",
+      asesorias: "Consulting",
+      portafolio: "portfolio",
       menu: "menu",
       close: "close",
     },
@@ -370,6 +372,7 @@ export const content: Record<Lang, SiteContent> = {
       talk: "hablemos",
       cv: "cv",
       asesorias: "asesorías",
+      portafolio: "portafolio",
       menu: "menú",
       close: "cerrar",
     },
