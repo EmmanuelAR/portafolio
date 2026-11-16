@@ -3,10 +3,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { useLang, useAlternateUrl, useLinkWithLang } from "@/lib/i18n";
+import { useLang, useLinkWithLang } from "@/lib/i18n";
 import { content, BRAND } from "@/lib/content";
 import { gsap, ScrollTrigger, useGSAP, MOTION_OK } from "@/lib/gsap";
 import { AVATARS } from "./Avatar";
+import LanguageSwitch from "./LanguageSwitch";
 
 function openCv() {
   window.dispatchEvent(new CustomEvent("open-cv"));
@@ -14,7 +15,6 @@ function openCv() {
 
 export default function Nav() {
   const { lang } = useLang();
-  const { esUrl, enUrl } = useAlternateUrl();
   const linkWithLang = useLinkWithLang();
   const c = content[lang];
   const root = useRef<HTMLElement>(null);
@@ -106,21 +106,7 @@ export default function Nav() {
 
         <div className="flex items-center gap-1 sm:gap-6">
           <div className="hidden items-center gap-6 sm:flex">{links}</div>
-          <nav aria-label="Language" className="inline-flex h-11 min-w-11 items-center justify-center font-mono text-xs tracking-[0.12em]">
-            <a
-              href={enUrl}
-              className={`transition-colors hover:text-ink ${lang === "en" ? "text-ink" : "text-ink/70"}`}
-            >
-              en
-            </a>
-            <span className="mx-1 text-ink/30">/</span>
-            <a
-              href={esUrl}
-              className={`transition-colors hover:text-ink ${lang === "es" ? "text-ink" : "text-ink/70"}`}
-            >
-              es
-            </a>
-          </nav>
+          <LanguageSwitch />
           <button
             type="button"
             className="inline-flex h-11 w-11 items-center justify-center sm:hidden"

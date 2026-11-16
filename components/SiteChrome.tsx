@@ -2,10 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useLang, useAlternateUrl, useLinkWithLang } from "@/lib/i18n";
+import { useLang, useLinkWithLang } from "@/lib/i18n";
 import { BRAND } from "@/lib/content";
 import { asesoriasUi } from "@/lib/asesorias";
 import { AVATARS } from "./Avatar";
+import LanguageSwitch from "./LanguageSwitch";
 
 /**
  * Light chrome for hub / asesorías: brand → hub, one cross-link, lang toggle.
@@ -18,7 +19,6 @@ export default function SiteChrome({
   crossLabel?: string;
 }) {
   const { lang } = useLang();
-  const { esUrl, enUrl } = useAlternateUrl();
   const linkWithLang = useLinkWithLang();
   const ui = asesoriasUi[lang];
   const label =
@@ -42,21 +42,7 @@ export default function SiteChrome({
           >
             {label}
           </Link>
-          <nav aria-label="Language" className="inline-flex h-11 min-w-11 items-center justify-center font-mono text-xs tracking-[0.12em]">
-            <a
-              href={enUrl}
-              className={`transition-colors hover:text-ink ${lang === "en" ? "text-ink" : "text-ink/70"}`}
-            >
-              en
-            </a>
-            <span className="mx-1 text-ink/30">/</span>
-            <a
-              href={esUrl}
-              className={`transition-colors hover:text-ink ${lang === "es" ? "text-ink" : "text-ink/70"}`}
-            >
-              es
-            </a>
-          </nav>
+          <LanguageSwitch />
         </div>
       </div>
     </header>
