@@ -19,17 +19,23 @@ interface LangCtx {
 
 const Ctx = createContext<LangCtx | null>(null);
 
-const STORAGE_KEY = "portfolio-lang";
+const LEGACY_STORAGE_KEY = "portfolio-lang";
 
-function isLang(v: unknown): v is Lang {
-  return v === "en" || v === "es";
+/**
+ * English only when the query is exactly `lang=en`.
+ * Missing, empty, or any other value is Spanish. Browser language is ignored.
+ */
+export function langFromSearch(search: string): Lang {
+  const value = new URLSearchParams(search).get("lang");
+  return value === "en" ? "en" : "es";
 }
 
-/** Browser language → site lang. Only `en*` is English; everything else Spanish. */
-export function detectBrowserLang(
-  language = typeof navigator !== "undefined" ? navigator.language : "es"
-): Lang {
-  return language.toLowerCase().startsWith("en") ? "en" : "es";
+function currentQuery(
+  searchParams: { toString(): string } | null
+): string {
+  if (searchParams) return searchParams.toString();
+  if (typeof window !== "undefined") return window.location.search;
+  return "";
 }
 
 export function LanguageProvider({
@@ -39,30 +45,47 @@ export function LanguageProvider({
   children: ReactNode;
   initialLang?: Lang;
 }) {
+  const searchParams = useSearchParams();
+  const routerKey = searchParams?.toString() ?? "";
   const [lang, setLangState] = useState<Lang>(initialLang);
 
+  // routerKey / initialLang change when a client navigation keeps this
+  // provider mounted. Search params are not part of the Next.js page key.
   useEffect(() => {
-    const fromUrl = new URLSearchParams(window.location.search).get("lang");
-    const saved = localStorage.getItem(STORAGE_KEY);
-    const next = isLang(fromUrl)
-      ? fromUrl
-      : isLang(saved)
-        ? saved
-        : detectBrowserLang(navigator.language);
-    if (next !== lang) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setLangState(next);
+    // Drop the old button-toggle preference. It overrode the URL and made
+    // "es" snap back to English on the next load.
+    try {
+      localStorage.removeItem(LEGACY_STORAGE_KEY);
+    } catch {
+      // Private mode can throw. The URL is still the source of truth.
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+
+    const sync = () => {
+      const next = langFromSearch(window.location.search);
+      setLangState((current) => (current === next ? current : next));
+    };
+    sync();
+    window.addEventListener("popstate", sync);
+    window.addEventListener("pageshow", sync);
+    return () => {
+      window.removeEventListener("popstate", sync);
+      window.removeEventListener("pageshow", sync);
+    };
+  }, [routerKey, initialLang]);
 
   useEffect(() => {
     document.documentElement.lang = lang;
   }, [lang]);
 
-  const setLang = (l: Lang) => {
-    setLangState(l);
-    localStorage.setItem(STORAGE_KEY, l);
+  const setLang = (next: Lang) => {
+    const url = new URL(window.location.href);
+    if (next === "en") url.searchParams.set("lang", "en");
+    else url.searchParams.delete("lang");
+    const nextHref = `${url.pathname}${url.search}${url.hash}`;
+    const current = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+    if (nextHref === current) return;
+    window.history.pushState(null, "", nextHref);
+    window.dispatchEvent(new PopStateEvent("popstate"));
   };
 
   const toggle = () => setLang(lang === "en" ? "es" : "en");
@@ -77,18 +100,20 @@ export function useLang(): LangCtx {
 }
 
 export function useAlternateUrl(): { esUrl: string; enUrl: string } {
-  const pathname = usePathname();
+  const path = usePathname();
+  const pathname =
+    path || (typeof window !== "undefined" ? window.location.pathname : "/");
   const searchParams = useSearchParams();
-  
-  const esParams = new URLSearchParams(searchParams.toString());
+
+  const esParams = new URLSearchParams(currentQuery(searchParams));
   esParams.delete("lang");
   const esQuery = esParams.toString();
   const esUrl = esQuery ? `${pathname}?${esQuery}` : pathname;
-  
-  const enParams = new URLSearchParams(searchParams.toString());
+
+  const enParams = new URLSearchParams(currentQuery(searchParams));
   enParams.set("lang", "en");
   const enUrl = `${pathname}?${enParams.toString()}`;
-  
+
   return { esUrl, enUrl };
 }
 

@@ -1,16 +1,24 @@
 import { render, screen } from "@testing-library/react";
 import Home from "./Home";
 
+beforeEach(() => {
+  window.history.pushState({}, "", "/portafolio");
+});
+
 test("renders nav with brand wordmark and language toggle", () => {
   render(<Home contributions={{ total: 0, weeks: [] }} />);
-  expect(screen.getByLabelText("Toggle language")).toBeInTheDocument();
+  expect(screen.getByRole("navigation", { name: "Language" })).toBeInTheDocument();
+  const langNav = screen.getByRole("navigation", { name: "Language" });
+  expect(langNav).toHaveTextContent("en");
+  expect(langNav.querySelector('a[href="/portafolio?lang=en"]')).toBeTruthy();
+  expect(langNav.querySelector('a[href="/portafolio"]')).toBeTruthy();
   expect(screen.getByLabelText("Emmanuel Agüero Rojas — home")).toBeInTheDocument();
-  expect(screen.getByLabelText("menu")).toBeInTheDocument();
+  expect(screen.getByLabelText("menú")).toBeInTheDocument();
 });
 
 test("renders founder-first hero and key sections", () => {
   render(<Home contributions={{ total: 0, weeks: [] }} />);
-  expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("hi. i'm emmanuel.");
+  expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("hola. soy emmanuel.");
   expect(document.querySelector("#about")).toBeInTheDocument();
   expect(document.querySelector("#work")).toBeInTheDocument();
   expect(document.querySelector("#story")).toBeInTheDocument();
