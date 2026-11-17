@@ -2,13 +2,12 @@ import type { Metadata, Viewport } from "next";
 import { headers } from "next/headers";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import { LINKS, NAME, X_HANDLE } from "@/lib/content";
-import { hubMeta, pageAlternates, portafolioMeta } from "@/lib/meta";
+import { NAME, X_HANDLE } from "@/lib/content";
+import { hubMeta, pageAlternates, personJsonLd } from "@/lib/meta";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 import type { Lang } from "@/lib/i18n";
 
 const defaultMeta = hubMeta.es;
-const portfolioFallback = portafolioMeta.es;
 
 const inter = Inter({
   subsets: ["latin", "latin-ext"],
@@ -79,48 +78,6 @@ export const metadata: Metadata = {
   },
 };
 
-const personJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Person",
-  name: NAME,
-  alternateName: "emmanuel agüero",
-  url: SITE_URL,
-  image: `${SITE_URL}/brand/avatar-logo.png`,
-  jobTitle: "Founder & Software Engineer",
-  description: portfolioFallback.description,
-  email: `mailto:${LINKS.email}`,
-  nationality: { "@type": "Country", name: "Costa Rica" },
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: "Alajuela",
-    addressCountry: "CR",
-  },
-  sameAs: [
-    LINKS.github,
-    LINKS.linkedin,
-    LINKS.instagram,
-    `https://x.com/${X_HANDLE}`,
-  ],
-  worksFor: [
-    { "@type": "Organization", name: "Cavos", url: "https://cavos.xyz/" },
-    { "@type": "Organization", name: "Studio Framezz", url: "https://studioframezz.com/en" },
-    { "@type": "Organization", name: "Snap Finance" },
-  ],
-  alumniOf: [
-    { "@type": "CollegeOrUniversity", name: "Universidad Nacional, Costa Rica" },
-    { "@type": "CollegeOrUniversity", name: "Universidad CENFOTEC" },
-  ],
-  knowsAbout: [
-    "Backend engineering",
-    "Fintech",
-    "Web3",
-    "Starknet",
-    "Account abstraction",
-    "Next.js",
-    "AWS",
-  ],
-};
-
 export default async function RootLayout({
   children,
 }: {
@@ -143,7 +100,7 @@ export default async function RootLayout({
         />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd(lang)) }}
         />
       </head>
       <body

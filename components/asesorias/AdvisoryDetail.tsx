@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { LanguageProvider, useLang, useLinkWithLang, type Lang } from "@/lib/i18n";
 import {
+  LANDING_WHATSAPP_MESSAGE,
   asesoriasUi,
   advisoryCopy,
   whatsappUrl,
@@ -10,12 +11,29 @@ import {
 } from "@/lib/asesorias";
 import SiteChrome from "../SiteChrome";
 
+const LANDING_VIDEO = "/asesorias/el-empleado-que-no-se-cansa.mp4";
+const LANDING_POSTER = "/asesorias/el-empleado-que-no-se-cansa-poster.jpg";
+
+function WhatsAppButton({ href, label }: { href: string; label: string }) {
+  return (
+    <div className="mx-auto w-[min(100%,calc(80svh*9/16))]">
+      <a href={href} target="_blank" rel="noopener noreferrer" className="btn btn-primary w-full">
+        {label}
+      </a>
+    </div>
+  );
+}
+
 function DetailInner({ advisory }: { advisory: Advisory }) {
   const { lang } = useLang();
   const linkWithLang = useLinkWithLang();
   const ui = asesoriasUi[lang];
   const copy = advisoryCopy(advisory, lang);
-  const wa = whatsappUrl(copy.whatsappMessage);
+  const message =
+    advisory.slug === "el-empleado-que-no-se-cansa"
+      ? LANDING_WHATSAPP_MESSAGE
+      : copy.whatsappMessage;
+  const wa = whatsappUrl(message);
 
   return (
     <div className="min-h-dvh bg-paper text-ink">
@@ -33,6 +51,30 @@ function DetailInner({ advisory }: { advisory: Advisory }) {
           {copy.title}
         </h1>
         <p className="mt-4 max-w-[36ch] text-lead text-ink/70 text-balance">{copy.tagline}</p>
+
+        {advisory.slug === "el-empleado-que-no-se-cansa" && (
+          <div className="mx-auto mt-10 w-[min(100%,calc(80svh*9/16))]">
+            <video
+              className="aspect-[9/16] h-auto w-full max-h-[80svh] rounded-[4px] bg-ink object-contain"
+              width={720}
+              height={1280}
+              controls
+              playsInline
+              preload="metadata"
+              poster={LANDING_POSTER}
+              aria-label={copy.title}
+            >
+              <source src={LANDING_VIDEO} type="video/mp4" />
+              {lang === "en"
+                ? "Your browser can't play this video."
+                : "Tu navegador no reproduce este video."}
+            </video>
+          </div>
+        )}
+
+        <div className="mt-8">
+          <WhatsAppButton href={wa} label={copy.whatsappCta} />
+        </div>
 
         <section className="mt-16 border-t border-ink/10 pt-12 sm:mt-20 sm:pt-16">
           <div className="grid gap-y-6 md:grid-cols-[minmax(9rem,12rem)_minmax(0,1fr)] md:gap-x-12">
@@ -111,9 +153,7 @@ function DetailInner({ advisory }: { advisory: Advisory }) {
         </section>
 
         <section className="mt-12 border-t border-ink/10 pt-12 sm:mt-16 sm:pt-16">
-          <a href={wa} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
-            {copy.whatsappCta}
-          </a>
+          <WhatsAppButton href={wa} label={copy.whatsappCta} />
           <ul className="mt-10 max-w-[52ch] space-y-3 text-sm leading-relaxed text-ink/45">
             {copy.disclaimers.map((line) => (
               <li key={line}>{line}</li>

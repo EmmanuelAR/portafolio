@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { LINKS, NAME, X_HANDLE } from "./content";
 import type { Lang } from "./i18n";
 import { SITE_NAME, SITE_TITLE, SITE_URL } from "./site";
 
@@ -66,6 +67,52 @@ export function localizedPageMeta({
   };
 }
 
+/** Structured data shared by every page. Role copy follows the active language. */
+export function personJsonLd(lang: Lang) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: NAME,
+    alternateName: "emmanuel agüero",
+    url: SITE_URL,
+    image: `${SITE_URL}/brand/avatar-logo.png`,
+    jobTitle:
+      lang === "en" ? "Founder & Software Engineer" : "Fundador e ingeniero de software",
+    description: portafolioMeta[lang].description,
+    email: `mailto:${LINKS.email}`,
+    nationality: { "@type": "Country", name: "Costa Rica" },
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Alajuela",
+      addressCountry: "CR",
+    },
+    sameAs: [
+      LINKS.github,
+      LINKS.linkedin,
+      LINKS.instagram,
+      `https://x.com/${X_HANDLE}`,
+    ],
+    worksFor: [
+      { "@type": "Organization", name: "Cavos", url: "https://cavos.xyz/" },
+      { "@type": "Organization", name: "Studio Framezz", url: "https://studioframezz.com/en" },
+      { "@type": "Organization", name: "Snap Finance" },
+    ],
+    alumniOf: [
+      { "@type": "CollegeOrUniversity", name: "Universidad Nacional, Costa Rica" },
+      { "@type": "CollegeOrUniversity", name: "Universidad CENFOTEC" },
+    ],
+    knowsAbout: [
+      "Backend engineering",
+      "Fintech",
+      "Web3",
+      "Starknet",
+      "Account abstraction",
+      "Next.js",
+      "AWS",
+    ],
+  };
+}
+
 export const hubMeta: Record<Lang, { title: string; description: string }> = {
   es: {
     title: "Emmanuel Agüero Rojas — fundador e ingeniero de software",
@@ -81,7 +128,7 @@ export const hubMeta: Record<Lang, { title: string; description: string }> = {
 
 export const portafolioMeta: Record<Lang, { title: string; description: string }> = {
   es: {
-    title: `emmanuel agüero — founder & software engineer · ${SITE_NAME}`,
+    title: `emmanuel agüero — fundador e ingeniero de software · ${SITE_NAME}`,
     description:
       "construyo productos desde costa rica para el mundo. cofundador de cavos (wallets invisibles) y framezz (fotos de carrera con selfie), build ambassador en la spacexsi community, backend engineer en fintech.",
   },
