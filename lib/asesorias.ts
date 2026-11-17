@@ -201,6 +201,9 @@ export function advisoryCopy(advisory: Advisory, lang: Lang): AdvisoryCopy {
   return advisory[lang];
 }
 
+/** Prefilled text for the ads landing page. Same sentence in every language. */
+export const LANDING_WHATSAPP_MESSAGE = "Hola, vengo por El empleado que no se cansa";
+
 /** Build a wa.me URL with a prefilled message. */
 export function whatsappUrl(message: string): string {
   const base = LINKS.whatsapp.replace(/\/$/, "");
