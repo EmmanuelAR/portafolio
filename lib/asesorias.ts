@@ -115,7 +115,7 @@ const empleadoQueNoSeCansa: Advisory = {
       "Diagnóstico de tu negocio",
       "Configuración y automatización en vivo de una tarea real",
       "Mapa de otras tareas que podés delegar",
-      "Preguntas",
+      "Tiempo para tus preguntas",
     ],
     deliverablesHeading: "Qué te vas a llevar",
     deliverables: [
@@ -156,7 +156,7 @@ const empleadoQueNoSeCansa: Advisory = {
       "A diagnosis of your business",
       "Live setup and automation of one real task",
       "A map of other tasks you can hand off",
-      "Q&A",
+      "Time for your questions",
     ],
     deliverablesHeading: "What you leave with",
     deliverables: [
@@ -180,6 +180,71 @@ const empleadoQueNoSeCansa: Advisory = {
     whatsappCta: "Message me on WhatsApp",
     whatsappMessage:
       "Hi Emmanuel — I'm interested in the advisory «The employee who never gets tired». Can you share availability and details?",
+  },
+};
+
+export interface LandingFaq {
+  question: string;
+  answer: string;
+}
+
+/** Copy that exists only on the ads landing, in both languages. */
+export interface LandingCopy {
+  promise: string;
+  examplesHeading: string;
+  examples: string[];
+  bioHeading: string;
+  bio: string;
+  faqHeading: string;
+  faq: LandingFaq[];
+}
+
+export const landingCopy: Record<Lang, LandingCopy> = {
+  es: {
+    promise:
+      "En unos 90 minutos salís con tu primera tarea funcionando en Grok Bot, y 7 días para dudas mientras la afinamos.",
+    examplesHeading: "Ejemplos de tareas",
+    examples: [
+      "Contestar precios y horarios por WhatsApp",
+      "Recordatorios de citas",
+      "Publicar en redes",
+    ],
+    bioHeading: "Quién soy",
+    bio: "Soy Emmanuel Agüero, ingeniero de software y founder en Costa Rica. Uso bots para automatizar mi propio negocio.",
+    faqHeading: "Preguntas frecuentes",
+    faq: [
+      {
+        question: "¿Necesito saber de tecnología?",
+        answer: "No. Lo armamos juntos en la sesión.",
+      },
+      {
+        question: "¿Qué necesito tener?",
+        answer: "Tu computadora y la cuenta de Grok Bot.",
+      },
+    ],
+  },
+  en: {
+    promise:
+      "In about 90 minutes you leave with your first task running in Grok Bot, and 7 days for questions while we tune it.",
+    examplesHeading: "Example tasks",
+    examples: [
+      "Answer prices and hours on WhatsApp",
+      "Appointment reminders",
+      "Post on social media",
+    ],
+    bioHeading: "Who I am",
+    bio: "I'm Emmanuel Agüero, a software engineer and founder in Costa Rica. I use bots to automate my own business.",
+    faqHeading: "Common questions",
+    faq: [
+      {
+        question: "Do I need to know about technology?",
+        answer: "No. We set it up together in the session.",
+      },
+      {
+        question: "What do I need to have?",
+        answer: "Your computer and a Grok Bot account.",
+      },
+    ],
   },
 };
 
