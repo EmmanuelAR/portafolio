@@ -4,6 +4,7 @@ import {
   hubMeta,
   langFromSearchParams,
   localizedPageMeta,
+  pageImageAlt,
   type PageSearchParams,
 } from "@/lib/meta";
 
@@ -14,7 +15,13 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const lang = langFromSearchParams(await searchParams);
   const { title, description } = hubMeta[lang];
-  return localizedPageMeta({ path: "/", lang, title, description });
+  return localizedPageMeta({
+    path: "/",
+    lang,
+    title,
+    description,
+    imageAlt: pageImageAlt.home[lang],
+  });
 }
 
 export default async function Page({

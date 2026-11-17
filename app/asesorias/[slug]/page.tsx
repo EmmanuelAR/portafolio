@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import AdvisoryDetail from "@/components/asesorias/AdvisoryDetail";
+import AdvisoryJsonLd from "@/components/asesorias/AdvisoryJsonLd";
 import { advisorySlugs, getAdvisory } from "@/lib/asesorias";
 import { NAME } from "@/lib/content";
-import { SITE_NAME, SITE_URL } from "@/lib/site";
+import { SITE_NAME } from "@/lib/site";
 import {
   langFromSearchParams,
   localizedPageMeta,
@@ -32,29 +33,8 @@ export async function generateMetadata({
     lang,
     title: `${copy.title} · ${SITE_NAME}`,
     description: copy.metaDescription,
+    imageAlt: `${copy.title} — ${NAME}`,
   });
-}
-
-function serviceJsonLd(slug: string) {
-  if (slug !== "el-empleado-que-no-se-cansa") return null;
-  return {
-    "@context": "https://schema.org",
-    "@type": "Service",
-    name: "El empleado que no se cansa",
-    serviceType: "Asesoría de automatización con inteligencia artificial",
-    description:
-      "Sesión de asesoría de aproximadamente 90 minutos para emprendedores: diagnóstico del negocio, una tarea automatizada en vivo con Grok Bot, prompts listos para copiar, las 3 tareas siguientes por automatizar, y 7 días de disponibilidad para resolver dudas.",
-    provider: {
-      "@type": "Person",
-      name: NAME,
-      url: SITE_URL,
-    },
-    areaServed: {
-      "@type": "Country",
-      name: "Costa Rica",
-    },
-    url: `${SITE_URL}/asesorias/el-empleado-que-no-se-cansa`,
-  };
 }
 
 export default async function AdvisoryPage({
@@ -68,15 +48,9 @@ export default async function AdvisoryPage({
   const advisory = getAdvisory(slug);
   if (!advisory) notFound();
   const lang = langFromSearchParams(await searchParams);
-  const jsonLd = serviceJsonLd(slug);
   return (
     <>
-      {jsonLd && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-      )}
+      <AdvisoryJsonLd slug={slug} lang={lang} />
       <AdvisoryDetail advisory={advisory} lang={lang} />
     </>
   );

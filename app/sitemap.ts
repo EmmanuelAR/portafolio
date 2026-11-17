@@ -1,10 +1,10 @@
 import type { MetadataRoute } from "next";
 import { advisorySlugs } from "@/lib/asesorias";
-import { SITE_URL } from "@/lib/site";
+import { pageUrl } from "@/lib/meta";
 
 function entry(path: string, priority: number): MetadataRoute.Sitemap[number] {
-  const url = path === "/" ? `${SITE_URL}/` : `${SITE_URL}${path}`;
-  const en = path === "/" ? `${SITE_URL}/?lang=en` : `${SITE_URL}${path}?lang=en`;
+  const url = pageUrl(path, "es");
+  const en = pageUrl(path, "en");
   return {
     url,
     lastModified: new Date(),

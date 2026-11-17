@@ -5,6 +5,8 @@ import { getAdvisory } from "@/lib/asesorias";
 const advisory = getAdvisory("el-empleado-que-no-se-cansa")!;
 const WA =
   "https://wa.me/50684339541?text=Hola%2C%20vengo%20por%20El%20empleado%20que%20no%20se%20cansa";
+const WA_EN =
+  "https://wa.me/50684339541?text=Hi%2C%20I'm%20here%20for%20The%20employee%20who%20never%20gets%20tired";
 const PIXEL_ID = "123456789012345";
 
 function setNavigatorLanguage(language: string) {
@@ -87,7 +89,7 @@ test("spanish landing shows the promise, video, and only the WhatsApp CTA", () =
   expect(screen.getByText("Publicar en redes")).toBeInTheDocument();
   expect(
     screen.getByText(
-      "Soy Emmanuel Agüero, ingeniero de software y founder en Costa Rica. Uso bots para automatizar mi propio negocio."
+      "Soy Emmanuel Agüero, ingeniero de software y fundador en Costa Rica. Uso bots para automatizar mi propio negocio."
     )
   ).toBeInTheDocument();
   const photo = screen
@@ -97,10 +99,16 @@ test("spanish landing shows the promise, video, and only the WhatsApp CTA", () =
   expect(photo).toHaveClass("object-cover");
   expect(photo).toHaveClass("object-top");
   expect(document.body.textContent).toContain("No. Lo armamos juntos en la sesión.");
-  expect(document.body.textContent).toContain("Tu computadora y la cuenta de Grok Bot.");
-  expect(document.querySelectorAll("details")).toHaveLength(2);
+  expect(document.body.textContent).toContain(
+    "Tu computadora y una cuenta de Grok Bot. Si no la tenés, te ayudo a crearla antes de la sesión."
+  );
+  expect(screen.getByText("¿La suscripción de Grok Bot está incluida?")).toBeInTheDocument();
+  expect(document.body.textContent).toContain("No, se paga aparte, directo a la herramienta.");
+  expect(document.querySelectorAll("details")).toHaveLength(3);
+  expect(screen.getByText(/no está incluida en la sesión/)).toBeInTheDocument();
+  expect(screen.queryByText(/esta propuesta/)).not.toBeInTheDocument();
 
-  expect(document.querySelectorAll("a.btn, button")).toHaveLength(2);
+  expect(document.querySelectorAll("a.btn")).toHaveLength(2);
   expect(screen.getByText("Qué te vas a llevar")).toBeInTheDocument();
   expect(screen.getByText("Pago único · SINPE Móvil o transferencia")).toBeInTheDocument();
   expect(screen.getByText(/suscripción a Grok Bot/)).toBeInTheDocument();
@@ -124,8 +132,13 @@ test("english keeps the same WhatsApp link and the translated landing", () => {
   const ctas = screen.getAllByRole("link", { name: "Message me on WhatsApp" });
   expect(ctas).toHaveLength(2);
   for (const cta of ctas) {
-    expect(cta).toHaveAttribute("href", WA);
+    expect(cta).toHaveAttribute("href", WA_EN);
   }
+  expect(screen.getByRole("link", { name: /all consulting/i })).toHaveAttribute(
+    "href",
+    "/asesorias?lang=en"
+  );
+  expect(screen.queryByText(/advisories/i)).not.toBeInTheDocument();
   expect(screen.queryByRole("link", { name: "Escribime por WhatsApp" })).not.toBeInTheDocument();
   expect(screen.queryByText("Asesoría de automatización para emprendedores")).not.toBeInTheDocument();
   expect(screen.getByText("Time for your questions")).toBeInTheDocument();
@@ -142,7 +155,12 @@ test("english keeps the same WhatsApp link and the translated landing", () => {
   ).toBeInTheDocument();
   expect(screen.getByText("Do I need to know about technology?")).toBeInTheDocument();
   expect(document.body.textContent).toContain("No. We set it up together in the session.");
-  expect(document.body.textContent).toContain("Your computer and a Grok Bot account.");
+  expect(document.body.textContent).toContain(
+    "Your computer and a Grok Bot account. If you don't have one, I'll help you set it up before the session."
+  );
+  expect(screen.getByText("Is the Grok Bot subscription included?")).toBeInTheDocument();
+  expect(document.body.textContent).toContain("No, it's paid separately, directly to the tool.");
+  expect(screen.getByText(/not included in the session/)).toBeInTheDocument();
   expect(document.querySelector("video")).not.toBeNull();
   expect(document.querySelector("video")).not.toHaveAttribute("autoplay");
 });
@@ -178,4 +196,40 @@ test("pixel events are a no-op on the landing when NEXT_PUBLIC_META_PIXEL_ID is 
 
   expect(fbq).not.toHaveBeenCalled();
   expect(document.documentElement.innerHTML).not.toContain("connect.facebook.net");
+});
+
+test("landing headings are one h1, section labels as h2, and faq questions as h3", () => {
+  render(<AdvisoryDetail advisory={advisory} lang="es" />);
+
+  expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
+  expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
+    "El empleado que no se cansa"
+  );
+
+  for (const label of [
+    "El problema",
+    "De qué trata",
+    "Qué te vas a llevar",
+    "Ejemplos de tareas",
+    "Quién soy",
+    "Detalle",
+    "Preguntas frecuentes",
+  ]) {
+    const heading = screen.getByRole("heading", { level: 2, name: label });
+    expect(heading.tagName).toBe("H2");
+    expect(heading).toHaveClass("mono-label");
+  }
+
+  const questions = [
+    "¿Necesito saber de tecnología?",
+    "¿Qué necesito tener?",
+    "¿La suscripción de Grok Bot está incluida?",
+  ];
+  const h3s = screen.getAllByRole("heading", { level: 3 });
+  expect(h3s.map((node) => node.textContent)).toEqual(questions);
+  for (const heading of h3s) {
+    expect(heading.closest("summary")).not.toBeNull();
+    expect(heading.closest("details")).not.toBeNull();
+  }
+  expect(document.querySelectorAll("details")).toHaveLength(3);
 });

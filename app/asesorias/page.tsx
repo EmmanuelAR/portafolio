@@ -4,6 +4,7 @@ import {
   asesoriasCatalogMeta,
   langFromSearchParams,
   localizedPageMeta,
+  pageImageAlt,
   type PageSearchParams,
 } from "@/lib/meta";
 
@@ -14,7 +15,13 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const lang = langFromSearchParams(await searchParams);
   const { title, description } = asesoriasCatalogMeta[lang];
-  return localizedPageMeta({ path: "/asesorias", lang, title, description });
+  return localizedPageMeta({
+    path: "/asesorias",
+    lang,
+    title,
+    description,
+    imageAlt: pageImageAlt.asesorias[lang],
+  });
 }
 
 export default async function AsesoriasPage({

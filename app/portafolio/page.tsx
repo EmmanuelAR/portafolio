@@ -4,6 +4,7 @@ import { getContributions } from "@/lib/github";
 import {
   langFromSearchParams,
   localizedPageMeta,
+  pageImageAlt,
   portafolioMeta,
   type PageSearchParams,
 } from "@/lib/meta";
@@ -15,7 +16,13 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const lang = langFromSearchParams(await searchParams);
   const { title, description } = portafolioMeta[lang];
-  return localizedPageMeta({ path: "/portafolio", lang, title, description });
+  return localizedPageMeta({
+    path: "/portafolio",
+    lang,
+    title,
+    description,
+    imageAlt: pageImageAlt.portafolio[lang],
+  });
 }
 
 export default async function PortafolioPage({

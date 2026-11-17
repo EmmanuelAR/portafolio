@@ -73,8 +73,8 @@ export const asesoriasUi: Record<Lang, AsesoriasUiCopy> = {
   },
   en: {
     portfolioLink: "portfolio",
-    advisoriesLink: "advisories",
-    backToList: "all advisories",
+    advisoriesLink: "consulting",
+    backToList: "all consulting",
     heroHeading: "Your business needs one more employee. One who doesn't get tired.",
     heroSubtitle:
       "I help you automate with AI the tasks that steal your day, without needing to know how to code.",
@@ -133,7 +133,7 @@ const empleadoQueNoSeCansa: Advisory = {
     payment: "Pago único · SINPE Móvil o transferencia",
     disclaimers: [
       "Servicio independiente. No es un servicio oficial ni está afiliado a ninguna empresa.",
-      "La suscripción a Grok Bot es un pago mensual aparte, que se paga directamente a la herramienta, y no está incluida en esta propuesta.",
+      "La suscripción a Grok Bot es un pago mensual aparte, que se paga directamente a la herramienta, y no está incluida en la sesión.",
       "No se procesan datos sensibles ni información financiera confidencial durante la sesión. El criterio contable o legal corresponde a un profesional.",
     ],
     whatsappCta: "Escribime por WhatsApp",
@@ -174,7 +174,7 @@ const empleadoQueNoSeCansa: Advisory = {
     payment: "One-time payment · SINPE Móvil or bank transfer",
     disclaimers: [
       "Independent service. Not an official service and not affiliated with any company.",
-      "A Grok Bot subscription is a separate monthly fee paid directly to the tool and is not included in this offer.",
+      "A Grok Bot subscription is a separate monthly fee paid directly to the tool and is not included in the session.",
       "No sensitive data or confidential financial information is processed during the session. Accounting or legal judgment belongs to a professional.",
     ],
     whatsappCta: "Message me on WhatsApp",
@@ -210,7 +210,7 @@ export const landingCopy: Record<Lang, LandingCopy> = {
       "Publicar en redes",
     ],
     bioHeading: "Quién soy",
-    bio: "Soy Emmanuel Agüero, ingeniero de software y founder en Costa Rica. Uso bots para automatizar mi propio negocio.",
+    bio: "Soy Emmanuel Agüero, ingeniero de software y fundador en Costa Rica. Uso bots para automatizar mi propio negocio.",
     faqHeading: "Preguntas frecuentes",
     faq: [
       {
@@ -219,7 +219,12 @@ export const landingCopy: Record<Lang, LandingCopy> = {
       },
       {
         question: "¿Qué necesito tener?",
-        answer: "Tu computadora y la cuenta de Grok Bot.",
+        answer:
+          "Tu computadora y una cuenta de Grok Bot. Si no la tenés, te ayudo a crearla antes de la sesión.",
+      },
+      {
+        question: "¿La suscripción de Grok Bot está incluida?",
+        answer: "No, se paga aparte, directo a la herramienta.",
       },
     ],
   },
@@ -242,7 +247,12 @@ export const landingCopy: Record<Lang, LandingCopy> = {
       },
       {
         question: "What do I need to have?",
-        answer: "Your computer and a Grok Bot account.",
+        answer:
+          "Your computer and a Grok Bot account. If you don't have one, I'll help you set it up before the session.",
+      },
+      {
+        question: "Is the Grok Bot subscription included?",
+        answer: "No, it's paid separately, directly to the tool.",
       },
     ],
   },
@@ -266,8 +276,12 @@ export function advisoryCopy(advisory: Advisory, lang: Lang): AdvisoryCopy {
   return advisory[lang];
 }
 
-/** Prefilled text for the ads landing page. Same sentence in every language. */
-export const LANDING_WHATSAPP_MESSAGE = "Hola, vengo por El empleado que no se cansa";
+/** Prefilled text for the ads landing. Spanish stays the original line; English is its own sentence. */
+export function landingWhatsappMessage(lang: Lang): string {
+  return lang === "en"
+    ? "Hi, I'm here for The employee who never gets tired"
+    : "Hola, vengo por El empleado que no se cansa";
+}
 
 /** Build a wa.me URL with a prefilled message. */
 export function whatsappUrl(message: string): string {
