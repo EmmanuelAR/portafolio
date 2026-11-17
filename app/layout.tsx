@@ -6,6 +6,8 @@ import { NAME, X_HANDLE } from "@/lib/content";
 import { hubMeta, pageAlternates, personJsonLd } from "@/lib/meta";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 import type { Lang } from "@/lib/i18n";
+import MetaPixel from "./meta-pixel";
+import MetaPixelPageViews from "@/components/MetaPixelPageViews";
 
 const defaultMeta = hubMeta.es;
 
@@ -107,6 +109,8 @@ export default async function RootLayout({
         className={`${inter.variable} ${mono.variable} font-sans bg-paper text-ink antialiased`}
       >
         {children}
+        <MetaPixel />
+        <MetaPixelPageViews />
       </body>
     </html>
   );

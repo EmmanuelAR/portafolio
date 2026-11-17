@@ -28,6 +28,11 @@ Brand system (Inter, marker highlights, line-art avatar) is documented in
 - `NEXT_PUBLIC_SITE_URL` (optional): canonical origin used for `metadataBase`,
   sitemap, robots and JSON-LD. Defaults to `https://ear.dev`.
 - `CAL_LINK` in `lib/content.ts`: public Cal.com booking slug. Empty hides the button.
+- `NEXT_PUBLIC_META_PIXEL_ID` (optional): numeric Meta Pixel id. When it is set, the
+  site loads the pixel and sends PageView (including after client navigations). The
+  advisory landing also sends ViewContent, and each WhatsApp button sends Contact.
+  Leave it empty to load nothing. The id is never hardcoded; change it in the
+  environment and rebuild.
 
 ## Content
 
@@ -37,8 +42,8 @@ rendered by `components/Marked.tsx`.
 
 ## Language
 
-English by default. `?lang=es` forces Spanish (shareable); the toggle persists in
-`localStorage`.
+Spanish by default on a bare URL. `?lang=en` selects English. The choice lives in
+the URL; browser language is ignored.
 
 ## Deploy
 
