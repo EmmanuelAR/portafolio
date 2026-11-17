@@ -7,6 +7,7 @@ import { useLang, useLinkWithLang } from "@/lib/i18n";
 import { content, BRAND } from "@/lib/content";
 import { gsap, ScrollTrigger, useGSAP, MOTION_OK } from "@/lib/gsap";
 import { AVATARS } from "./Avatar";
+import HeaderLinks from "./HeaderLinks";
 import LanguageSwitch from "./LanguageSwitch";
 
 function openCv() {
@@ -82,9 +83,7 @@ export default function Nav() {
       <a href="#talk" className={link} onClick={close}>
         {c.nav.talk}
       </a>
-      <Link href={linkWithLang("/asesorias")} className={link} onClick={close}>
-        {c.nav.asesorias}
-      </Link>
+      <HeaderLinks onClick={close} />
       <button onClick={() => { close(); openCv(); }} className={`${link} cursor-pointer`}>
         {c.nav.cv}
       </button>
@@ -146,9 +145,7 @@ export default function Nav() {
           <a href="#talk" className="flex min-h-14 items-center text-3xl font-medium tracking-tight-brand" onClick={close}>
             {c.nav.talk}
           </a>
-          <Link href={linkWithLang("/asesorias")} className="flex min-h-14 items-center text-3xl font-medium tracking-tight-brand" onClick={close}>
-            {c.nav.asesorias}
-          </Link>
+          <HeaderLinks variant="drawer" onClick={close} />
           <button
             onClick={() => { close(); openCv(); }}
             className="flex min-h-14 items-center text-left text-3xl font-medium tracking-tight-brand"

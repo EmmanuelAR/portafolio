@@ -91,7 +91,7 @@ function DetailInner({ advisory }: { advisory: Advisory }) {
 
   return (
     <div className="min-h-dvh bg-paper text-ink">
-      <SiteChrome crossHref="/portafolio" />
+      <SiteChrome />
       <main className="shell pb-24 pt-28 sm:pb-32 sm:pt-32">
         <Link
           href={linkWithLang("/asesorias")}

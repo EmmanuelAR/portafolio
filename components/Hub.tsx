@@ -8,7 +8,7 @@ import { BRAND } from "@/lib/content";
 import { hubCopy } from "@/lib/hub";
 import { gsap, useGSAP, MOTION_OK, REDUCED } from "@/lib/gsap";
 import { AVATARS } from "./Avatar";
-import LanguageSwitch from "./LanguageSwitch";
+import HeaderBar from "./HeaderBar";
 
 function HubInner() {
   const { lang } = useLang();
@@ -36,17 +36,16 @@ function HubInner() {
 
   return (
     <div className="min-h-dvh bg-paper text-ink">
-      <header className="fixed inset-x-0 top-0 z-40 bg-paper">
-        <div className="shell flex items-center justify-between pt-[max(0.75rem,env(safe-area-inset-top))] pb-3">
+      <HeaderBar
+        brand={
           <span className="flex min-h-11 items-center gap-2.5" aria-label={BRAND}>
-            <span className="relative block h-7 w-7">
+            <span className="relative block h-7 w-7 shrink-0">
               <Image src={AVATARS.logo} alt={BRAND} fill unoptimized className="object-contain" priority />
             </span>
-            <span className="text-[17px] font-medium tracking-brand">{BRAND}</span>
+            <span className="whitespace-nowrap text-[17px] font-medium tracking-brand">{BRAND}</span>
           </span>
-          <LanguageSwitch />
-        </div>
-      </header>
+        }
+      />
 
       <main ref={root} className="shell flex min-h-dvh flex-col justify-end pb-16 pt-28 sm:pb-20 lg:pb-24">
         <p data-reveal className="mono-label">
