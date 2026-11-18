@@ -18,6 +18,9 @@ import SiteChrome from "../SiteChrome";
 const LANDING_SLUG = "el-empleado-que-no-se-cansa";
 const INSTAGRAM_POST = "https://www.instagram.com/p/Df3oZighBw8/";
 const EMBED_SRC = "https://www.instagram.com/embed.js";
+const REEL_POSTER = "/asesorias/reel-df3oZighBw8.jpg";
+const REEL_ALT =
+  "Miniatura del reel: Emmanuel dice «Vos no tenés un negocio. Tenés un trabajo.»";
 const PORTRAIT = "/asesorias/emmanuel-asesoria.jpg";
 
 declare global {
@@ -30,8 +33,9 @@ declare global {
   }
 }
 
-function InstagramReel() {
+function InstagramReel({ lang }: { lang: Lang }) {
   const slotRef = useRef<HTMLDivElement>(null);
+  const reelLabel = lang === "en" ? "Watch the reel on Instagram" : "Ver el reel en Instagram";
 
   useEffect(() => {
     const slot = slotRef.current;
@@ -74,7 +78,7 @@ function InstagramReel() {
     <div ref={slotRef} className="@container mx-auto mt-8 w-full max-w-[540px]">
       <div className="flex min-h-[calc(100cqw*16/9)] w-full items-center justify-center">
         <blockquote
-          className="instagram-media w-full"
+          className="instagram-media w-full not-italic"
           data-instgrm-permalink={INSTAGRAM_POST}
           data-instgrm-version="14"
         >
@@ -82,12 +86,38 @@ function InstagramReel() {
             href={INSTAGRAM_POST}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm text-ink/55 underline underline-offset-4"
+            aria-label={reelLabel}
+            className="relative block overflow-hidden rounded-[4px] bg-ink no-underline"
           >
-            @ear.dev
+            <Image
+              src={REEL_POSTER}
+              alt={REEL_ALT}
+              width={720}
+              height={1280}
+              sizes="(min-width: 540px) 540px, 100vw"
+              className="aspect-[9/16] h-auto w-full object-cover"
+            />
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 flex items-center justify-center"
+            >
+              <span className="flex h-14 w-14 items-center justify-center rounded-full bg-paper/90 text-ink">
+                <svg viewBox="0 0 24 24" className="ml-0.5 h-6 w-6 fill-current" aria-hidden="true">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </span>
+            </span>
           </a>
         </blockquote>
       </div>
+      <a
+        href={INSTAGRAM_POST}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mt-3 inline-block text-sm text-ink/55 underline underline-offset-4"
+      >
+        @ear.dev
+      </a>
     </div>
   );
 }
@@ -196,7 +226,7 @@ function DetailInner({
           <WhatsAppButton href={wa} label={copy.whatsappCta} />
         </div>
 
-        {isLanding && <InstagramReel />}
+        {isLanding && <InstagramReel lang={lang} />}
 
         <Block
           index="00"

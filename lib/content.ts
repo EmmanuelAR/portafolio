@@ -121,7 +121,7 @@ export const CAL_LINK = "emmanuel-aguero-rojas-qgavpz/15min";
 export const LINKS = {
   github: "https://github.com/EmmanuelAR",
   linkedin: "https://linkedin.com/in/emmanuelaguerorojas",
-  instagram: "https://www.instagram.com/ear__rae/",
+  instagram: "https://www.instagram.com/ear.dev/",
   x: `https://x.com/${X_HANDLE}`,
   telegram: "https://t.me/EmmanuelDevCr",
   whatsapp: "https://wa.me/50684339541",

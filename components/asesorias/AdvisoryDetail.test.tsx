@@ -2,6 +2,7 @@ import { act, fireEvent, render, screen } from "@testing-library/react";
 import AdvisoryDetail from "./AdvisoryDetail";
 import { routeAdvisories } from "@/lib/advisoryRouting";
 import { getAdvisory } from "@/lib/asesorias";
+import { personJsonLd } from "@/lib/meta";
 
 const advisory = getAdvisory("el-empleado-que-no-se-cansa")!;
 const WA =
@@ -10,6 +11,8 @@ const WA_EN =
   "https://wa.me/50684339541?text=Hi%2C%20I'm%20here%20for%20The%20employee%20who%20never%20gets%20tired";
 const INSTAGRAM_POST = "https://www.instagram.com/p/Df3oZighBw8/";
 const EMBED_SRC = "https://www.instagram.com/embed.js";
+const REEL_POSTER = "/asesorias/reel-df3oZighBw8.jpg";
+const REEL_ALT = /Miniatura del reel/;
 const PIXEL_ID = "123456789012345";
 
 type EmbedObserver = {
@@ -85,11 +88,22 @@ test("spanish landing shows the promise, video, and only the WhatsApp CTA", () =
   expect(quote).toHaveAttribute("data-instgrm-permalink", INSTAGRAM_POST);
   expect(quote).toHaveAttribute("data-instgrm-version", "14");
   const fallback = screen.getByRole("link", { name: "@ear.dev" });
-  expect(quote).toContainElement(fallback);
+  expect(quote!.parentElement!.parentElement).toContainElement(fallback);
+  expect(quote).not.toContainElement(fallback);
   expect(fallback).toHaveAttribute("href", INSTAGRAM_POST);
   expect(fallback).toHaveAttribute("target", "_blank");
   expect(fallback).toHaveAttribute("rel", "noopener noreferrer");
   expect(fallback.className).not.toMatch(/\bbtn\b/);
+  const reel = screen.getByRole("link", { name: "Ver el reel en Instagram" });
+  expect(quote).toContainElement(reel);
+  expect(reel).toHaveAttribute("href", INSTAGRAM_POST);
+  expect(reel).toHaveAttribute("target", "_blank");
+  expect(reel).toHaveAttribute("rel", "noopener noreferrer");
+  expect(reel.className).not.toMatch(/\bbtn\b/);
+  const poster = screen.getByRole("img", { name: REEL_ALT });
+  expect(reel).toContainElement(poster);
+  expect(decodeURIComponent(poster.getAttribute("src") ?? "")).toContain(REEL_POSTER);
+  expect(reel.querySelector("svg")).not.toBeNull();
   const slot = quote!.parentElement;
   expect(slot?.className).toContain("min-h-[calc(100cqw*16/9)]");
   expect(slot?.parentElement?.className).toContain("mx-auto");
@@ -207,7 +221,18 @@ test("english keeps the same WhatsApp link and the translated landing", () => {
   expect(document.querySelector("video")).toBeNull();
   const quote = document.querySelector("blockquote.instagram-media");
   expect(quote).toHaveAttribute("data-instgrm-permalink", INSTAGRAM_POST);
-  expect(screen.getByRole("link", { name: "@ear.dev" })).toHaveAttribute("href", INSTAGRAM_POST);
+  const profile = screen.getByRole("link", { name: "@ear.dev" });
+  expect(quote!.parentElement!.parentElement).toContainElement(profile);
+  expect(profile).toHaveAttribute("href", INSTAGRAM_POST);
+  const reel = screen.getByRole("link", { name: "Watch the reel on Instagram" });
+  expect(quote).toContainElement(reel);
+  expect(reel).toHaveAttribute("href", INSTAGRAM_POST);
+  expect(reel).toHaveAttribute("target", "_blank");
+  expect(reel).toHaveAttribute("rel", "noopener noreferrer");
+  expect(reel.className).not.toMatch(/\bbtn\b/);
+  expect(decodeURIComponent(screen.getByRole("img", { name: REEL_ALT }).getAttribute("src") ?? "")).toContain(
+    REEL_POSTER
+  );
   expect(screen.queryByRole("link", { name: /Velo en Instagram|Watch it on Instagram/ })).not.toBeInTheDocument();
   expect(document.querySelector(`script[src="${EMBED_SRC}"]`)).toBeNull();
 });
@@ -249,6 +274,34 @@ test("instagram embed.js loads once when the reel scrolls into view and then pro
   expect(process).toHaveBeenCalledTimes(2);
   expect(document.documentElement.innerHTML).not.toContain("connect.facebook.net");
   expect(document.body.innerHTML).not.toContain(PIXEL_ID);
+});
+
+test("reel poster stays in the blockquote after embed.js processes", () => {
+  const observers = installIntersectionObserver();
+  window.instgrm = { Embeds: { process: vi.fn() } };
+  render(<AdvisoryDetail advisory={advisory} lang="es" />);
+
+  intersect(observers[0]);
+  const script = document.querySelector<HTMLScriptElement>(`script[src="${EMBED_SRC}"]`);
+  act(() => {
+    script!.dispatchEvent(new Event("load"));
+  });
+
+  const quote = document.querySelector("blockquote.instagram-media");
+  const reel = screen.getByRole("link", { name: "Ver el reel en Instagram" });
+  expect(quote).toContainElement(reel);
+  expect(screen.getByRole("img", { name: REEL_ALT })).toBeInTheDocument();
+  expect(screen.getByRole("link", { name: "@ear.dev" })).toBeInTheDocument();
+  expect(document.querySelectorAll("a.btn")).toHaveLength(2);
+});
+
+test("person json-ld sameAs points instagram at ear.dev", () => {
+  for (const lang of ["es", "en"] as const) {
+    const data = personJsonLd(lang);
+    expect(data.sameAs).toContain("https://www.instagram.com/ear.dev/");
+    expect(data.sameAs.join(" ")).not.toContain("ear__rae");
+    expect(JSON.stringify(data)).not.toContain("instagram.com/ear__rae");
+  }
 });
 
 test("back link is hidden for one service and points at the list when another exists", () => {

@@ -118,4 +118,8 @@ test("person metadata uses a spanish role when the page is spanish", () => {
   expect(personJsonLd("en").jobTitle).toBe("Founder & Software Engineer");
   expect(personJsonLd("es").description).toBe(portafolioMeta.es.description);
   expect(personJsonLd("en").description).toBe(portafolioMeta.en.description);
+  expect(personJsonLd("es").sameAs).toContain("https://www.instagram.com/ear.dev/");
+  expect(personJsonLd("en").sameAs).toContain("https://www.instagram.com/ear.dev/");
+  expect(JSON.stringify(personJsonLd("es"))).not.toContain("ear__rae");
+  expect(JSON.stringify(personJsonLd("en"))).not.toContain("ear__rae");
 });
