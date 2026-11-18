@@ -15,9 +15,20 @@ test("spanish service json-ld stays the detalle summary and has no price", () =>
     serviceType: "Asesoría de automatización con inteligencia artificial",
     description:
       "Sesión de asesoría de aproximadamente 90 minutos para emprendedores: diagnóstico del negocio, una tarea automatizada en vivo con Grok Bot, prompts listos para copiar, las 3 tareas siguientes por automatizar, y 7 días de disponibilidad para resolver dudas.",
-    url: `${SITE_URL}/asesorias/${SLUG}`,
+    url: `${SITE_URL}/asesorias`,
   });
   expect(JSON.stringify(data)).not.toMatch(/offers|price|USD|₡|\$\s?\d/i);
+});
+
+test("service url follows the public path for one service and for several", () => {
+  expect(serviceJsonLd(SLUG, "es", [{ slug: SLUG }])?.url).toBe(`${SITE_URL}/asesorias`);
+  expect(serviceJsonLd(SLUG, "en", [{ slug: SLUG }])?.url).toBe(`${SITE_URL}/asesorias?lang=en`);
+  expect(serviceJsonLd(SLUG, "es", [{ slug: SLUG }, { slug: "otra" }])?.url).toBe(
+    `${SITE_URL}/asesorias/${SLUG}`
+  );
+  expect(serviceJsonLd(SLUG, "en", [{ slug: SLUG }, { slug: "otra" }])?.url).toBe(
+    `${SITE_URL}/asesorias/${SLUG}?lang=en`
+  );
 });
 
 test("english service json-ld is the english session and url", () => {
@@ -27,7 +38,7 @@ test("english service json-ld is the english session and url", () => {
     serviceType: "AI automation advisory",
     description:
       "About a 90-minute advisory session for entrepreneurs: business diagnosis, one task automated live with Grok Bot, ready-to-copy prompts, the next 3 tasks to automate, and 7 days of availability for questions.",
-    url: `${SITE_URL}/asesorias/${SLUG}?lang=en`,
+    url: `${SITE_URL}/asesorias?lang=en`,
   });
   expect(JSON.stringify(serviceJsonLd(SLUG, "en"))).not.toMatch(/offers|priceCurrency|\$\s?\d/);
 });
@@ -70,7 +81,7 @@ test("landing scripts embed parseable json-ld for the active language", () => {
     (node) => JSON.parse(node.innerHTML)
   );
   expect(esBlocks[0].name).toBe("El empleado que no se cansa");
-  expect(esBlocks[0].url).toBe(`${SITE_URL}/asesorias/${SLUG}`);
+  expect(esBlocks[0].url).toBe(`${SITE_URL}/asesorias`);
   expect(esBlocks[1].mainEntity[1].acceptedAnswer.text).toBe(
     "Tu computadora y una cuenta de Grok Bot. Si no la tenés, te ayudo a crearla antes de la sesión."
   );

@@ -1,6 +1,8 @@
 import type { Lang } from "./i18n";
-import { landingCopy } from "./asesorias";
+import { getAdvisories, landingCopy } from "./asesorias";
+import { advisoryCanonicalPath } from "./advisoryRouting";
 import { NAME } from "./content";
+import { pageUrl } from "./meta";
 import { SITE_URL } from "./site";
 
 const LANDING_SLUG = "el-empleado-que-no-se-cansa";
@@ -11,18 +13,20 @@ const serviceCopy = {
     serviceType: "Asesoría de automatización con inteligencia artificial",
     description:
       "Sesión de asesoría de aproximadamente 90 minutos para emprendedores: diagnóstico del negocio, una tarea automatizada en vivo con Grok Bot, prompts listos para copiar, las 3 tareas siguientes por automatizar, y 7 días de disponibilidad para resolver dudas.",
-    url: `${SITE_URL}/asesorias/${LANDING_SLUG}`,
   },
   en: {
     name: "The employee who never gets tired",
     serviceType: "AI automation advisory",
     description:
       "About a 90-minute advisory session for entrepreneurs: business diagnosis, one task automated live with Grok Bot, ready-to-copy prompts, the next 3 tasks to automate, and 7 days of availability for questions.",
-    url: `${SITE_URL}/asesorias/${LANDING_SLUG}?lang=en`,
   },
 } as const;
 
-export function serviceJsonLd(slug: string, lang: Lang) {
+export function serviceJsonLd(
+  slug: string,
+  lang: Lang,
+  advisories: readonly { slug: string }[] = getAdvisories()
+) {
   if (slug !== LANDING_SLUG) return null;
   const copy = serviceCopy[lang];
   return {
@@ -40,7 +44,7 @@ export function serviceJsonLd(slug: string, lang: Lang) {
       "@type": "Country",
       name: "Costa Rica",
     },
-    url: copy.url,
+    url: pageUrl(advisoryCanonicalPath(advisories, slug), lang),
   };
 }
 

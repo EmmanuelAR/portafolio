@@ -2,14 +2,19 @@
 
 import Link from "next/link";
 import { LanguageProvider, useLang, useLinkWithLang, type Lang } from "@/lib/i18n";
-import { asesoriasUi, getAdvisories, advisoryCopy, whatsappUrl } from "@/lib/asesorias";
+import {
+  asesoriasUi,
+  getAdvisories,
+  advisoryCopy,
+  whatsappUrl,
+  type Advisory,
+} from "@/lib/asesorias";
 import SiteChrome from "../SiteChrome";
 
-function ListInner() {
+function ListInner({ advisories }: { advisories: Advisory[] }) {
   const { lang } = useLang();
   const linkWithLang = useLinkWithLang();
   const ui = asesoriasUi[lang];
-  const advisories = getAdvisories();
   const firstAdvisory = advisories[0];
   const firstCopy = firstAdvisory ? advisoryCopy(firstAdvisory, lang) : null;
   const wa = firstCopy ? whatsappUrl(firstCopy.whatsappMessage) : "#";
@@ -99,10 +104,16 @@ function ListInner() {
   );
 }
 
-export default function AdvisoryList({ lang }: { lang?: Lang }) {
+export default function AdvisoryList({
+  lang,
+  advisories = getAdvisories(),
+}: {
+  lang?: Lang;
+  advisories?: Advisory[];
+}) {
   return (
     <LanguageProvider initialLang={lang}>
-      <ListInner />
+      <ListInner advisories={advisories} />
     </LanguageProvider>
   );
 }

@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
-import { advisorySlugs } from "@/lib/asesorias";
+import { routeAdvisories } from "@/lib/advisoryRouting";
+import { getAdvisories } from "@/lib/asesorias";
 import { pageUrl } from "@/lib/meta";
 
 function entry(path: string, priority: number): MetadataRoute.Sitemap[number] {
@@ -22,6 +23,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     entry("/", 1),
     entry("/portafolio", 0.9),
     entry("/asesorias", 0.9),
-    ...advisorySlugs().map((slug) => entry(`/asesorias/${slug}`, 0.8)),
+    ...routeAdvisories(getAdvisories()).detailPaths.map((path) => entry(path, 0.8)),
   ];
 }
