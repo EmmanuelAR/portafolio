@@ -17,21 +17,35 @@ export function langFromSearchParams(
 }
 
 /**
- * hreflang and self-referencing canonical.
- * Spanish is the bare path; English uses `?lang=en`.
- * Each language's canonical points to itself.
+ * Absolute page URL. Spanish is the bare path. Home has no trailing slash,
+ * matching the canonical Next emits for `/`. English home keeps the slash
+ * before the query (`/?lang=en`), which is the form the metadata resolver writes.
  */
+export function pageUrl(path: string, lang: Lang): string {
+  if (path === "/") {
+    return lang === "en" ? `${SITE_URL}/?lang=en` : SITE_URL;
+  }
+  const base = `${SITE_URL}${path}`;
+  return lang === "en" ? `${base}?lang=en` : base;
+}
+
+/** hreflang and self-referencing canonical. Each language points at itself. */
 export function pageAlternates(path: string, lang: Lang): Metadata["alternates"] {
-  const en = path.includes("?") ? `${path}&lang=en` : `${path}?lang=en`;
-  const canonical = lang === "en" ? en : path;
+  const es = pageUrl(path, "es");
+  const en = pageUrl(path, "en");
   return {
-    canonical,
+    canonical: lang === "en" ? en : es,
     languages: {
-      es: path,
+      es,
       en,
-      "x-default": path,
+      "x-default": es,
     },
   };
+}
+
+function ogImageUrl(path: string, lang: Lang): string {
+  const base = path === "/" ? `${SITE_URL}/opengraph-image` : `${SITE_URL}${path}/opengraph-image`;
+  return lang === "en" ? `${base}?lang=en` : base;
 }
 
 export function localizedPageMeta({
@@ -39,30 +53,37 @@ export function localizedPageMeta({
   lang,
   title,
   description,
+  imageAlt,
 }: {
   path: string;
   lang: Lang;
   title: string;
   description: string;
+  imageAlt: string;
 }): Metadata {
-  const basePath = path === "/" ? `${SITE_URL}/` : `${SITE_URL}${path}`;
-  const enPath = path === "/" ? `${SITE_URL}/?lang=en` : `${SITE_URL}${path}?lang=en`;
-  const url = lang === "en" ? enPath : basePath;
+  const image = {
+    url: ogImageUrl(path, lang),
+    width: 1200,
+    height: 630,
+    alt: imageAlt,
+  };
   return {
     title,
     description,
     alternates: pageAlternates(path, lang),
     openGraph: {
-      url,
+      url: pageUrl(path, lang),
       siteName: SITE_NAME,
       title,
       description,
       locale: lang === "es" ? "es_CR" : "en_US",
+      images: [image],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
+      images: image,
     },
   };
 }
@@ -128,14 +149,30 @@ export const hubMeta: Record<Lang, { title: string; description: string }> = {
 
 export const portafolioMeta: Record<Lang, { title: string; description: string }> = {
   es: {
-    title: `emmanuel agüero — fundador e ingeniero de software · ${SITE_NAME}`,
+    title: "emmanuel agüero — fundador e ingeniero de software",
     description:
-      "construyo productos desde costa rica para el mundo. cofundador de cavos (wallets invisibles) y framezz (fotos de carrera con selfie), build ambassador en la spacexsi community, backend engineer en fintech.",
+      "Construyo productos desde Costa Rica para el mundo. Cofundador de Cavos (wallets invisibles) y Framezz (fotos de carrera con selfie); backend engineer en fintech.",
   },
   en: {
     title: `emmanuel agüero — founder & software engineer · ${SITE_NAME}`,
     description:
-      "i build products from costa rica for the world. co-founder of cavos (invisible wallets) and framezz (selfie-search race photos), build ambassador in the spacexsi community, backend engineer in fintech.",
+      "I build products from Costa Rica for the world. Co-founder of Cavos (invisible wallets) and Framezz (selfie-search race photos); backend engineer in fintech.",
+  },
+};
+
+/** Alt text for the generated Open Graph images, in the page language. */
+export const pageImageAlt: Record<"home" | "portafolio" | "asesorias", Record<Lang, string>> = {
+  home: {
+    es: "Emmanuel Agüero Rojas — fundador e ingeniero de software",
+    en: "Emmanuel Agüero Rojas — founder & software engineer",
+  },
+  portafolio: {
+    es: "emmanuel agüero — fundador e ingeniero de software",
+    en: "emmanuel agüero — founder & software engineer",
+  },
+  asesorias: {
+    es: "Asesoría de automatización con IA — Emmanuel Agüero Rojas",
+    en: "AI automation consulting — Emmanuel Agüero Rojas",
   },
 };
 

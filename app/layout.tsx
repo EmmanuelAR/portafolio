@@ -56,7 +56,7 @@ export const metadata: Metadata = {
   alternates: pageAlternates("/", "es"),
   openGraph: {
     type: "profile",
-    url: "/",
+    url: SITE_URL,
     siteName: SITE_NAME,
     title: defaultMeta.title,
     description: defaultMeta.description,

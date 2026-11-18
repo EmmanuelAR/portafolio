@@ -5,10 +5,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { LanguageProvider, useLang, useLinkWithLang, type Lang } from "@/lib/i18n";
 import {
-  LANDING_WHATSAPP_MESSAGE,
   asesoriasUi,
   advisoryCopy,
   landingCopy,
+  landingWhatsappMessage,
   whatsappUrl,
   type Advisory,
 } from "@/lib/asesorias";
@@ -48,11 +48,15 @@ function Block({
   return (
     <section className={className}>
       <div className="grid gap-y-6 md:grid-cols-[minmax(9rem,12rem)_minmax(0,1fr)] md:gap-x-12">
-        <p className="mono-label">
-          <span className="text-ink/35">{index}</span>
-          <span className="mx-2 text-ink/25">—</span>
+        <h2 className="mono-label">
+          <span aria-hidden className="text-ink/35">
+            {index}
+          </span>
+          <span aria-hidden className="mx-2 text-ink/25">
+            —
+          </span>
           {label}
-        </p>
+        </h2>
         {children}
       </div>
     </section>
@@ -81,7 +85,7 @@ function DetailInner({ advisory }: { advisory: Advisory }) {
   const copy = advisoryCopy(advisory, lang);
   const landing = landingCopy[lang];
   const isLanding = advisory.slug === LANDING_SLUG;
-  const message = isLanding ? LANDING_WHATSAPP_MESSAGE : copy.whatsappMessage;
+  const message = isLanding ? landingWhatsappMessage(lang) : copy.whatsappMessage;
   const wa = whatsappUrl(message);
 
   useEffect(() => {
@@ -198,8 +202,10 @@ function DetailInner({ advisory }: { advisory: Advisory }) {
             <div className="max-w-[48ch] divide-y divide-ink/10 border-y border-ink/10">
               {landing.faq.map((item) => (
                 <details key={item.question} className="group py-4">
-                  <summary className="cursor-pointer text-lg font-medium leading-snug text-ink marker:text-ink/40">
-                    {item.question}
+                  <summary className="cursor-pointer marker:text-ink/40">
+                    <h3 className="inline text-lg font-medium leading-snug text-ink">
+                      {item.question}
+                    </h3>
                   </summary>
                   <p className="mt-2 text-lg leading-snug text-ink/70">{item.answer}</p>
                 </details>
