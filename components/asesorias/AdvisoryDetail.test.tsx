@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import AdvisoryDetail from "./AdvisoryDetail";
 import { routeAdvisories } from "@/lib/advisoryRouting";
 import { getAdvisory } from "@/lib/asesorias";
@@ -8,7 +8,42 @@ const WA =
   "https://wa.me/50684339541?text=Hola%2C%20vengo%20por%20El%20empleado%20que%20no%20se%20cansa";
 const WA_EN =
   "https://wa.me/50684339541?text=Hi%2C%20I'm%20here%20for%20The%20employee%20who%20never%20gets%20tired";
+const INSTAGRAM_POST = "https://www.instagram.com/p/Df3oZighBw8/";
+const EMBED_SRC = "https://www.instagram.com/embed.js";
 const PIXEL_ID = "123456789012345";
+
+type EmbedObserver = {
+  callback: IntersectionObserverCallback;
+};
+
+function installIntersectionObserver() {
+  const observers: EmbedObserver[] = [];
+  class IO implements IntersectionObserver {
+    readonly root = null;
+    readonly rootMargin = "";
+    readonly thresholds = [];
+    constructor(readonly callback: IntersectionObserverCallback) {
+      observers.push(this);
+    }
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+    takeRecords() {
+      return [];
+    }
+  }
+  vi.stubGlobal("IntersectionObserver", IO);
+  return observers;
+}
+
+function intersect(observer: EmbedObserver) {
+  act(() => {
+    observer.callback(
+      [{ isIntersecting: true } as IntersectionObserverEntry],
+      observer as unknown as IntersectionObserver
+    );
+  });
+}
 
 function setNavigatorLanguage(language: string) {
   Object.defineProperty(navigator, "language", {
@@ -26,7 +61,13 @@ beforeEach(() => {
   setNavigatorLanguage("en-US");
   delete process.env.NEXT_PUBLIC_META_PIXEL_ID;
   delete window.fbq;
+  delete window.instgrm;
+  document.querySelectorAll(`script[src="${EMBED_SRC}"]`).forEach((node) => node.remove());
   window.history.pushState({}, "", "/asesorias/el-empleado-que-no-se-cansa");
+});
+
+afterEach(() => {
+  vi.unstubAllGlobals();
 });
 
 test("spanish landing shows the promise, video, and only the WhatsApp CTA", () => {
@@ -36,22 +77,26 @@ test("spanish landing shows the promise, video, and only the WhatsApp CTA", () =
   const promise = screen.getByText(
     "En unos 90 minutos salís con tu primera tarea funcionando en Grok Bot, y 7 días para dudas mientras la afinamos."
   );
-  const video = document.querySelector("video");
-  expect(video).not.toBeNull();
-  expect(title.compareDocumentPosition(video!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-
-  expect(video).toHaveAttribute("controls");
-  expect(video).toHaveAttribute("playsinline");
-  expect(video).toHaveAttribute("preload", "metadata");
-  expect(video).toHaveAttribute("poster", "/asesorias/el-empleado-que-no-se-cansa-poster.jpg");
-  expect(video).not.toHaveAttribute("autoplay");
-  expect(video!.autoplay).toBe(false);
-  expect(video!.className).toContain("max-h-[58svh]");
-  expect(video!.querySelector("source")).toHaveAttribute(
-    "src",
-    "/asesorias/el-empleado-que-no-se-cansa.mp4"
-  );
-  expect(video!.querySelector("source")).toHaveAttribute("type", "video/mp4");
+  expect(document.querySelector("video")).toBeNull();
+  const quote = document.querySelector("blockquote.instagram-media");
+  expect(quote).not.toBeNull();
+  expect(document.querySelectorAll("blockquote.instagram-media")).toHaveLength(1);
+  expect(title.compareDocumentPosition(quote!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  expect(quote).toHaveAttribute("data-instgrm-permalink", INSTAGRAM_POST);
+  expect(quote).toHaveAttribute("data-instgrm-version", "14");
+  const fallback = screen.getByRole("link", { name: "@ear.dev" });
+  expect(quote).toContainElement(fallback);
+  expect(fallback).toHaveAttribute("href", INSTAGRAM_POST);
+  expect(fallback).toHaveAttribute("target", "_blank");
+  expect(fallback).toHaveAttribute("rel", "noopener noreferrer");
+  expect(fallback.className).not.toMatch(/\bbtn\b/);
+  const slot = quote!.parentElement;
+  expect(slot?.className).toContain("min-h-[calc(100cqw*16/9)]");
+  expect(slot?.parentElement?.className).toContain("mx-auto");
+  expect(slot?.parentElement?.className).toContain("max-w-[540px]");
+  expect(document.body.innerHTML).not.toMatch(/el-empleado-que-no-se-cansa\.(mp4|jpg)|video\/mp4/);
+  expect(screen.queryByRole("link", { name: /Velo en Instagram|Watch it on Instagram/ })).not.toBeInTheDocument();
+  expect(document.querySelector(`script[src="${EMBED_SRC}"]`)).toBeNull();
 
   const ctas = screen.getAllByRole("link", { name: "Escribime por WhatsApp" });
   expect(ctas).toHaveLength(2);
@@ -72,8 +117,8 @@ test("spanish landing shows the promise, video, and only the WhatsApp CTA", () =
 
   follows(title, promise);
   follows(promise, ctas[0]);
-  follows(ctas[0], video!);
-  follows(video!, about);
+  follows(ctas[0], quote!);
+  follows(quote!, about);
   follows(about, deliverables);
   follows(deliverables, examples);
   follows(examples, bio);
@@ -159,8 +204,51 @@ test("english keeps the same WhatsApp link and the translated landing", () => {
   expect(screen.getByText("Is the Grok Bot subscription included?")).toBeInTheDocument();
   expect(document.body.textContent).toContain("No, it's paid separately, directly to the tool.");
   expect(screen.getByText(/not included in the session/)).toBeInTheDocument();
-  expect(document.querySelector("video")).not.toBeNull();
-  expect(document.querySelector("video")).not.toHaveAttribute("autoplay");
+  expect(document.querySelector("video")).toBeNull();
+  const quote = document.querySelector("blockquote.instagram-media");
+  expect(quote).toHaveAttribute("data-instgrm-permalink", INSTAGRAM_POST);
+  expect(screen.getByRole("link", { name: "@ear.dev" })).toHaveAttribute("href", INSTAGRAM_POST);
+  expect(screen.queryByRole("link", { name: /Velo en Instagram|Watch it on Instagram/ })).not.toBeInTheDocument();
+  expect(document.querySelector(`script[src="${EMBED_SRC}"]`)).toBeNull();
+});
+
+test("instagram embed.js loads once when the reel scrolls into view and then processes", () => {
+  const observers = installIntersectionObserver();
+  const process = vi.fn();
+  window.instgrm = { Embeds: { process } };
+
+  const first = render(<AdvisoryDetail advisory={advisory} lang="es" />);
+  expect(document.querySelector(`script[src="${EMBED_SRC}"]`)).toBeNull();
+  expect(observers).toHaveLength(1);
+
+  act(() => {
+    observers[0].callback(
+      [{ isIntersecting: false } as IntersectionObserverEntry],
+      observers[0] as unknown as IntersectionObserver
+    );
+  });
+  expect(document.querySelector(`script[src="${EMBED_SRC}"]`)).toBeNull();
+
+  intersect(observers[0]);
+  const script = document.querySelector<HTMLScriptElement>(`script[src="${EMBED_SRC}"]`);
+  expect(script).not.toBeNull();
+  expect(script?.async).toBe(true);
+  expect(process).not.toHaveBeenCalled();
+
+  act(() => {
+    script!.dispatchEvent(new Event("load"));
+  });
+  expect(process).toHaveBeenCalledTimes(1);
+  first.unmount();
+
+  const observersBefore = observers.length;
+  render(<AdvisoryDetail advisory={advisory} lang="en" />);
+  expect(observers.length).toBeGreaterThan(observersBefore);
+  intersect(observers[observers.length - 1]);
+  expect(document.querySelectorAll(`script[src="${EMBED_SRC}"]`)).toHaveLength(1);
+  expect(process).toHaveBeenCalledTimes(2);
+  expect(document.documentElement.innerHTML).not.toContain("connect.facebook.net");
+  expect(document.body.innerHTML).not.toContain(PIXEL_ID);
 });
 
 test("back link is hidden for one service and points at the list when another exists", () => {

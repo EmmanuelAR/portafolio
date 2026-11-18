@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { LanguageProvider, useLang, useLinkWithLang, type Lang } from "@/lib/i18n";
@@ -16,9 +16,81 @@ import { trackMeta } from "@/lib/metaPixel";
 import SiteChrome from "../SiteChrome";
 
 const LANDING_SLUG = "el-empleado-que-no-se-cansa";
-const LANDING_VIDEO = "/asesorias/el-empleado-que-no-se-cansa.mp4";
-const LANDING_POSTER = "/asesorias/el-empleado-que-no-se-cansa-poster.jpg";
+const INSTAGRAM_POST = "https://www.instagram.com/p/Df3oZighBw8/";
+const EMBED_SRC = "https://www.instagram.com/embed.js";
 const PORTRAIT = "/asesorias/emmanuel-asesoria.jpg";
+
+declare global {
+  interface Window {
+    instgrm?: {
+      Embeds?: {
+        process?: () => void;
+      };
+    };
+  }
+}
+
+function InstagramReel() {
+  const slotRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const slot = slotRef.current;
+    if (!slot || typeof IntersectionObserver === "undefined") return;
+
+    let cancelled = false;
+    const process = () => {
+      if (cancelled) return;
+      window.instgrm?.Embeds?.process?.();
+    };
+
+    const load = () => {
+      const existing = document.querySelector<HTMLScriptElement>(`script[src="${EMBED_SRC}"]`);
+      if (existing) {
+        if (window.instgrm?.Embeds?.process) process();
+        else existing.addEventListener("load", process, { once: true });
+        return;
+      }
+      const script = document.createElement("script");
+      script.src = EMBED_SRC;
+      script.async = true;
+      script.addEventListener("load", process, { once: true });
+      document.body.appendChild(script);
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      if (!entries.some((entry) => entry.isIntersecting)) return;
+      observer.disconnect();
+      load();
+    });
+    observer.observe(slot);
+
+    return () => {
+      cancelled = true;
+      observer.disconnect();
+    };
+  }, []);
+
+  return (
+    <div ref={slotRef} className="@container mx-auto mt-8 w-full max-w-[540px]">
+      <div className="flex min-h-[calc(100cqw*16/9)] w-full items-center justify-center">
+        <blockquote
+          className="instagram-media w-full"
+          data-instgrm-permalink={INSTAGRAM_POST}
+          data-instgrm-version="14"
+        >
+          <a
+            href={INSTAGRAM_POST}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-ink/55 underline underline-offset-4"
+          >
+            @ear.dev
+          </a>
+        </blockquote>
+      </div>
+    </div>
+  );
+}
 
 function WhatsAppButton({ href, label }: { href: string; label: string }) {
   return (
@@ -124,25 +196,7 @@ function DetailInner({
           <WhatsAppButton href={wa} label={copy.whatsappCta} />
         </div>
 
-        {isLanding && (
-          <div className="mx-auto mt-8 w-[min(100%,calc(58svh*9/16))]">
-            <video
-              className="aspect-[9/16] h-auto w-full max-h-[58svh] rounded-[4px] bg-ink object-contain"
-              width={720}
-              height={1280}
-              controls
-              playsInline
-              preload="metadata"
-              poster={LANDING_POSTER}
-              aria-label={copy.title}
-            >
-              <source src={LANDING_VIDEO} type="video/mp4" />
-              {lang === "en"
-                ? "Your browser can't play this video."
-                : "Tu navegador no reproduce este video."}
-            </video>
-          </div>
-        )}
+        {isLanding && <InstagramReel />}
 
         <Block
           index="00"
