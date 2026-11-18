@@ -78,7 +78,13 @@ function BulletList({ items, loose = false }: { items: string[]; loose?: boolean
   );
 }
 
-function DetailInner({ advisory }: { advisory: Advisory }) {
+function DetailInner({
+  advisory,
+  showBackLink,
+}: {
+  advisory: Advisory;
+  showBackLink: boolean;
+}) {
   const { lang } = useLang();
   const linkWithLang = useLinkWithLang();
   const ui = asesoriasUi[lang];
@@ -97,14 +103,16 @@ function DetailInner({ advisory }: { advisory: Advisory }) {
     <div className="min-h-dvh bg-paper text-ink">
       <SiteChrome />
       <main className="shell pb-24 pt-28 sm:pb-32 sm:pt-32">
-        <Link
-          href={linkWithLang("/asesorias")}
-          className="link-grow mono-label inline-flex min-h-11 items-center text-ink/55 transition-colors hover:text-ink"
-        >
-          ← {ui.backToList}
-        </Link>
+        {showBackLink ? (
+          <Link
+            href={linkWithLang("/asesorias")}
+            className="link-grow mono-label inline-flex min-h-11 items-center text-ink/55 transition-colors hover:text-ink"
+          >
+            ← {ui.backToList}
+          </Link>
+        ) : null}
 
-        <p className="mono-label mt-5 sm:mt-8">{copy.serviceLabel}</p>
+        <p className={`mono-label ${showBackLink ? "mt-5 sm:mt-8" : ""}`}>{copy.serviceLabel}</p>
         <h1 className="mt-3 max-w-[16ch] text-display font-medium tracking-brand text-balance sm:mt-4">
           {copy.title}
         </h1>
@@ -232,13 +240,16 @@ function DetailInner({ advisory }: { advisory: Advisory }) {
 export default function AdvisoryDetail({
   advisory,
   lang,
+  showBackLink = false,
 }: {
   advisory: Advisory;
   lang?: Lang;
+  /** Shown only when another advisory exists to return to. */
+  showBackLink?: boolean;
 }) {
   return (
     <LanguageProvider initialLang={lang}>
-      <DetailInner advisory={advisory} />
+      <DetailInner advisory={advisory} showBackLink={showBackLink} />
     </LanguageProvider>
   );
 }

@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import AdvisoryList from "@/components/asesorias/AdvisoryList";
+import AsesoriasIndex from "@/components/asesorias/AsesoriasIndex";
+import { getAdvisories } from "@/lib/asesorias";
+import { asesoriasIndexMeta } from "@/lib/advisoryRouting";
 import {
-  asesoriasCatalogMeta,
   langFromSearchParams,
   localizedPageMeta,
-  pageImageAlt,
   type PageSearchParams,
 } from "@/lib/meta";
 
@@ -14,13 +14,13 @@ export async function generateMetadata({
   searchParams: PageSearchParams;
 }): Promise<Metadata> {
   const lang = langFromSearchParams(await searchParams);
-  const { title, description } = asesoriasCatalogMeta[lang];
+  const meta = asesoriasIndexMeta(getAdvisories(), lang);
   return localizedPageMeta({
     path: "/asesorias",
     lang,
-    title,
-    description,
-    imageAlt: pageImageAlt.asesorias[lang],
+    title: meta.title,
+    description: meta.description,
+    imageAlt: meta.imageAlt,
   });
 }
 
@@ -30,5 +30,5 @@ export default async function AsesoriasPage({
   searchParams: PageSearchParams;
 }) {
   const lang = langFromSearchParams(await searchParams);
-  return <AdvisoryList lang={lang} />;
+  return <AsesoriasIndex lang={lang} advisories={getAdvisories()} />;
 }

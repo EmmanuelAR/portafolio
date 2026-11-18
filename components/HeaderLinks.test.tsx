@@ -89,6 +89,20 @@ test("asesorías is current on the catalog and the detail route", () => {
   );
 });
 
+test("home hub card 01 links asesorías to /asesorias in both languages", () => {
+  const spanish = render(<Hub lang="es" />);
+  const esCard = screen.getByRole("link", { name: /01/ });
+  expect(esCard).toHaveAttribute("href", "/asesorias");
+  expect(esCard).toHaveTextContent("asesorías");
+  spanish.unmount();
+
+  window.history.pushState({}, "", "/?lang=en");
+  render(<Hub lang="en" />);
+  const enCard = screen.getByRole("link", { name: /01/ });
+  expect(enCard).toHaveAttribute("href", "/asesorias?lang=en");
+  expect(enCard).toHaveTextContent("advisories");
+});
+
 test("an english browser without ?lang=en still shows the spanish label", () => {
   setEnglishBrowser();
   window.history.pushState({}, "", "/");

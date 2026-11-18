@@ -1,5 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import AdvisoryDetail from "./AdvisoryDetail";
+import { routeAdvisories } from "@/lib/advisoryRouting";
 import { getAdvisory } from "@/lib/asesorias";
 
 const advisory = getAdvisory("el-empleado-que-no-se-cansa")!;
@@ -134,10 +135,7 @@ test("english keeps the same WhatsApp link and the translated landing", () => {
   for (const cta of ctas) {
     expect(cta).toHaveAttribute("href", WA_EN);
   }
-  expect(screen.getByRole("link", { name: /all consulting/i })).toHaveAttribute(
-    "href",
-    "/asesorias?lang=en"
-  );
+  expect(screen.queryByRole("link", { name: /all consulting/i })).not.toBeInTheDocument();
   expect(screen.queryByText(/advisories/i)).not.toBeInTheDocument();
   expect(screen.queryByRole("link", { name: "Escribime por WhatsApp" })).not.toBeInTheDocument();
   expect(screen.queryByText("Asesoría de automatización para emprendedores")).not.toBeInTheDocument();
@@ -163,6 +161,31 @@ test("english keeps the same WhatsApp link and the translated landing", () => {
   expect(screen.getByText(/not included in the session/)).toBeInTheDocument();
   expect(document.querySelector("video")).not.toBeNull();
   expect(document.querySelector("video")).not.toHaveAttribute("autoplay");
+});
+
+test("back link is hidden for one service and points at the list when another exists", () => {
+  window.history.pushState({}, "", "/asesorias?lang=en");
+  const { unmount } = render(
+    <AdvisoryDetail
+      advisory={advisory}
+      lang="en"
+      showBackLink={routeAdvisories([advisory]).showBackLink}
+    />
+  );
+  expect(screen.queryByRole("link", { name: /all consulting/i })).not.toBeInTheDocument();
+  unmount();
+
+  render(
+    <AdvisoryDetail
+      advisory={advisory}
+      lang="en"
+      showBackLink={routeAdvisories([advisory, { slug: "otra-asesoria" }]).showBackLink}
+    />
+  );
+  expect(screen.getByRole("link", { name: /all consulting/i })).toHaveAttribute(
+    "href",
+    "/asesorias?lang=en"
+  );
 });
 
 test("WhatsApp clicks send Contact when the pixel id is set and do not cancel the link", () => {

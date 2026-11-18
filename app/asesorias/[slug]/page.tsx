@@ -1,8 +1,14 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import AdvisoryDetail from "@/components/asesorias/AdvisoryDetail";
 import AdvisoryJsonLd from "@/components/asesorias/AdvisoryJsonLd";
-import { advisorySlugs, getAdvisory } from "@/lib/asesorias";
+import { advisorySlugs, getAdvisories, getAdvisory } from "@/lib/asesorias";
+import {
+  advisoryCanonicalPath,
+  detailRedirectLocation,
+  routeAdvisories,
+  searchFromRecord,
+} from "@/lib/advisoryRouting";
 import { NAME } from "@/lib/content";
 import { SITE_NAME } from "@/lib/site";
 import {
@@ -22,14 +28,14 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
   searchParams: PageSearchParams;
 }): Promise<Metadata> {
-  const { slug } = await params;
+  const [{ slug }, resolvedSearch] = await Promise.all([params, searchParams]);
   const advisory = getAdvisory(slug);
   if (!advisory) return {};
 
-  const lang = langFromSearchParams(await searchParams);
+  const lang = langFromSearchParams(resolvedSearch);
   const copy = advisory[lang];
   return localizedPageMeta({
-    path: `/asesorias/${slug}`,
+    path: advisoryCanonicalPath(getAdvisories(), slug),
     lang,
     title: `${copy.title} · ${SITE_NAME}`,
     description: copy.metaDescription,
@@ -44,14 +50,22 @@ export default async function AdvisoryPage({
   params: Promise<{ slug: string }>;
   searchParams: PageSearchParams;
 }) {
-  const { slug } = await params;
+  const advisories = getAdvisories();
+  const [{ slug }, resolvedSearch] = await Promise.all([params, searchParams]);
+  const target = detailRedirectLocation(advisories, slug, searchFromRecord(resolvedSearch));
+  if (target) permanentRedirect(target);
+
   const advisory = getAdvisory(slug);
   if (!advisory) notFound();
-  const lang = langFromSearchParams(await searchParams);
+  const lang = langFromSearchParams(resolvedSearch);
   return (
     <>
       <AdvisoryJsonLd slug={slug} lang={lang} />
-      <AdvisoryDetail advisory={advisory} lang={lang} />
+      <AdvisoryDetail
+        advisory={advisory}
+        lang={lang}
+        showBackLink={routeAdvisories(advisories).showBackLink}
+      />
     </>
   );
 }
