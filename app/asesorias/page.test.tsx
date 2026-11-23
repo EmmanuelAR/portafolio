@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import AsesoriasIndex from "@/components/asesorias/AsesoriasIndex";
 import AsesoriasPage, { generateMetadata } from "./page";
 import { getAdvisory, type Advisory } from "@/lib/asesorias";
+import { asesoriasPageKeywords } from "@/lib/meta";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 
 const advisory = getAdvisory("el-empleado-que-no-se-cansa")!;
@@ -89,12 +90,25 @@ test("/asesorias metadata is the landing title, description, canonical, and og i
   const es = await generateMetadata({ searchParams: Promise.resolve({}) });
   const en = await generateMetadata({ searchParams: Promise.resolve({ lang: "en" }) });
 
-  expect(es.title).toBe(`${advisory.es.title} · ${SITE_NAME}`);
+  expect(advisory.es.metaTitle).toBe(
+    "Automatizá tu negocio con IA: asesoría en Costa Rica · Emmanuel Agüero"
+  );
+  expect(advisory.en.metaTitle).toBe(
+    "Automate your business with AI: 90-min session · Emmanuel Agüero"
+  );
+  expect(es.title).toEqual({ absolute: advisory.es.metaTitle });
   expect(es.description).toBe(advisory.es.metaDescription);
+  expect(es.keywords).toBe(asesoriasPageKeywords);
+  expect(es.keywords).toBe("asesoría automatización, Grok Bot, emprendedores Costa Rica");
   expect(es.alternates?.canonical).toBe(`${SITE_URL}/asesorias`);
   expect(es.openGraph).toMatchObject({
     url: `${SITE_URL}/asesorias`,
-    title: `${advisory.es.title} · ${SITE_NAME}`,
+    title: advisory.es.metaTitle,
+    description: advisory.es.metaDescription,
+  });
+  expect(es.twitter).toMatchObject({
+    card: "summary_large_image",
+    title: advisory.es.metaTitle,
     description: advisory.es.metaDescription,
   });
   expect(es.openGraph?.images).toEqual([
@@ -106,9 +120,18 @@ test("/asesorias metadata is the landing title, description, canonical, and og i
     },
   ]);
 
-  expect(en.title).toBe(`${advisory.en.title} · ${SITE_NAME}`);
+  expect(en.title).toEqual({ absolute: advisory.en.metaTitle });
   expect(en.description).toBe(advisory.en.metaDescription);
+  expect(en.keywords).toBe(asesoriasPageKeywords);
   expect(en.alternates?.canonical).toBe(`${SITE_URL}/asesorias?lang=en`);
+  expect(en.openGraph).toMatchObject({
+    title: advisory.en.metaTitle,
+    description: advisory.en.metaDescription,
+  });
+  expect(en.twitter).toMatchObject({
+    title: advisory.en.metaTitle,
+    description: advisory.en.metaDescription,
+  });
   expect(en.openGraph?.images).toEqual([
     {
       url: `${SITE_URL}/asesorias/opengraph-image?lang=en`,

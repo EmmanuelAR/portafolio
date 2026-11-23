@@ -14,8 +14,8 @@ export interface AdvisoryRoute {
 }
 
 type AdvisoryMeta = {
-  es: { title: string; metaDescription: string };
-  en: { title: string; metaDescription: string };
+  es: { title: string; metaDescription: string; metaTitle?: string };
+  en: { title: string; metaDescription: string; metaTitle?: string };
 };
 
 /**
@@ -96,7 +96,7 @@ export function asesoriasIndexMeta(
   if (advisories.length === 1 && advisories[0]) {
     const copy = advisories[0][lang];
     return {
-      title: `${copy.title} · ${SITE_NAME}`,
+      title: copy.metaTitle ?? `${copy.title} · ${SITE_NAME}`,
       description: copy.metaDescription,
       imageAlt: `${copy.title} — ${NAME}`,
     };
