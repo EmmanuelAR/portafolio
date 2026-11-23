@@ -176,6 +176,14 @@ export const pageImageAlt: Record<"home" | "portafolio" | "asesorias", Record<La
   },
 };
 
+/**
+ * Replaces the root layout keywords on `/asesorias` only.
+ * One string, not an array: Next joins keyword arrays with "," and would drop
+ * the spaces in this value.
+ */
+export const asesoriasPageKeywords =
+  "asesoría automatización, Grok Bot, emprendedores Costa Rica";
+
 export const asesoriasCatalogMeta: Record<
   Lang,
   { title: string; description: string }

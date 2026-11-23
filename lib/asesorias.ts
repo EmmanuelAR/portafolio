@@ -4,6 +4,11 @@ import { LINKS } from "./content";
 export interface AdvisoryCopy {
   title: string;
   tagline: string;
+  /**
+   * Document title for the /asesorias landing when this is the only service.
+   * Not shown on the page. Absent services keep `${title} · site name`.
+   */
+  metaTitle?: string;
   /** SEO / Open Graph description (not shown on the page body). */
   metaDescription: string;
   /** Short pain-point line for the catalog card subtitle. */
@@ -99,6 +104,7 @@ const empleadoQueNoSeCansa: Advisory = {
   slug: "el-empleado-que-no-se-cansa",
   es: {
     title: "El empleado que no se cansa",
+    metaTitle: "Automatizá tu negocio con IA: asesoría en Costa Rica · Emmanuel Agüero",
     tagline: "Asesoría de automatización para emprendedores",
     metaDescription:
       "¿Seguís respondiendo mensajes, cotizaciones y recordatorios a mano? En 90 minutos dejamos tu primera tarea automatizada con Grok Bot.",
@@ -142,6 +148,7 @@ const empleadoQueNoSeCansa: Advisory = {
   },
   en: {
     title: "The employee who never gets tired",
+    metaTitle: "Automate your business with AI: 90-min session · Emmanuel Agüero",
     tagline: "Automation advisory for founders",
     metaDescription:
       "Still answering messages, quotes, and reminders by hand? In 90 minutes we set up your first automated task with Grok Bot.",

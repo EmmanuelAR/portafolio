@@ -71,6 +71,13 @@ test("index metadata uses the sole service in each language and the catalog when
     description: "Alpha description",
     imageAlt: `Alpha — ${NAME}`,
   });
+  const withSeoTitle = {
+    ...services[0],
+    es: { ...services[0].es, metaTitle: "Título SEO" },
+    en: { ...services[0].en, metaTitle: "SEO title" },
+  };
+  expect(asesoriasIndexMeta([withSeoTitle], "es").title).toBe("Título SEO");
+  expect(asesoriasIndexMeta([withSeoTitle], "en").title).toBe("SEO title");
   expect(asesoriasIndexMeta(services, "es")).toEqual({
     title: asesoriasCatalogMeta.es.title,
     description: asesoriasCatalogMeta.es.description,
@@ -78,6 +85,20 @@ test("index metadata uses the sole service in each language and the catalog when
   });
   expect(asesoriasIndexMeta(services, "en").title).toBe(asesoriasCatalogMeta.en.title);
   expect(asesoriasIndexMeta(services, "en").description).toBe(asesoriasCatalogMeta.en.description);
+});
+
+test("the published landing title is the dedicated metadata title, not the heading", () => {
+  const published = getAdvisories();
+  expect(asesoriasIndexMeta(published, "es")).toMatchObject({
+    title: published[0].es.metaTitle,
+    description: published[0].es.metaDescription,
+    imageAlt: `${published[0].es.title} — ${NAME}`,
+  });
+  expect(asesoriasIndexMeta(published, "en")).toMatchObject({
+    title: published[0].en.metaTitle,
+    description: published[0].en.metaDescription,
+    imageAlt: `${published[0].en.title} — ${NAME}`,
+  });
 });
 
 test("the published catalog is one service, so sitemap and redirects omit the detail url", async () => {
